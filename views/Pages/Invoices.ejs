@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+
+    <div class="WorkSpace">
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2><i class="fa-solid fa-book-open"></i> كل الفواتير</h2>
+            <p>إدارة وعرض جميع الفواتير والعمليات التجارية</p>
+          </div>
+
+          <div class="Control-bar">
+            <div class="compact-cards-row">
+              <div class="mini-metric-card card-orange">
+                <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
+                <div class="info-text">
+                  <span class="lbl">إجمالي الفواتير</span>
+                  <span class="num" id="TotalInvoices">1,248</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-green">
+                <div class="icon-box"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                <div class="info-text">
+                  <span class="lbl">مبيعات</span>
+                  <span class="num" id="TotalSales">856,400 ر.س</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-blue">
+                <div class="icon-box"><i class="fa-solid fa-arrow-trend-down"></i></div>
+                <div class="info-text">
+                  <span class="lbl">مشتريات</span>
+                  <span class="num" id="TotalPurchases">420,150 ر.س</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-purple">
+                <div class="icon-box"><i class="fa-solid fa-rotate-left"></i></div>
+                <div class="info-text">
+                  <span class="lbl">المرتجعات</span>
+                  <span class="num" id="TotalReturns">45,200 ر.س</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-red">
+                <div class="icon-box"><i class="fa-solid fa-percent"></i></div>
+                <div class="info-text">
+                  <span class="lbl">الضرائب</span>
+                  <span class="num" id="TotalTax">128,450 ر.س</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-green">
+                <div class="icon-box"><i class="fa-solid fa-wallet"></i></div>
+                <div class="info-text">
+                  <span class="lbl">المدفوعات</span>
+                  <span class="num" id="TotalPayments">680,000 ر.س</span>
+                </div>
+              </div>
+            </div>
+            <div class="action-buttons-group">
+              <button class="Tool-Btn btn-excel" onclick="exportInvoicesExcel()"><i class="fa-solid fa-file-excel"></i>
+                تصدير Excel</button>
+            </div>
+          </div>
+
+          <div class="Filter-bar">
+            <div class="Field">
+              <label>نوع الفاتورة</label>
+              <div class="input SelectInput">
+                <select id="FilterInvoiceType">
+                  <option value="all">الكل</option>
+                  <option value="sales">مبيعات</option>
+                  <option value="purchase">مشتريات</option>
+                  <option value="sales-return">مرتجع مبيعات</option>
+                  <option value="purchase-return">مرتجع مشتريات</option>
+                  <option value="transfer">تحويل مخزني</option>
+                </select>
+                <i class="fa-solid fa-layer-group"></i>
+              </div>
+            </div>
+            <div class="Field">
+              <label>الحالة</label>
+              <div class="input SelectInput">
+                <select id="FilterStatus">
+                  <option value="all">الكل</option>
+                  <option value="paid">مدفوعة</option>
+                  <option value="partial">مدفوعة جزئياً</option>
+                  <option value="unpaid">غير مدفوعة</option>
+                  <option value="draft">مسودة</option>
+                </select>
+                <i class="fa-solid fa-filter"></i>
+              </div>
+            </div>
+            <div class="Field">
+              <label>من تاريخ</label>
+              <div class="input"><input type="date" id="FilterFromDate"><i class="fa-solid fa-calendar"></i></div>
+            </div>
+            <div class="Field">
+              <label>إلى تاريخ</label>
+              <div class="input"><input type="date" id="FilterToDate"><i class="fa-solid fa-calendar"></i></div>
+            </div>
+            <div class="Field wide">
+              <label>بحث</label>
+              <div class="input"><input type="text" id="FilterSearch" placeholder="رقم الفاتورة، العميل، المورد..."><i
+                  class="fa-solid fa-search"></i></div>
+            </div>
+            <button class="Tool-Btn btn-excel" onclick="filterInvoices()"><i class="fa-solid fa-search"></i>
+              بحث</button>
+          </div>
+
+          <div class="Container-Table">
+            <div class="Container-Table-Header">
+              <h3><i class="fa-solid fa-list-ol"></i> سجل الفواتير</h3>
+            </div>
+            <div class="Container-Table-Body">
+              <table class="Perfect-Table" id="MainPerfectTable">
+                <thead>
+                  <tr>
+                    <th style="width: 4%;">#</th>
+                    <th style="width: 10%;">
+                      <div class="th-content">رقم الفاتورة <i class="fa-solid fa-filter Filter-Btn" data-columnindex="1"
+                          data-columnname="invoiceNo"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">النوع <i class="fa-solid fa-filter Filter-Btn" data-columnindex="2"
+                          data-columnname="type"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">التاريخ <i class="fa-solid fa-filter Filter-Btn" data-columnindex="3"
+                          data-columnname="date"></i></div>
+                    </th>
+                    <th style="width: 18%;">
+                      <div class="th-content">العميل / المورد <i class="fa-solid fa-filter Filter-Btn"
+                          data-columnindex="4" data-columnname="party"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">الإجمالي <i class="fa-solid fa-filter Filter-Btn" data-columnindex="5"
+                          data-columnname="total"></i></div>
+                    </th>
+                    <th style="width: 8%;">
+                      <div class="th-content">الضريبة <i class="fa-solid fa-filter Filter-Btn" data-columnindex="6"
+                          data-columnname="tax"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">الصافي <i class="fa-solid fa-filter Filter-Btn" data-columnindex="7"
+                          data-columnname="net"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">الحالة <i class="fa-solid fa-filter Filter-Btn" data-columnindex="8"
+                          data-columnname="status"></i></div>
+                    </th>
+                    <th style="width: 5%;">الإجراء</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-id="1">
+                    <td class="row-number">1</td>
+                    <td>INV-00125</td>
+                    <td>
+                      <span class="status-badge Color-Bg-green"><i class="fa-solid fa-arrow-trend-up"></i> مبيعات</span>
+                    </td>
+                    <td>2024-06-18</td>
+                    <td>
+                      <div class="Name-Cell">
+                        <i class="fa-solid fa-user Color-Bg-green"></i>
+                        <div class="Name-Cell-info">
+                          <span class="name">شركة التقنية المتقدمة</span>
+                          <span class="code">CUST-001</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>15,000</td>
+                    <td>2,250</td>
+                    <td>17,250</td>
+                    <td>
+                      <span class="status-badge Color-Bg-green">مدفوعة</span>
+                    </td>
+                    <td>
+                      <div class="action-menu-container">
+                        <button class="Action-Row-Btn"><i class="fa-solid fa-ellipsis"></i></button>
+                        <div class="Profile-Dropdown">
+                          <a class="Profile-Link">
+                            <i class="fa-regular fa-pen-to-square"></i> تعديل</a>
+                          <a class="Profile-Link" onclick="openPopUpWindow('DetailsPopup');">
+                            <i class="fa-solid fa-eye" o></i> عرض التفاصيل</a>
+                          <div class="Separator"></div>
+                          <a class="Profile-Link">
+                            <i class="fa-solid fa-trash-can"></i> حذف </a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr data-id="2">
+                    <td class="row-number">2</td>
+                    <td>INV-00125</td>
+                    <td>
+                      <span class="status-badge Color-Bg-blue"><i class="fa-solid fa-arrow-trend-up"></i> مبيعات</span>
+                    </td>
+                    <td>2024-06-18</td>
+                    <td>
+                      <div class="Name-Cell">
+                        <i class="fa-solid fa-user Color-Bg-blue"></i>
+                        <div class="Name-Cell-info">
+                          <span class="name">شركة التقنية المتقدمة</span>
+                          <span class="code">CUST-001</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>15,000</td>
+                    <td>2,250</td>
+                    <td>17,250</td>
+                    <td>
+                      <span class="status-badge Color-Bg-blue">مدفوعة</span>
+                    </td>
+                    <td>
+                      <div class="action-menu-container">
+                        <button class="Action-Row-Btn"><i class="fa-solid fa-ellipsis"></i></button>
+                        <div class="Profile-Dropdown">
+                          <a class="Profile-Link">
+                            <i class="fa-regular fa-pen-to-square"></i> تعديل</a>
+                          <a class="Profile-Link" onclick="openPopUpWindow('DetailsPopup');">
+                            <i class="fa-solid fa-eye" o></i> عرض التفاصيل</a>
+                          <div class="Separator"></div>
+                          <a class="Profile-Link">
+                            <i class="fa-solid fa-trash-can"></i> حذف </a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr data-id="3">
+                    <td class="row-number">3</td>
+                    <td>INV-00125</td>
+                    <td>
+                      <span class="status-badge Color-Bg-orange"><i class="fa-solid fa-arrow-trend-up"></i>
+                        مبيعات</span>
+                    </td>
+                    <td>2024-06-18</td>
+                    <td>
+                      <div class="Name-Cell">
+                        <i class="fa-solid fa-truck Color-Bg-orange"></i>
+                        <div class="Name-Cell-info">
+                          <span class="name">شركة التقنية المتقدمة</span>
+                          <span class="code">CUST-001</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>15,000</td>
+                    <td>2,250</td>
+                    <td>17,250</td>
+                    <td>
+                      <span class="status-badge Color-Bg-orange">مدفوعة</span>
+                    </td>
+                    <td>
+                      <div class="action-menu-container">
+                        <button class="Action-Row-Btn"><i class="fa-solid fa-ellipsis"></i></button>
+                        <div class="Profile-Dropdown">
+                          <a class="Profile-Link">
+                            <i class="fa-regular fa-pen-to-square"></i> تعديل</a>
+                          <a class="Profile-Link" onclick="openPopUpWindow('DetailsPopup');">
+                            <i class="fa-solid fa-eye" o></i> عرض التفاصيل</a>
+                          <div class="Separator"></div>
+                          <a class="Profile-Link">
+                            <i class="fa-solid fa-trash-can"></i> حذف </a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+              </table>
+            </div>
+            <div class="Container-Table-Footer">
+              <span class="info-text" id="showingDataMetrics">عرض 1-8 من 1,248</span>
+              <div id="PaginationPages" class="Pagination-Pages"></div>
+            </div>
+          </div>
+        </main>
+    </div>
+
+    <div class="Container-PopUp-Window" id="DetailsPopup">
+      <div class="PopUp-Window PopUp-Window-invoice" id="PopUp-Window">
+        <div class="PopUpWindow-Header" id="WindowHeaderDrag">
+          <div class="PopUpWindow-Title">
+            <h3 id="PopupTitle">فاتورة </h3>
+            <p id="PopupSubtitle">فاتورة رقم | 0001</p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('DetailsPopup')">
+            <i class="fa fa-xmark"></i></button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <div class="Watermark">شركة أرباح التجارية</div>
+
+          <%- include('../Partials/letterHead') %>
+
+            <div class="parties-section">
+              <div class="party-card">
+                <div class="card-header-xxxx">
+                  <i class="fa-solid fa-user"></i>
+                  <h4>بيانات العميل</h4>
+                </div>
+                <div class="party-details">
+                  <div>
+                    <p>اسم العميل:</p>
+                    <p class="NameCustomer">مطعم الرغيف المصري للاكلات الشعبية والمصرية</p>
+                  </div>
+                  <div>
+                    <p>الرقم الضريبي:</p>
+                    <p>314446452800003</p>
+                  </div>
+                  <div>
+                    <p>العنوان:</p>
+                    <p>جدة، حي الصفا، شارع فلسطين</p>
+                  </div>
+                  <div>
+                    <p>الهاتف:</p>
+                    <p>0501234567</p>
+                  </div>
+                  <div>
+                    <p>البريد:</p>
+                    <p>customer@email.com</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="party-card">
+                <div class="card-header-xxxx">
+                  <i class="fa-solid fa-file"></i>
+                  <h4>تفاصيل الفاتورة</h4>
+                </div>
+                <div class="party-details">
+                  <div>
+                    <p>نوع الفاتورة:</p>
+                    <p class="NameCustomer">فاتورة مبيعات</p>
+                  </div>
+                  <div>
+                    <p>رقم الفاتورة:</p>
+                    <p>INV-2024-001</p>
+                  </div>
+                  <div>
+                    <p>تاريخ الفاتورة:</p>
+                    <p>09-06-2026</p>
+                  </div>
+                  <div>
+                    <p>تاريخ الاستحقاق:</p>
+                    <p>09-07-2026</p>
+                  </div>
+                  <div>
+                    <p>نوع الدفع:</p>
+                    <p>نقدي</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="party-card">
+                <div id="QRCode"></div>
+              </div>
+            </div>
+
+            <div class="Container-Table2 ">
+              <table class="Perfect-Table" id="Items-table-invoice">
+                <thead>
+                  <tr>
+                    <th style="width: 4%;">#</th>
+                    <th style="width: 42%;">الصنف</th>
+                    <th style="width: 9%;">الوحدة</th>
+                    <th style="width: 9%;">الكمية</th>
+                    <th style="width: 9%;">السعر</th>
+                    <th style="width: 9%;">الخصم%</th>
+                    <th style="width: 9%;">الضريبة%</th>
+                    <th style="width: 9%;">الإجمالي</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- ITEMS 1-25 (DYNAMIC) -->
+                  <tr>
+                    <td class="text-center">1</td>
+                    <td><span class="item-code">ITM-001</span><span class="item-name">لابتوب Dell Latitude
+                        5520</span></td>
+                    <td class="text-center">جهاز</td>
+                    <td class="text-center number">2</td>
+                    <td class="text-right number">4,500.00</td>
+                    <td class="text-center number">0</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">10,350.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">2</td>
+                    <td><span class="item-code">ITM-002</span><span class="item-name">ماوس لاسلكي
+                        Logitech</span></td>
+                    <td class="text-center">قطعة</td>
+                    <td class="text-center number">10</td>
+                    <td class="text-right number">120.00</td>
+                    <td class="text-center number">0</td>
+                    <td class="text-center number">0</td>
+                    <td class="text-right total-cell">1,200.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">3</td>
+                    <td><span class="item-code">ITM-003</span><span class="item-name">كيبورد ميكانيكي
+                        Redragon</span></td>
+                    <td class="text-center">قطعة</td>
+                    <td class="text-center number">5</td>
+                    <td class="text-right number">280.00</td>
+                    <td class="text-center number">10</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">1,449.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">4</td>
+                    <td><span class="item-code">ITM-004</span><span class="item-name">شاشة Samsung 27
+                        بوصة</span></td>
+                    <td class="text-center">جهاز</td>
+                    <td class="text-center number">3</td>
+                    <td class="text-right number">1,200.00</td>
+                    <td class="text-center number">5</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">3,933.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">5</td>
+                    <td><span class="item-code">ITM-005</span><span class="item-name">طابعة HP LaserJet
+                        Pro</span></td>
+                    <td class="text-center">جهاز</td>
+                    <td class="text-center number">1</td>
+                    <td class="text-right number">850.00</td>
+                    <td class="text-center number">0</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">977.50</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">6</td>
+                    <td><span class="item-code">ITM-006</span><span class="item-name">راوتر TP-Link
+                        AC1750</span></td>
+                    <td class="text-center">جهاز</td>
+                    <td class="text-center number">2</td>
+                    <td class="text-right number">320.00</td>
+                    <td class="text-center number">0</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">736.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">7</td>
+                    <td><span class="item-code">ITM-007</span><span class="item-name">هارد ديسك خارجي 2TB</span>
+                    </td>
+                    <td class="text-center">قطعة</td>
+                    <td class="text-center number">4</td>
+                    <td class="text-right number">450.00</td>
+                    <td class="text-center number">5</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">1,966.50</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">8</td>
+                    <td><span class="item-code">ITM-008</span><span class="item-name">سماعات رأس Sony
+                        WH-1000</span></td>
+                    <td class="text-center">قطعة</td>
+                    <td class="text-center number">3</td>
+                    <td class="text-right number">680.00</td>
+                    <td class="text-center number">0</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">2,346.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">9</td>
+                    <td><span class="item-code">ITM-009</span><span class="item-name">كاميرا ويب Logitech
+                        C920</span></td>
+                    <td class="text-center">قطعة</td>
+                    <td class="text-center number">5</td>
+                    <td class="text-right number">290.00</td>
+                    <td class="text-center number">0</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">1,667.50</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">10</td>
+                    <td><span class="item-code">ITM-010</span><span class="item-name">مايكروفون Blue Yeti</span>
+                    </td>
+                    <td class="text-center">قطعة</td>
+                    <td class="text-center number">2</td>
+                    <td class="text-right number">750.00</td>
+                    <td class="text-center number">10</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">1,552.50</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">11</td>
+                    <td><span class="item-code">ITM-011</span><span class="item-name">باور بنك Anker
+                        20000mAh</span></td>
+                    <td class="text-center">قطعة</td>
+                    <td class="text-center number">6</td>
+                    <td class="text-right number">180.00</td>
+                    <td class="text-center number">0</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">1,242.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">12</td>
+                    <td><span class="item-code">ITM-012</span><span class="item-name">ستاند لابتوب
+                        ألومنيوم</span></td>
+                    <td class="text-center">قطعة</td>
+                    <td class="text-center number">8</td>
+                    <td class="text-right number">95.00</td>
+                    <td class="text-center number">0</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">874.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">13</td>
+                    <td><span class="item-code">ITM-013</span><span class="item-name">كابل HDMI 2.1 - 3
+                        متر</span></td>
+                    <td class="text-center">قطعة</td>
+                    <td class="text-center number">10</td>
+                    <td class="text-right number">65.00</td>
+                    <td class="text-center number">0</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">747.50</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">14</td>
+                    <td><span class="item-code">ITM-014</span><span class="item-name">كابل USB-C to
+                        Lightning</span></td>
+                    <td class="text-center">قطعة</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right number">45.00</td>
+                    <td class="text-center number">0</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">776.25</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">15</td>
+                    <td><span class="item-code">ITM-015</span><span class="item-name">جراب لابتوب 15.6
+                        بوصة</span></td>
+                    <td class="text-center">قطعة</td>
+                    <td class="text-center number">4</td>
+                    <td class="text-right number">120.00</td>
+                    <td class="text-center number">5</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">524.40</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">16</td>
+                    <td><span class="item-code">ITM-016</span><span class="item-name">فأرة ألعاب Razer
+                        DeathAdder</span></td>
+                    <td class="text-center">قطعة</td>
+                    <td class="text-center number">3</td>
+                    <td class="text-right number">350.00</td>
+                    <td class="text-center number">0</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">1,207.50</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">17</td>
+                    <td><span class="item-code">ITM-017</span><span class="item-name">كيبورد ألعاب SteelSeries
+                        Apex</span></td>
+                    <td class="text-center">قطعة</td>
+                    <td class="text-center number">2</td>
+                    <td class="text-right number">580.00</td>
+                    <td class="text-center number">0</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">1,334.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">18</td>
+                    <td><span class="item-code">ITM-018</span><span class="item-name">شاشة LG UltraWide 34
+                        بوصة</span></td>
+                    <td class="text-center">جهاز</td>
+                    <td class="text-center number">1</td>
+                    <td class="text-right number">2,800.00</td>
+                    <td class="text-center number">0</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">3,220.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">19</td>
+                    <td><span class="item-code">ITM-019</span><span class="item-name">مكبر صوت JBL Charge
+                        5</span></td>
+                    <td class="text-center">قطعة</td>
+                    <td class="text-center number">4</td>
+                    <td class="text-right number">450.00</td>
+                    <td class="text-center number">0</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">2,070.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">20</td>
+                    <td>
+                      <span class="item-code">ITM-020</span>
+                      <span class="item-name">محول USB-C Hub 7-in-1</span>
+                    </td>
+                    <td class="text-center">قطعة</td>
+                    <td class="text-center number">6</td>
+                    <td class="text-right number">180.00</td>
+                    <td class="text-center number">0</td>
+                    <td class="text-center number">15</td>
+                    <td class="text-right total-cell">1,242.00</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+
+            <div class="bottom-section">
+              <div class="totals-card">
+                <div class="total-title">
+                  <i class="fa-solid fa-calculator"></i>
+                  ملخص الفاتورة
+                </div>
+                <div class="total-row">
+                  <span class="label">إجمالي الأصناف</span>
+                  <span class="value">43,415.65 ر.س</span>
+                </div>
+                <div class="total-row">
+                  <span class="label">إجمالي الخصومات</span>
+                  <span class="value" style="color: #f87171;">- 1,215.50 ر.س</span>
+                </div>
+                <div class="total-row">
+                  <span class="label">الإجمالي بعد الخصم</span>
+                  <span class="value" style="color: var(--primary);">42,200.15 ر.س</span>
+                </div>
+                <div class="total-row">
+                  <span class="label">ضريبة القيمة المضافة (15%)</span>
+                  <span class="value" style="color: #60a5fa;">+ 6,330.02 ر.س</span>
+                </div>
+                <div class="total-row grand-total">
+                  <span class="label">الإجمالي النهائي</span>
+                  <span class="value">48,530.17 ر.س</span>
+                </div>
+
+
+                <div class="total-row">
+                  <span class="label">المبلغ المدفوع</span>
+                  <span class="value" style="color: var(--primary);">48,530.17 ر.س</span>
+                </div>
+                <div class="total-row">
+                  <span class="label">المبلغ المتبقي</span>
+                  <span class="value" style="color: var(--danger);">0 ر.س</span>
+                </div>
+                <div class="total-row PaymentStatus">
+                  <span class="label">حالة الدفع</span>
+                  <span class="value">مدفوعة بالكامل</span>
+                </div>
+
+              </div>
+              <div class="signatures-section">
+                <div class="signature-box">
+                  <div class="signature-line"></div>
+                  <div class="signature-label">توقيع العميل / الختم</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="LetterFoot LetterFoot-Invoices">
+              <div class="Footer-Left">
+                <span class="system-badge"><i class="fa-solid fa-shield-halved"></i>ArbahERP v4.0</span>
+                <span>تم إنشاؤها بواسطة: إسلام عبدالرحمن ابراهيم عبدالنعيم | 2024/06/09 14:30:25</span>
+              </div>
+              <div class="Footer-Pages">صفحة 1 من 1</div>
+            </div>
+
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('DetailsPopup')"><i class="fa fa-xmark"></i>
+            إلغاء</button>
+          <button class="apply" onclick="PrintAreaFn('#DetailsPopup .PopUpWindow-Body')"><i
+              class="fa-solid fa-print"></i>
+            طباعة</button>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../Partials/filter') %>
+      <%- include('../Partials/scripts') %>
+
+        <script>
+          function GenerateQR() {
+            const QRcode = document.getElementById("QRCode")
+            const invoiceUrl = "https://loma2023.github.io/ArbahERP/InvoiceShow.html";
+            QRcode.innerHTML = "";
+            new QRCode(QRcode, { text: invoiceUrl, width: 110, height: 100 });
+          }
+
+          GenerateQR()
+        </script>
+
+</body>
+
+</html>

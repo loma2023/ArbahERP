@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+
+    <div class="WorkSpace">
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2>☻ تعريف البنوك</h2>
+            <p>إدارة الحسابات البنكية والبنوك المتعاملة معها</p>
+          </div>
+
+          <div class="Control-bar">
+            <div class="compact-cards-row">
+              <div class="mini-metric-card card-orange">
+                <div class="icon-box"><i class="fa-solid fa-building-columns"></i></div>
+                <div class="info-text">
+                  <span class="lbl">عدد البنوك</span>
+                  <span class="num" id="TotalBanks">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-green">
+                <div class="icon-box"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="info-text">
+                  <span class="lbl">الحسابات النشطة</span>
+                  <span class="num" id="ActiveAccounts">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-blue">
+                <div class="icon-box"><i class="fa-solid fa-money-bill"></i></div>
+                <div class="info-text">
+                  <span class="lbl">إجمالي الأرصدة</span>
+                  <span class="num" id="TotalBankBalance">0 ر.س</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-red">
+                <div class="icon-box"><i class="fa-solid fa-circle-exclamation"></i></div>
+                <div class="info-text">
+                  <span class="lbl">حسابات مجمدة</span>
+                  <span class="num" id="FrozenAccounts">0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="action-buttons-group">
+              <button class="Tool-Btn btn-add-Customer" onclick="resetForm(); openPopUpWindow('AddNewPopup');">
+                <i class="fa-solid fa-plus"></i> إضافة حساب
+              </button>
+              <button class="Tool-Btn btn-excel" onclick="exportBanksExcel()">
+                <i class="fa-solid fa-file-excel"></i> تصدير Excel
+              </button>
+            </div>
+          </div>
+
+          <div class="Container-Table">
+            <div class="Container-Table-Body">
+              <table class="Perfect-Table" id="MainPerfectTable">
+                <thead>
+                  <tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 16%;">
+                      <div class="th-content">البنك <i class="fa-solid fa-filter Filter-Btn" data-columnindex="1" data-columnname="name"></i></div>
+                    </th>
+                    <th style="width: 14%;">
+                      <div class="th-content">رقم الحساب <i class="fa-solid fa-filter Filter-Btn" data-columnindex="2" data-columnname="accountNo"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">الفرع <i class="fa-solid fa-filter Filter-Btn" data-columnindex="3" data-columnname="branch"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">الحساب المحاسبي <i class="fa-solid fa-filter Filter-Btn" data-columnindex="4" data-columnname="linkedAccountCode"></i></div>
+                    </th>
+                    <th style="width: 11%;">
+                      <div class="th-content">الرصيد الحالي <i class="fa-solid fa-filter Filter-Btn" data-columnindex="5" data-columnname="currentBalance"></i></div>
+                    </th>
+                    <th style="width: 8%;">الحالة</th>
+                    <th style="width: 5%;">الإجراء</th>
+                  </tr>
+                </thead>
+                <tbody id="BanksTable"></tbody>
+              </table>
+            </div>
+            <div class="Container-Table-Footer">
+              <span class="info-text" id="showingDataMetrics">عرض 0-0 من 0</span>
+              <div id="PaginationPages" class="Pagination-Pages"></div>
+            </div>
+          </div>
+        </main>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- POPUP: إضافة/تعديل بنك -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div class="Container-PopUp-Window" id="AddNewPopup">
+      <div class="PopUp-Window" id="PopUp-Window">
+        <div class="PopUpWindow-Header" id="WindowHeaderDrag">
+          <div class="PopUpWindow-Title">
+            <h3 id="PopupTitle">إضافة بنك جديد</h3>
+            <p id="PopupSubtitle">أدخل بيانات البنك والحساب البنكي</p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('AddNewPopup')"><i class="fa fa-xmark"></i></button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <form id="BankForm">
+            <input type="hidden" id="BankId" value="">
+
+            <!-- البيانات الأساسية -->
+            <div class="Form-Section">
+              <h4><i class="fa fa-building-columns"></i> البيانات الأساسية</h4>
+              <div class="grid grid-2">
+                <div class="Field">
+                  <label>كود البنك <span class="required">*</span></label>
+                  <div class="input">
+                    <input type="text" id="BankCode" placeholder="BNK-XXX" disabled required>
+                    <i class="fa fa-hashtag"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>اسم البنك <span class="required">*</span></label>
+                  <div class="input">
+                    <input type="text" id="BankName" placeholder="اسم البنك" required>
+                    <i class="fa fa-building-columns"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- بيانات الحساب البنكي -->
+            <div class="Form-Section">
+              <h4><i class="fa fa-credit-card"></i> بيانات الحساب البنكي</h4>
+              <div class="grid grid-2">
+                <div class="Field">
+                  <label>رقم الحساب (IBAN) <span class="required">*</span></label>
+                  <div class="input">
+                    <input type="text" id="BankAccountNo" placeholder="SA00XXXXXXXXXXXXXXXX" required>
+                    <i class="fa fa-credit-card"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>رقم الحساب المحلي</label>
+                  <div class="input">
+                    <input type="text" id="BankLocalAccount" placeholder="رقم الحساب المحلي">
+                    <i class="fa fa-hashtag"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="grid grid-2" style="margin-top: 12px;">
+                <div class="Field">
+                  <label>SWIFT Code</label>
+                  <div class="input">
+                    <input type="text" id="BankSwift" placeholder="SWIFT Code">
+                    <i class="fa fa-code"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>الفرع / المنطقة</label>
+                  <div class="input">
+                    <input type="text" id="BankBranch" placeholder="الفرع أو المدينة">
+                    <i class="fa fa-location-dot"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- الرصيد والحالة -->
+            <div class="Form-Section">
+              <h4><i class="fa fa-money-bill"></i> الرصيد والحالة</h4>
+              <div class="grid grid-3">
+                <div class="Field">
+                  <label>الرصيد الافتتاحي</label>
+                  <div class="input">
+                    <input type="number" id="BankOpenBalance" placeholder="0.00" min="0" step="1">
+                    <i class="fa fa-money-bill"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>نوع الرصيد</label>
+                  <div class="input SelectInput">
+                    <select id="BankBalanceType">
+                      <option value="debit">مدين (رصيد إيجابي)</option>
+                      <option value="credit">دائن (رصيد سلبي)</option>
+                    </select>
+                    <i class="fa fa-scale-balanced"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>الحالة</label>
+                  <div class="input SelectInput">
+                    <select id="BankStatus">
+                      <option value="active">نشط</option>
+                      <option value="frozen">مجمد</option>
+                      <option value="closed">مغلق</option>
+                    </select>
+                    <i class="fa fa-circle-check"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- بيانات التواصل -->
+            <div class="Form-Section">
+              <h4><i class="fa fa-address-card"></i> بيانات التواصل</h4>
+              <div class="grid grid-3">
+                <div class="Field">
+                  <label>مسؤول التواصل</label>
+                  <div class="input">
+                    <input type="text" id="BankContactPerson" placeholder="اسم مسؤول التواصل">
+                    <i class="fa fa-user"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>رقم التواصل</label>
+                  <div class="input">
+                    <input type="text" id="BankContactPhone" placeholder="رقم الهاتف">
+                    <i class="fa fa-phone"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>البريد الإلكتروني</label>
+                  <div class="input">
+                    <input type="email" id="BankContactEmail" placeholder="email@example.com">
+                    <i class="fa fa-envelope"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ملاحظات -->
+            <div class="Form-Section">
+              <h4><i class="fa fa-pen"></i> ملاحظات</h4>
+              <div class="Field">
+                <div class="input">
+                  <textarea id="BankNotes" placeholder="ملاحظات إضافية..."></textarea>
+                  <i class="fa fa-pen icon-area"></i>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('AddNewPopup')"><i class="fa fa-xmark"></i> إلغاء</button>
+          <button class="apply" onclick="saveBank()"><i class="fa fa-save"></i> حفظ البنك</button>
+        </div>
+      </div>
+    </div>
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- POPUP: تفاصيل البنك -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div class="Container-PopUp-Window" id="DetailsPopup">
+      <div class="PopUp-Window">
+        <div class="PopUpWindow-Header">
+          <div class="PopUpWindow-Title">
+            <h3>تفاصيل البنك</h3>
+            <p><i class="fa-solid fa-hashtag"></i> <span id="DetailsCode">--</span></p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('DetailsPopup')"><i class="fa fa-xmark"></i></button>
+        </div>
+        <div class="PopUpWindow-Body" id="VoucherDetailsBody">
+          <div class="voucher-details-container">
+            <div class="Watermark">بيانات البنك</div>
+
+            <%- include('../Partials/letterHead') %>
+
+            <div class="voucher-info-grid">
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-blue">
+                  <i class="fa-solid fa-building-columns"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">اسم البنك</div>
+                  <div class="voucher-info-value" id="DetailBankName">--</div>
+                  <div class="voucher-info-label" id="DetailBankCode">--</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="voucher-info-grid Grid-3">
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-cyan">
+                  <i class="fa-solid fa-credit-card"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">رقم الحساب (IBAN)</div>
+                  <div class="voucher-info-value" id="DetailAccountNo">--</div>
+                </div>
+              </div>
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-purple">
+                  <i class="fa-solid fa-building"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">الفرع</div>
+                  <div class="voucher-info-value" id="DetailBranch">--</div>
+                </div>
+              </div>
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-green">
+                  <i class="fa-solid fa-book"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">الحساب المحاسبي</div>
+                  <div class="voucher-info-value" id="DetailLinkedAccount">--</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="voucher-info-grid Grid-3">
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-green">
+                  <i class="fa-solid fa-money-bill"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">الرصيد الافتتاحي</div>
+                  <div class="voucher-info-value" id="DetailOpenBalance">0 ر.س</div>
+                </div>
+              </div>
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-orange">
+                  <i class="fa-solid fa-wallet"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">الرصيد الحالي</div>
+                  <div class="voucher-info-value" id="DetailCurrentBalance">0 ر.س</div>
+                </div>
+              </div>
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-red" id="DetailStatusIcon">
+                  <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">الحالة</div>
+                  <div class="voucher-info-value" id="DetailStatus">--</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="voucher-info-grid Grid-3" id="ContactInfoSection" style="display: none;">
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-blue">
+                  <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">مسؤول التواصل</div>
+                  <div class="voucher-info-value" id="DetailContactPerson">--</div>
+                </div>
+              </div>
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-green">
+                  <i class="fa-solid fa-phone"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">رقم التواصل</div>
+                  <div class="voucher-info-value" id="DetailContactPhone">--</div>
+                </div>
+              </div>
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-orange">
+                  <i class="fa-solid fa-envelope"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">البريد الإلكتروني</div>
+                  <div class="voucher-info-value" id="DetailContactEmail">--</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="voucher-notes-section" id="NotesSection" style="display: none;">
+              <div class="voucher-notes-title"><i class="fa-solid fa-pen"></i> ملاحظات</div>
+              <div class="voucher-notes-text" id="DetailNotes">--</div>
+            </div>
+
+            <div class="LetterFoot">
+              <div class="Footer-Left">
+                <span class="system-badge"><i class="fa-solid fa-shield-halved"></i>ArbahERP v1.0</span>
+                <span id="DetailCreatedBy">تم إنشاؤها بواسطة: --</span>
+              </div>
+              <div class="Footer-Pages">صفحة 1 من 1</div>
+            </div>
+          </div>
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('DetailsPopup')"><i class="fa fa-xmark"></i> إغلاق</button>
+          <button class="apply btn-print" onclick="PrintAreaFn('#DetailsPopup .PopUpWindow-Body')"><i class="fa fa-print"></i> طباعة</button>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../Partials/filter') %>
+    <%- include('../Partials/scripts') %>
+
+    <script src="/Js/Banks.js"></script>
+
+</body>
+
+</html>

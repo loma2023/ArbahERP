@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/Css/1-Main.css">
+  <link rel="stylesheet" href="/Css/7-Auth.css">
+  <title>تسجيل حساب جديد - ArbahERP</title>
+</head>
+
+<body>
+  <div class="auth-bg-decoration">
+    <div class="circle-1"></div>
+    <div class="circle-2"></div>
+    <div class="dots"></div>
+  </div>
+
+  <button class="auth-dark-toggle" id="darkModeToggle" title="تبديل الوضع المظلم">
+    <i class="fa-regular fa-moon"></i>
+  </button>
+
+  <div class="auth-register-wrapper">
+    <!-- Header -->
+    <div class="auth-register-header">
+      <img src="Assets/Img/Logo-with-text2.png" alt="ArbahERP" class="auth-register-header-logo">
+      <h2>إنشاء حساب جديد</h2>
+      <p>انضم إلى آلاف الشركات التي تثق في أرباح ERP</p>
+    </div>
+
+    <!-- Progress Steps -->
+    <div class="auth-steps-progress">
+      <div class="auth-step-item active" id="stepIndicator1">
+        <div class="auth-step-circle"><span>1</span></div>
+        <span class="auth-step-label">بيانات المستخدم</span>
+      </div>
+      <div class="auth-step-line" id="line1"></div>
+      <div class="auth-step-item" id="stepIndicator2">
+        <div class="auth-step-circle"><span>2</span></div>
+        <span class="auth-step-label">التحقق</span>
+      </div>
+      <div class="auth-step-line" id="line2"></div>
+      <div class="auth-step-item" id="stepIndicator3">
+        <div class="auth-step-circle"><span>3</span></div>
+        <span class="auth-step-label">الشركة</span>
+      </div>
+      <div class="auth-step-line" id="line3"></div>
+      <div class="auth-step-item" id="stepIndicator4">
+        <div class="auth-step-circle"><span>4</span></div>
+        <span class="auth-step-label">تم!</span>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="auth-register-content">
+
+      <!-- Step 1: User Data -->
+      <div class="auth-step-content active" id="step1">
+        <h3 class="auth-step-title"><i class="fa-regular fa-id-card"></i> بيانات المستخدم</h3>
+        <p class="auth-step-desc">أدخل بياناتك الشخصية لإنشاء حسابك</p>
+
+        <div class="auth-form-grid">
+          <div class="Field" id="fieldFullName">
+            <label>الاسم الكامل <span class="required">*</span></label>
+            <div class="input">
+              <input type="text" id="fullName" placeholder="إسلام عبدالرحمن">
+              <i class="fa fa-user"></i>
+            </div>
+            <span class="auth-error-message">الاسم الكامل مطلوب</span>
+          </div>
+
+          <div class="Field" id="fieldPhone">
+            <label>رقم الهاتف <span class="required">*</span></label>
+            <div class="input">
+              <input type="tel" id="phone" placeholder="05xxxxxxxx">
+              <i class="fa fa-phone"></i>
+            </div>
+            <span class="auth-error-message">رقم الهاتف مطلوب</span>
+          </div>
+
+          <div class="Field" id="fieldEmail">
+            <label>البريد الإلكتروني <span class="required">*</span></label>
+            <div class="input">
+              <input type="email" id="email" placeholder="example@company.com">
+              <i class="fa fa-envelope"></i>
+            </div>
+            <span class="auth-error-message">بريد إلكتروني صحيح مطلوب</span>
+          </div>
+
+          <div class="Field" id="fieldUsername">
+            <label>اسم المستخدم <span class="required">*</span></label>
+            <div class="input">
+              <input type="text" id="username" placeholder="Islam , Ahmed , Mohamed">
+              <i class="fa fa-at"></i>
+            </div>
+            <span class="auth-error-message">اسم المستخدم مطلوب</span>
+          </div>
+
+          <div class="Field" id="fieldPassword">
+            <label>كلمة المرور <span class="required">*</span></label>
+            <div class="input">
+              <input type="password" id="password" placeholder="••••••••" oninput="checkPasswordStrength()">
+              <i class="fa fa-lock"></i>
+              <button type="button" class="auth-toggle-password" onclick="togglePassword('password', 'eyeIcon1')">
+                <i class="fa-regular fa-eye" id="eyeIcon1"></i>
+              </button>
+            </div>
+            <div class="auth-password-strength">
+              <div class="auth-strength-bar">
+                <div class="auth-strength-segment" id="seg1"></div>
+                <div class="auth-strength-segment" id="seg2"></div>
+                <div class="auth-strength-segment" id="seg3"></div>
+                <div class="auth-strength-segment" id="seg4"></div>
+              </div>
+              <div class="auth-strength-text" id="strengthText">أدخل كلمة مرور قوية</div>
+            </div>
+            <span class="auth-error-message">كلمة المرور يجب أن تكون 8 أحرف على الأقل</span>
+          </div>
+
+          <div class="Field" id="fieldConfirmPassword">
+            <label>تأكيد كلمة المرور <span class="required">*</span></label>
+            <div class="input">
+              <input type="password" id="confirmPassword" placeholder="••••••••">
+              <i class="fa fa-check-double"></i>
+              <button type="button" class="auth-toggle-password"
+                onclick="togglePassword('confirmPassword', 'eyeIcon2')">
+                <i class="fa-regular fa-eye" id="eyeIcon2"></i>
+              </button>
+            </div>
+            <span class="auth-error-message">كلمات المرور غير متطابقة</span>
+          </div>
+        </div>
+
+        <div class="auth-checkbox" style="margin-top: 16px;">
+          <input type="checkbox" id="termsAgree">
+          <label for="termsAgree">أوافق على <a href="#">شروط الاستخدام</a> و <a href="#">سياسة الخصوصية</a></label>
+        </div>
+      </div>
+
+      <!-- Step 2: OTP Verification -->
+      <div class="auth-step-content" id="step2">
+        <h3 class="auth-step-title"><i class="fa-solid fa-shield-halved"></i> التحقق من البريد الإلكتروني</h3>
+        <p class="auth-step-desc">أدخل رمز التحقق المكون من 6 أرقام المرسل إلى بريدك الإلكتروني</p>
+
+        <div style="text-align: center; margin-bottom: 16px;">
+          <div style="font-size: 14px; color: var(--text-sub);">
+            <i class="fa-solid fa-envelope-open-text" style="color: var(--accent-green); margin-left: 6px;"></i>
+            تم إرسال الرمز إلى: <strong id="displayEmail" style="color: var(--text-main);">example@company.com</strong>
+          </div>
+        </div>
+
+        <div class="auth-otp-container" id="otpContainer">
+          <input type="text" class="auth-otp-input" maxlength="1" data-index="0" oninput="handleOtpInput(this, 0)"
+            onkeydown="handleOtpKeydown(event, 0)">
+          <input type="text" class="auth-otp-input" maxlength="1" data-index="1" oninput="handleOtpInput(this, 1)"
+            onkeydown="handleOtpKeydown(event, 1)">
+          <input type="text" class="auth-otp-input" maxlength="1" data-index="2" oninput="handleOtpInput(this, 2)"
+            onkeydown="handleOtpKeydown(event, 2)">
+          <input type="text" class="auth-otp-input" maxlength="1" data-index="3" oninput="handleOtpInput(this, 3)"
+            onkeydown="handleOtpKeydown(event, 3)">
+          <input type="text" class="auth-otp-input" maxlength="1" data-index="4" oninput="handleOtpInput(this, 4)"
+            onkeydown="handleOtpKeydown(event, 4)">
+          <input type="text" class="auth-otp-input" maxlength="1" data-index="5" oninput="handleOtpInput(this, 5)"
+            onkeydown="handleOtpKeydown(event, 5)">
+        </div>
+
+        <div class="auth-otp-timer">
+          <span>لم تستلم الرمز؟ </span>
+          <a href="#" class="auth-resend-link disabled" id="resendLink" onclick="resendOtp(event)">إعادة الإرسال</a>
+          <div style="margin-top: 8px;">
+            <span class="timer" id="timer">02:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Company Data -->
+      <div class="auth-step-content" id="step3">
+        <h3 class="auth-step-title"><i class="fa-solid fa-building"></i> بيانات الشركة / النشاط</h3>
+        <p class="auth-step-desc">أدخل بيانات شركتك أو نشاطك التجاري</p>
+
+        <div class="auth-form-grid">
+          <div class="Field" id="fieldCompanyName">
+            <label>اسم الشركة / النشاط <span class="required">*</span></label>
+            <div class="input">
+              <input type="text" id="companyName" placeholder="شركة أرباح التجارية">
+              <i class="fa fa-building"></i>
+            </div>
+            <span class="auth-error-message">اسم الشركة مطلوب</span>
+          </div>
+
+          <div class="Field" id="fieldCompanyType">
+            <label>نوع النشاط</label>
+            <div class="input SelectInput">
+              <select id="companyType">
+                <option value="">اختر نوع النشاط</option>
+                <option value="retail">تجارة تجزئة</option>
+                <option value="wholesale">تجارة جملة</option>
+                <option value="manufacturing">تصنيع</option>
+                <option value="services">خدمات</option>
+                <option value="restaurant">مطاعم ومقاهي</option>
+                <option value="healthcare">صحة وتجميل</option>
+                <option value="construction">مقاولات</option>
+                <option value="other">أخرى</option>
+              </select>
+              <i class="fa fa-briefcase"></i>
+            </div>
+          </div>
+
+          <div class="Field" id="fieldTaxNumber">
+            <label>الرقم الضريبي</label>
+            <div class="input">
+              <input type="text" id="taxNumber" placeholder="311234567890003">
+              <i class="fa fa-file-invoice"></i>
+            </div>
+          </div>
+
+          <div class="Field" id="fieldCommercialReg">
+            <label>السجل التجاري</label>
+            <div class="input">
+              <input type="text" id="commercialReg" placeholder="1010123456">
+              <i class="fa fa-file-contract"></i>
+            </div>
+          </div>
+
+          <div class="Field" id="fieldCompanyPhone">
+            <label>هاتف الشركة</label>
+            <div class="input">
+              <input type="text" id="companyPhone" placeholder="01158347657">
+              <i class="fa fa-phone"></i>
+            </div>
+          </div>
+
+          <div class="Field" id="fieldCompanyCity">
+            <label>المدينة</label>
+            <div class="input SelectInput">
+              <select id="companyCity">
+                <option value="">اختر المدينة</option>
+                <option value="riyadh">الرياض</option>
+                <option value="jeddah">جدة</option>
+                <option value="dammam">الدمام</option>
+                <option value="makkah">مكة المكرمة</option>
+                <option value="madinah">المدينة المنورة</option>
+                <option value="khobar">الخبر</option>
+                <option value="taif">الطائف</option>
+                <option value="other">أخرى</option>
+              </select>
+              <i class="fa fa-city"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-form-grid full-width" style="margin-top: 16px;">
+          <div class="Field" id="fieldCompanyAddress">
+            <label>العنوان التفصيلي</label>
+            <div class="input">
+              <textarea id="companyAddress" placeholder="أدخل عنوان الشركة بالتفصيل..."></textarea>
+              <i class="fa fa-location-dot icon-area"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Success -->
+      <div class="auth-step-content" id="step4">
+        <div class="auth-success-container">
+          <div class="auth-success-icon">
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <h2 class="auth-success-title">تم تسجيل الحساب بنجاح! 🎉</h2>
+          <p class="auth-success-desc">
+            تم إنشاء حسابك بنجاح في نظام أرباح ERP.<br>
+            يمكنك الآن تسجيل الدخول وبدء إدارة أعمالك بكفاءة.
+          </p>
+
+          <div class="auth-success-details">
+            <div class="auth-success-detail-row">
+              <span class="label">اسم المستخدم</span>
+              <span class="value" id="successUsername">-</span>
+            </div>
+            <div class="auth-success-detail-row">
+              <span class="label">البريد الإلكتروني</span>
+              <span class="value" id="successEmail">-</span>
+            </div>
+            <div class="auth-success-detail-row">
+              <span class="label">الشركة</span>
+              <span class="value" id="successCompany">-</span>
+            </div>
+            <div class="auth-success-detail-row">
+              <span class="label">تاريخ التسجيل</span>
+              <span class="value" id="successDate">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Actions -->
+    <div class="auth-register-footer">
+      <button class="auth-btn-back" id="btnBack" onclick="prevStep()">
+        <i class="fa-solid fa-arrow-right"></i>
+        السابق
+      </button>
+      <button class="auth-btn-next" id="btnNext" onclick="nextStep()">
+        التالي
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+    </div>
+
+    <p class="auth-login-link">
+      لديك حساب بالفعل؟ <a href="Login.html">سجل دخولك الآن</a>
+    </p>
+  </div>
+
+  <script>
+    // ===== State =====
+    let currentStep = 1;
+    const totalSteps = 4;
+    let otpTimer = null;
+    let otpSeconds = 120;
+    let userData = {};
+
+    // ===== Dark Mode =====
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    darkModeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('Dark-Mood');
+      const icon = darkModeToggle.querySelector('i');
+      if (document.body.classList.contains('Dark-Mood')) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+      } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+      }
+    });
+
+    // ===== Navigation =====
+    function updateStepIndicators() {
+      for (let i = 1; i <= totalSteps; i++) {
+        const indicator = document.getElementById('stepIndicator' + i);
+        indicator.classList.remove('active', 'completed');
+        if (i < currentStep) {
+          indicator.classList.add('completed');
+        } else if (i === currentStep) {
+          indicator.classList.add('active');
+        }
+      }
+      for (let i = 1; i < totalSteps; i++) {
+        const line = document.getElementById('line' + i);
+        if (line) {
+          line.classList.toggle('completed', i < currentStep);
+        }
+      }
+    }
+
+    function showStep(step) {
+      document.querySelectorAll('.auth-step-content').forEach(el => el.classList.remove('active'));
+      document.getElementById('step' + step).classList.add('active');
+
+      const btnBack = document.getElementById('btnBack');
+      const btnNext = document.getElementById('btnNext');
+
+      btnBack.classList.toggle('hidden', step === 1);
+
+      if (step === totalSteps) {
+        btnNext.innerHTML = 'الذهاب إلى لوحة التحكم <i class="fa-solid fa-arrow-left"></i>';
+        btnNext.classList.add('auth-btn-finish');
+        btnNext.onclick = () => window.location.href = '/index';
+      } else if (step === totalSteps - 1) {
+        btnNext.innerHTML = 'إنشاء الحساب <i class="fa-solid fa-check"></i>';
+        btnNext.classList.remove('auth-btn-finish');
+        btnNext.onclick = () => nextStep();
+      } else {
+        btnNext.innerHTML = 'التالي <i class="fa-solid fa-arrow-left"></i>';
+        btnNext.classList.remove('auth-btn-finish');
+        btnNext.onclick = () => nextStep();
+      }
+
+      updateStepIndicators();
+    }
+
+    function nextStep() {
+      if (!validateStep(currentStep)) return;
+
+      if (currentStep === 1) {
+        userData.fullName = document.getElementById('fullName').value;
+        userData.email = document.getElementById('email').value;
+        userData.username = document.getElementById('username').value;
+        document.getElementById('displayEmail').textContent = userData.email;
+        startOtpTimer();
+      }
+
+      if (currentStep === 3) {
+        userData.companyName = document.getElementById('companyName').value;
+        document.getElementById('successUsername').textContent = userData.username;
+        document.getElementById('successEmail').textContent = userData.email;
+        document.getElementById('successCompany').textContent = userData.companyName;
+        document.getElementById('successDate').textContent = new Date().toLocaleDateString('ar-SA');
+      }
+
+      if (currentStep < totalSteps) {
+        currentStep++;
+        showStep(currentStep);
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    }
+
+    // ===== Validation =====
+    function validateStep(step) {
+      let valid = true;
+
+      if (step === 1) {
+        const fields = [
+          { id: 'fullName', fieldId: 'fieldFullName', message: 'الاسم الكامل مطلوب' },
+          { id: 'phone', fieldId: 'fieldPhone', message: 'رقم الهاتف مطلوب', pattern: /^05\d{8}$/ },
+          { id: 'email', fieldId: 'fieldEmail', message: 'بريد إلكتروني صحيح مطلوب', pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+          { id: 'username', fieldId: 'fieldUsername', message: 'اسم المستخدم مطلوب' },
+          { id: 'password', fieldId: 'fieldPassword', message: 'كلمة المرور يجب أن تكون 8 أحرف على الأقل', minLength: 8 }
+        ];
+
+        fields.forEach(f => {
+          const el = document.getElementById(f.id);
+          const fieldEl = document.getElementById(f.fieldId);
+          const value = el.value.trim();
+          fieldEl.classList.remove('auth-error');
+          if (!value) {
+            fieldEl.classList.add('auth-error');
+            valid = false;
+          } else if (f.pattern && !f.pattern.test(value)) {
+            fieldEl.classList.add('auth-error');
+            valid = false;
+          } else if (f.minLength && value.length < f.minLength) {
+            fieldEl.classList.add('auth-error');
+            valid = false;
+          }
+        });
+
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const confirmField = document.getElementById('fieldConfirmPassword');
+        confirmField.classList.remove('auth-error');
+        if (password !== confirmPassword || !confirmPassword) {
+          confirmField.classList.add('auth-error');
+          valid = false;
+        }
+
+        const termsAgree = document.getElementById('termsAgree');
+        if (!termsAgree.checked) {
+          alert('يرجى الموافقة على شروط الاستخدام وسياسة الخصوصية');
+          valid = false;
+        }
+      }
+
+      if (step === 2) {
+        const otpInputs = document.querySelectorAll('.auth-otp-input');
+        let otpValue = '';
+        otpInputs.forEach(input => otpValue += input.value);
+        if (otpValue.length !== 6) {
+          alert('يرجى إدخال رمز التحقق كاملاً (6 أرقام)');
+          valid = false;
+        }
+      }
+
+      if (step === 3) {
+        const companyName = document.getElementById('companyName').value.trim();
+        const field = document.getElementById('fieldCompanyName');
+        field.classList.remove('auth-error');
+        if (!companyName) {
+          field.classList.add('auth-error');
+          valid = false;
+        }
+      }
+
+      return valid;
+    }
+
+    // ===== Password Toggle =====
+    function togglePassword(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    }
+
+    // ===== Password Strength =====
+    function checkPasswordStrength() {
+      const password = document.getElementById('password').value;
+      const segments = [
+        document.getElementById('seg1'),
+        document.getElementById('seg2'),
+        document.getElementById('seg3'),
+        document.getElementById('seg4')
+      ];
+      const strengthText = document.getElementById('strengthText');
+      segments.forEach(s => s.className = 'auth-strength-segment');
+      let strength = 0;
+      if (password.length >= 8) strength++;
+      if (/[A-Z]/.test(password)) strength++;
+      if (/[0-9]/.test(password)) strength++;
+      if (/[^A-Za-z0-9]/.test(password)) strength++;
+      for (let i = 0; i < strength; i++) {
+        if (i < 2) segments[i].classList.add('weak');
+        else if (i < 3) segments[i].classList.add('medium');
+        else segments[i].classList.add('strong');
+      }
+      const texts = ['أدخل كلمة مرور قوية', 'ضعيفة', 'متوسطة', 'قوية', 'ممتازة'];
+      const colors = ['var(--text-sub)', 'var(--accent-red)', 'var(--accent-orange)', 'var(--accent-green)', 'var(--accent-green)'];
+      strengthText.textContent = texts[strength];
+      strengthText.style.color = colors[strength];
+    }
+
+    // ===== OTP Handling =====
+    function handleOtpInput(input, index) {
+      input.value = input.value.replace(/[^0-9]/g, '');
+      if (input.value) {
+        input.classList.add('filled');
+        if (index < 5) {
+          document.querySelectorAll('.auth-otp-input')[index + 1].focus();
+        }
+      } else {
+        input.classList.remove('filled');
+      }
+    }
+
+    function handleOtpKeydown(e, index) {
+      if (e.key === 'Backspace' && !e.target.value && index > 0) {
+        document.querySelectorAll('.auth-otp-input')[index - 1].focus();
+      }
+      if (e.key === 'ArrowLeft' && index > 0) {
+        document.querySelectorAll('.auth-otp-input')[index - 1].focus();
+      }
+      if (e.key === 'ArrowRight' && index < 5) {
+        document.querySelectorAll('.auth-otp-input')[index + 1].focus();
+      }
+    }
+
+    document.getElementById('otpContainer').addEventListener('paste', function (e) {
+      e.preventDefault();
+      const paste = e.clipboardData.getData('text').replace(/[^0-9]/g, '').slice(0, 6);
+      const inputs = document.querySelectorAll('.auth-otp-input');
+      paste.split('').forEach((char, i) => {
+        if (inputs[i]) {
+          inputs[i].value = char;
+          inputs[i].classList.add('filled');
+        }
+      });
+      if (inputs[paste.length]) inputs[paste.length].focus();
+    });
+
+    // ===== OTP Timer =====
+    function startOtpTimer() {
+      otpSeconds = 120;
+      const timerEl = document.getElementById('timer');
+      const resendLink = document.getElementById('resendLink');
+      resendLink.classList.add('disabled');
+      resendLink.textContent = 'إعادة الإرسال';
+      if (otpTimer) clearInterval(otpTimer);
+      otpTimer = setInterval(() => {
+        otpSeconds--;
+        const mins = Math.floor(otpSeconds / 60).toString().padStart(2, '0');
+        const secs = (otpSeconds % 60).toString().padStart(2, '0');
+        timerEl.textContent = mins + ':' + secs;
+        if (otpSeconds <= 0) {
+          clearInterval(otpTimer);
+          resendLink.classList.remove('disabled');
+          timerEl.textContent = '00:00';
+        }
+      }, 1000);
+    }
+
+    function resendOtp(e) {
+      e.preventDefault();
+      if (document.getElementById('resendLink').classList.contains('disabled')) return;
+      document.querySelectorAll('.auth-otp-input').forEach(input => {
+        input.value = '';
+        input.classList.remove('filled');
+      });
+      document.querySelectorAll('.auth-otp-input')[0].focus();
+      startOtpTimer();
+      alert('تم إعادة إرسال رمز التحقق!');
+    }
+
+    // ===== Remove error on input =====
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+      el.addEventListener('input', function () {
+        this.closest('.Field')?.classList.remove('auth-error');
+      });
+    });
+
+    // ===== Initialize =====
+    updateStepIndicators();
+  </script>
+</body>
+
+</html>

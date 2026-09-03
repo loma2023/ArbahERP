@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+
+    <div class="WorkSpace">
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2><i class="fa-solid fa-scale-balanced"></i> ميزان المراجعة</h2>
+            <p>التحقق من توازن القيود المحاسبية (مدين = دائن)</p>
+          </div>
+
+          <!-- Summary Cards -->
+          <div class="Control-bar">
+            <div class="compact-cards-row">
+              <div class="mini-metric-card card-blue">
+                <div class="icon-box"><i class="fa-solid fa-arrow-down"></i></div>
+                <div class="info-text">
+                  <span class="lbl">إجمالي مدين الفترة</span>
+                  <span class="num" id="TotalPeriodDebit">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-red">
+                <div class="icon-box"><i class="fa-solid fa-arrow-up"></i></div>
+                <div class="info-text">
+                  <span class="lbl">إجمالي دائن الفترة</span>
+                  <span class="num" id="TotalPeriodCredit">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-orange">
+                <div class="icon-box"><i class="fa-solid fa-not-equal"></i></div>
+                <div class="info-text">
+                  <span class="lbl">الفرق</span>
+                  <span class="num" id="BalanceDiff">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-green" id="StatusCard">
+                <div class="icon-box"><i class="fa-solid fa-check-circle"></i></div>
+                <div class="info-text">
+                  <span class="lbl">الحالة</span>
+                  <span class="num" id="Status">✓ متوازن</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="Filter-bar">
+            <div class="Field">
+              <label>من تاريخ</label>
+              <div class="input">
+                <input type="date" data-filter="date-from" id="DateFrom">
+                <i class="fa-solid fa-calendar"></i>
+              </div>
+            </div>
+
+            <div class="Field">
+              <label>إلى تاريخ</label>
+              <div class="input">
+                <input type="date" data-filter="date-to" id="DateTo">
+                <i class="fa-solid fa-calendar"></i>
+              </div>
+            </div>
+
+            <div class="Field" style="flex: 1;">
+              <label>بحث</label>
+              <div class="input">
+                <input type="text" data-filter="search" placeholder="كود الحساب، اسم الحساب...">
+                <i class="fa-solid fa-search"></i>
+              </div>
+            </div>
+
+            <button class="Tool-Btn" onclick="loadTrialBalance()">
+              <i class="fa-solid fa-search"></i> عرض
+            </button>
+
+            <button class="Tool-Btn" onclick="activeTableFilter?.clearFilter()">
+              <i class="fa-solid fa-rotate-left"></i> مسح
+            </button>
+
+            <button class="Tool-Btn btn-excel" onclick="openPrintPopup()">
+              <i class="fa-solid fa-print"></i> طباعة الكشف
+            </button>
+          </div>
+
+          <!-- Table -->
+          <div class="Container-Table">
+            <div class="Container-Table-Body" style="height: 90vh;">
+              <table class="Perfect-Table" id="MainPerfectTable">
+                <thead>
+                  <tr>
+                    <th style="width: 8%;">كود الحساب</th>
+                    <th style="width: 22%;">اسم الحساب</th>
+                    <th style="width: 8%;">النوع</th>
+                    <th style="width: 12%;">رصيد أول المدة</th>
+                    <th style="width: 12%;">مدين الفترة</th>
+                    <th style="width: 12%;">دائن الفترة</th>
+                    <th style="width: 12%;">رصيد آخر المدة</th>
+                    <th style="width: 14%;">طبيعة الرصيد</th>
+                  </tr>
+                </thead>
+                <tbody id="TrialBalanceBody">
+                  <!-- يتم ملؤها ديناميكياً -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+    </div>
+
+
+    <div class="Container-PopUp-Window" id="DetailsPopup">
+      <div class="PopUp-Window" style="width: 1000px; max-width: 98vw;">
+        <div class="PopUpWindow-Header" id="WindowHeaderDrag">
+          <div class="PopUpWindow-Title">
+            <h3 id="PopupTitle"><i class="fa-solid fa-book-open"></i>ميزان المراجعة</h3>
+            <p id="PopupSubtitle">معاينة</p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('DetailsPopup')">
+            <i class="fa fa-xmark"></i></button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <div class="Watermark">>ميزان المراجعة</div>
+
+          <%- include('../Partials/letterHead') %>
+
+            <div class="Title-Voucher">ميزان المراجعة</div>
+
+            <!-- رأس كشف الحساب -->
+            <!-- كروت الملخص -->
+            <div class="voucher-info-grid Grid-2">
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-blue">
+                  <i class="fa-solid fa-calendar"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">من تاريخ</div>
+                  <div class="voucher-info-value" id="DetailsFromDate">01-01-2026</div>
+                </div>
+              </div>
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-purple">
+                  <i class="fa-solid fa-calendar"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">الي تاريخ</div>
+                  <div class="voucher-info-value" id="DetailsToDate">31-12-2026</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- جدول كشف الحساب -->
+            <div class="Container-Table2">
+              <table class="Perfect-Table ledger-print-table" id="LedgerPrintTable">
+                <thead>
+                  <tr>
+                    <th style="width: 8%;">كود الحساب</th>
+                    <th style="width: 28%;">اسم الحساب</th>
+                    <th style="width: 14%;">النوع</th>
+                    <th style="width: 10%;">رصيد أول المدة</th>
+                    <th style="width: 10%;">مدين الفترة</th>
+                    <th style="width: 10%;">دائن الفترة</th>
+                    <th style="width: 10%;">رصيد آخر المدة</th>
+                    <th style="width: 10%;">طبيعة الرصيد</th>
+                  </tr>
+                </thead>
+                <tbody id="TrialPrintTableBody">
+                  <!-- يملأها JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="LetterFoot">
+              <div class="Footer-Left">
+                <span class="system-badge"><i class="fa-solid fa-shield-halved"></i>ArbahERP v1.0</span>
+                <span id="DetailsFooterInfo"></span>
+              </div>
+              <div class="Footer-Pages" id="TimeDate"></div>
+            </div>
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('DetailsPopup')"><i class="fa fa-xmark"></i> إغلاق</button>
+          <button class="apply" onclick="PrintAreaFn('#DetailsPopup .PopUpWindow-Body')"><i
+              class="fa-solid fa-print"></i> طباعة</button>
+        </div>
+      </div>
+    </div>
+    
+    <%- include('../Partials/filter') %>
+      <%- include('../Partials/scripts') %>
+
+        <script src="Js/TrialBalance.js"></script>
+</body>
+
+</html>

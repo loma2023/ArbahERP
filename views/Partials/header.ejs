@@ -1,0 +1,58 @@
+<header class="WorkSpace-Header">
+  <div class="WorkSpace-Header-Right">
+    <button class="ToggleSideBarBtn" id="ToggleSideBarBtn"><i class="fa-solid fa-bars-staggered"></i></button>
+  </div>
+  <div class="WorkSpace-Header-Left">
+    <div class="ChangeMood-Icon" id="ChangeMood"><i class="fa-regular fa-moon"></i></div>
+    <div class="Notification-Wrapper">
+      <div class="Notification-Icon" id="NotificationTrigger">
+        <i class="fa-regular fa-bell"></i>
+        <div class="Notification-Dot"></div>
+      </div>
+      <div class="Notification-Dropdown" id="NotificationDropdown">
+        <div class="Notification-Header">
+          <h4>الإشعارات</h4>
+          <span class="Mark-All-Read" id="MarkAllReadBtn">تحديد الكل كمقروء</span>
+        </div>
+        <div class="Notification-body">
+          <div class="Notification-Item unread">
+            <div class="Notify-Icon Color-Bg-orange"><i class="fa-solid fa-chart-line"></i>
+            </div>
+            <div class="Notify-Details">
+              <p class="Notify-Text">تم تسجيل قيد يومي جديد: <strong>قيد-0001</strong></p>
+              <span class="Notify-Time">من 10 دقائق</span>
+            </div>
+          </div>
+          <div class="Notification-Item unread">
+            <div class="Notify-Icon Color-Bg-orange"><i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="Notify-Details">
+              <p class="Notify-Text">الحساب <strong>ذمم مدينة</strong> تجاوز الحد المسموح</p>
+              <span class="Notify-Time">من ساعة</span>
+            </div>
+          </div>
+          <div class="Notification-Item">
+            <div class="Notify-Icon Color-Bg-green"><i class="fa-solid fa-user-plus"></i></div>
+            <div class="Notify-Details">
+              <p class="Notify-Text">تم إضافة حساب جديد: <strong>مخزون فرع جدة</strong></p>
+              <span class="Notify-Time">أمس</span>
+            </div>
+          </div>
+        </div>
+        <div class="Notification-Footer"><a href="/Notifications">عرض كل الإشعارات</a></div>
+      </div>
+    </div>
+    <div class="User-Wrapper">
+      <div class="User-Action-Pill" id="userMenuTrigger"><img src="/Img/UserImg.jpeg" alt="المدير">
+      </div>
+      <div class="Profile-Dropdown" id="ProfileDropdown">
+        <a href="/Profile" class="Profile-Link active"><i class="fa-regular fa-id-card"></i> الملف
+          الشخصي</a>
+        <a href="/Settings" class="Profile-Link"><i class="fa-solid fa-gear"></i> الإعدادات</a>
+        <div class="Separator"></div>
+        <a href="/login" class="Profile-Link" style="color: var(--accent-red);" onclick="logout()"><i
+            class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</a>
+      </div>
+    </div>
+  </div>
+</header>

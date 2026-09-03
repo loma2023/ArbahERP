@@ -1,0 +1,144 @@
+<aside class="SideBar" id="SideBar">
+  <div class="System-Logo">
+    <img src="/Img/Logo-with-text.png" alt="ArbahERP Logo">
+  </div>
+  <nav class="SideBar-Pages">
+
+    <!-- الرئيسية -->
+    <a href="/index" class="Page-Link">
+      <i class="fa-solid fa-chart-pie"></i>
+      <span>لوحة التحكم</span>
+    </a>
+
+    <div class="Separator"></div>
+    <!--  ●  ✓ ✗ -->
+    <!-- المخزون -->
+    <div class="Dropdown-Wrapper">
+      <div class="Page-Link Dropdown-Trigger">
+        <div class="DropdownItem"><i class="fa-solid fa-cube"></i><span>المخزون</span></div>
+        <i class="fa-solid fa-chevron-down Dropdown-Arrow"></i>
+      </div>
+      <div class="Dropdown-Menu">
+        <a href="/Products" class="Page-Link"><span class="Page-Link-Dot">✓</span> المنتجات</a>
+        <a href="/StockMovements" class="Page-Link"><span class="Page-Link-Dot">✗</span> حركة المخزون</a>
+        <a href="/Transfer" class="Page-Link"><span class="Page-Link-Dot">✗</span> تحويل مخزني</a>
+      </div>
+    </div>
+
+    <!-- العملاء -->
+    <div class="Dropdown-Wrapper">
+      <div class="Page-Link Dropdown-Trigger">
+        <div class="DropdownItem"><i class="fa-solid fa-users"></i><span>العملاء</span></div>
+        <i class="fa-solid fa-chevron-down Dropdown-Arrow"></i>
+      </div>
+      <div class="Dropdown-Menu">
+        <a href="/Customers" class="Page-Link"><span class="Page-Link-Dot">✓</span> قائمة العملاء</a>
+        <a href="/AgingReportCustomer" class="Page-Link"><span class="Page-Link-Dot">✗</span> تقرير الآجل</a>
+      </div>
+    </div>
+
+    <!-- الموردين -->
+    <div class="Dropdown-Wrapper">
+      <div class="Page-Link Dropdown-Trigger">
+        <div class="DropdownItem"><i class="fa-solid fa-truck-ramp-box"></i><span>الموردين</span></div>
+        <i class="fa-solid fa-chevron-down Dropdown-Arrow"></i>
+      </div>
+      <div class="Dropdown-Menu">
+        <a href="/Suppliers" class="Page-Link"><span class="Page-Link-Dot">✓</span> قائمة الموردين</a>
+        <a href="/AgingReportSupplier" class="Page-Link"><span class="Page-Link-Dot">✗</span> تقرير الآجل</a>
+      </div>
+    </div>
+
+    <div class="Separator"></div>
+
+    <!-- المبيعات -->
+    <div class="Dropdown-Wrapper">
+      <div class="Page-Link Dropdown-Trigger">
+        <div class="DropdownItem"><i class="fa-solid fa-cart-shopping"></i><span>المبيعات</span></div>
+        <i class="fa-solid fa-chevron-down Dropdown-Arrow"></i>
+      </div>
+      <div class="Dropdown-Menu">
+        <a href="/Invoices" class="Page-Link"><span class="Page-Link-Dot">✗</span> فواتير المبيعات</a>
+        <a href="/SalesInvoice" class="Page-Link"><span class="Page-Link-Dot">✗</span> فاتورة مبيعات جديدة</a>
+        <a href="/SalesReturn" class="Page-Link"><span class="Page-Link-Dot">✗</span> مرتجع مبيعات</a>
+      </div>
+    </div>
+
+    <!-- المشتريات -->
+    <div class="Dropdown-Wrapper">
+      <div class="Page-Link Dropdown-Trigger">
+        <div class="DropdownItem"><i class="fa-solid fa-bag-shopping"></i><span>المشتريات</span></div>
+        <i class="fa-solid fa-chevron-down Dropdown-Arrow"></i>
+      </div>
+      <div class="Dropdown-Menu">
+        <a href="/PurchaseInvoice" class="Page-Link"><span class="Page-Link-Dot">✗</span> فاتورة مشتريات</a>
+        <a href="/PurchaseReturn" class="Page-Link"><span class="Page-Link-Dot">✗</span> مرتجع مشتريات</a>
+      </div>
+    </div>
+
+    <div class="Separator"></div>
+
+    <a href="/Custody" class="Page-Link"><i class="fa-solid fa-hand-holding-dollar"></i><span>العهدة</span></a>
+    <a href="/Revenues" class="Page-Link"><i class="fa-solid fa-money-bill-wave"></i><span>الايرادات</span></a>
+    <a href="/Expenses" class="Page-Link"><i class="fa-solid fa-money-bill-wave"></i><span>المصروفات</span></a>
+
+    <div class="Separator"></div>
+
+    <!-- الحسابات -->
+    <div class="Dropdown-Wrapper">
+      <div class="Page-Link Dropdown-Trigger">
+        <div class="DropdownItem"><i class="fa-solid fa-book"></i><span>الحسابات</span></div>
+        <i class="fa-solid fa-chevron-down Dropdown-Arrow"></i>
+      </div>
+      <div class="Dropdown-Menu">
+        <a href="/ChartAccounts" class="Page-Link"><span class="Page-Link-Dot">✓</span> شجرة الحسابات</a>
+        <a href="/Journal" class="Page-Link"><span class="Page-Link-Dot">✓</span> القيود اليومية</a>
+        <a href="/Ledger" class="Page-Link"><span class="Page-Link-Dot">✓</span> كشف حساب </a>
+        <a href="/TrialBalance" class="Page-Link"><span class="Page-Link-Dot">✓</span> ميزان المراجعة</a>
+        <a href="/IncomeStatement" class="Page-Link"><span class="Page-Link-Dot">✓</span> قائمة الدخل</a>
+        <a href="/BalanceSheet" class="Page-Link"><span class="Page-Link-Dot">✓</span> الميزانية العمومية</a>
+        <a href="/CashFlow" class="Page-Link"><span class="Page-Link-Dot">✓</span> التدفقات النقدية</a>
+      </div>
+    </div>
+
+    <!-- السندات -->
+    <div class="Dropdown-Wrapper">
+      <div class="Page-Link Dropdown-Trigger">
+        <div class="DropdownItem"><i class="fa-solid fa-file-invoice-dollar"></i><span>السندات</span></div>
+        <i class="fa-solid fa-chevron-down Dropdown-Arrow"></i>
+      </div>
+      <div class="Dropdown-Menu">
+        <a href="/VouchersReceipt" class="Page-Link"><span class="Page-Link-Dot">✓</span> سندات القبض</a>
+        <a href="/VouchersPayment" class="Page-Link"><span class="Page-Link-Dot">✓</span> سندات الصرف</a>
+      </div>
+    </div>
+
+    <!-- الأصول الثابتة -->
+    <a href="/FixedAssets" class="Page-Link"><i class="fa-solid fa-building"></i><span>الأصول الثابتة</span></a>
+
+    <div class="Separator"></div>
+
+    <!-- التعريفات -->
+    <div class="Dropdown-Wrapper">
+      <div class="Page-Link Dropdown-Trigger">
+        <div class="DropdownItem"><i class="fa-solid fa-sliders"></i><span>التعريفات</span></div>
+        <i class="fa-solid fa-chevron-down Dropdown-Arrow"></i>
+      </div>
+      <div class="Dropdown-Menu">
+        <a href="/CashBoxes" class="Page-Link"><span class="Page-Link-Dot">✓</span> الخزنات</a>
+        <a href="/Banks" class="Page-Link"><span class="Page-Link-Dot">✓</span> البنوك</a>
+        <a href="/SalesReps" class="Page-Link"><span class="Page-Link-Dot">✓</span> المناديب</a>
+        <a href="/Warehouses" class="Page-Link"><span class="Page-Link-Dot">✓</span> المخازن</a>
+        <a href="/Branches" class="Page-Link"><span class="Page-Link-Dot">✓</span> الفروع</a>
+        <a href="/CostCenters" class="Page-Link"><span class="Page-Link-Dot">✓</span> مراكز التكلفة</a>
+      </div>
+    </div>
+
+    <div class="Separator"></div>
+
+    <!-- النظام -->
+    <a href="/Settings" class="Page-Link"><i class="fa-solid fa-gear"></i><span>الإعدادات</span></a>
+    <a href="/Profile" class="Page-Link"><i class="fa-solid fa-user-circle"></i><span>الملف الشخصي</span></a>
+
+  </nav>
+</aside>

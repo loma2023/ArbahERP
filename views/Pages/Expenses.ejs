@@ -1,0 +1,251 @@
+<!-- Views/Pages/Expenses.ejs -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+
+    <div class="WorkSpace">
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2><i class="fa-solid fa-sack-dollar"></i> تسجيل المصروفات</h2>
+            <p>إدارة وتسجيل المصروفات والتكاليف التشغيلية</p>
+          </div>
+
+          <div class="Control-bar">
+            <div class="compact-cards-row">
+              <div class="mini-metric-card card-orange">
+                <div class="icon-box"><i class="fa-solid fa-wallet"></i></div>
+                <div class="info-text">
+                  <span class="lbl">إجمالي المصروفات</span>
+                  <span class="num" id="TotalExpenses">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-green">
+                <div class="icon-box"><i class="fa-solid fa-layer-group"></i></div>
+                <div class="info-text">
+                  <span class="lbl">مصروفات رئيسية</span>
+                  <span class="num" id="MainExpenses">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-blue">
+                <div class="icon-box"><i class="fa-solid fa-list-check"></i></div>
+                <div class="info-text">
+                  <span class="lbl">مصروفات فرعية</span>
+                  <span class="num" id="SubExpenses">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-red">
+                <div class="icon-box"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="info-text">
+                  <span class="lbl">نشطة</span>
+                  <span class="num" id="ActiveExpenses">0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="action-buttons-group">
+              <button class="Tool-Btn btn-add-customer" onclick="openPopUpWindow('AddNewPopup'); resetExpenseForm();">
+                <i class="fa-solid fa-plus"></i> تسجيل مصروف
+              </button>
+              <button class="Tool-Btn btn-excel" onclick="exportExpensesExcel()">
+                <i class="fa-solid fa-file-excel"></i> تصدير Excel
+              </button>
+            </div>
+          </div>
+
+          <div class="Container-Table">
+            <div class="Container-Table-Body">
+              <table class="Perfect-Table" id="MainPerfectTable">
+                <thead>
+                  <tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 12%;">
+                      <div class="th-content">الكود <i class="fa-solid fa-filter Filter-Btn" data-columnindex="1"
+                          data-columnname="code"></i></div>
+                    </th>
+                    <th style="width: 20%;">
+                      <div class="th-content">اسم المصروف <i class="fa-solid fa-filter Filter-Btn" data-columnindex="2"
+                          data-columnname="name"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">النوع <i class="fa-solid fa-filter Filter-Btn" data-columnindex="3"
+                          data-columnname="type"></i></div>
+                    </th>
+                    <th style="width: 15%;">
+                      <div class="th-content">عنصر الأب <i class="fa-solid fa-filter Filter-Btn" data-columnindex="4"
+                          data-columnname="parent"></i></div>
+                    </th>
+                    <th style="width: 15%;">
+                      <div class="th-content">حساب شجرة الحسابات <i class="fa-solid fa-filter Filter-Btn"
+                          data-columnindex="5" data-columnname="account"></i></div>
+                    </th>
+                    <th style="width: 15%;">
+                      <div class="th-content">الوصف <i class="fa-solid fa-filter Filter-Btn" data-columnindex="6"
+                          data-columnname="description"></i></div>
+                    </th>
+                    <th style="width: 5%;">الحالة</th>
+                    <th style="width: 5%;">الإجراء</th>
+                  </tr>
+                </thead>
+                <tbody id="ExpensesTable">
+                  <tr>
+                    <td colspan="9" class="NotFound">جاري التحميل...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="Container-Table-Footer">
+              <span class="info-text" id="showingDataMetrics">عرض 0-0 من 0</span>
+              <div id="PaginationPages" class="Pagination-Pages"></div>
+            </div>
+          </div>
+        </main>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         POPUP: إضافة/تعديل مصروف
+         ═══════════════════════════════════════════════════════════ -->
+    <div class="Container-PopUp-Window" id="AddNewPopup">
+      <div class="PopUp-Window" id="PopUp-Window">
+        <div class="PopUpWindow-Header" id="WindowHeaderDrag">
+          <div class="PopUpWindow-Title">
+            <h3 id="PopupTitle">إضافة مصروف جديد</h3>
+            <p id="PopupSubtitle">أدخل بيانات المصروف بدقة</p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('AddNewPopup')">
+            <i class="fa fa-xmark"></i>
+          </button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <form id="ExpenseForm">
+            <input type="hidden" id="ExpenseId" value="">
+
+            <div class="Form-Section">
+              <h4><i class="fa fa-file-invoice"></i> البيانات الأساسية</h4>
+              <div class="grid">
+                <div class="Field">
+                  <label>كود المصروف <span style="color: #e74c3c;">*</span></label>
+                  <div class="input">
+                    <input type="text" id="ExpenseCode" disabled placeholder="مثال: EXP-001">
+                    <i class="fa fa-barcode"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>اسم المصروف <span style="color: #e74c3c;">*</span></label>
+                  <div class="input">
+                    <input type="text" id="ExpenseName" placeholder="مثال: إيجار المكتب">
+                    <i class="fa fa-file-invoice"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid" style="margin-top: 12px;">
+                <div class="Field">
+                  <label>نوع المصروف <span style="color: #e74c3c;">*</span></label>
+                  <div class="input SelectInput">
+                    <select id="ExpenseType" onchange="onExpenseTypeChange()">
+                      <option value="main">رئيسي (أب)</option>
+                      <option value="sub" selected>فرعي (ابن)</option>
+                    </select>
+                    <i class="fa fa-sitemap"></i>
+                  </div>
+                </div>
+
+                <!-- ✅ قائمة المصاريف  -->
+                <div class="Field" data-select="Expenses" id="ParentField">
+                  <label>عنصر الاب</label>
+                  <div class="input SelectInput">
+                    <input type="text" class="select-search" placeholder="..." autocomplete="off">
+                    <input type="hidden" class="select-value" id="ExpenseId">
+                    <i class="fa fa-building select-icon"></i>
+                  </div>
+                  <div class="SelectOptionDropdown">
+                    <div class="select-content"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="Form-Section">
+              <h4><i class="fa fa-pen"></i> ملاحظات</h4>
+              <div class="Field">
+                <div class="input">
+                  <textarea id="ExpenseDescription" placeholder="وصف/ملاحظات إضافية عن المصروف..."></textarea>
+                  <i class="fa fa-pen icon-area"></i>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('AddNewPopup')">
+            <i class="fa fa-xmark"></i> إلغاء
+          </button>
+          <button class="apply" onclick="saveExpense()">
+            <i class="fa fa-save"></i> حفظ
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         POPUP: عرض تفاصيل المصروف
+         ═══════════════════════════════════════════════════════════ -->
+    <div class="Container-PopUp-Window" id="DetailsPopup">
+      <div class="PopUp-Window" style="max-width: 450px;">
+        <div class="PopUpWindow-Header">
+          <div class="PopUpWindow-Title">
+            <h3>تفاصيل المصروف</h3>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('DetailsPopup')">
+            <i class="fa fa-xmark"></i>
+          </button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <div class="details-grid">
+            <div class="detail-row">
+              <span class="label">الكود:</span>
+              <span class="value" id="DetailsCode">-</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">الاسم:</span>
+              <span class="value" id="DetailsName">-</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">النوع:</span>
+              <span class="value" id="DetailsType">-</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">عنصر الأب:</span>
+              <span class="value" id="DetailsParent">-</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">حساب شجرة الحسابات:</span>
+              <span class="value" id="DetailsAccount">-</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">الوصف:</span>
+              <span class="value" id="DetailsDescription">-</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">الحالة:</span>
+              <span class="value" id="DetailsStatus">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../Partials/filter') %>
+      <%- include('../Partials/scripts') %>
+        <script src="/Js/Expenses.js"></script>
+</body>
+
+</html>

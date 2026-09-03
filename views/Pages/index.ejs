@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <%- include('../Partials/sidebar') %>
+
+    <div class="WorkSpace">
+
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2>مركز الإدارة المالية</h2>
+            <p>تتبع الشؤون المالية للشركات، والمستحقات، والمدفوعات</p>
+          </div>
+
+          <div class="Grand-Cards-Grid">
+            <div class="Home-Card">
+              <div class="Home-Card-Head">
+                <span class="Card-Lable">ملخص المبيعات</span>
+                <div class="Home-Card-Icon Color-Bg-orange"><i class="fa-solid fa-chart-line"></i>
+                </div>
+              </div>
+
+              <div class="Home-Card-body">
+                <div class="Home-Card-Number">45,200</div>
+                <div class="Home-Card-Description" style="color: var(--accent-orange);">إجمالي المبيعات هذا
+                  الشهر
+                </div>
+              </div>
+
+              <div class="Home-Card-Foot">
+                <div class="Home-Card-Details"><span>المبيعات النقدية</span><span>31,000</span></div>
+                <div class="Home-Card-Details"><span>المبيعات الآجلة</span><span>14,200</span></div>
+              </div>
+
+            </div>
+
+            <div class="Home-Card">
+              <div class="Home-Card-Head">
+                <span class="Card-Lable">دفتر المشتريات</span>
+                <div class="Home-Card-Icon Color-Bg-blue"><i class="fa-solid fa-basket-shopping"></i>
+                </div>
+              </div>
+              <div class="Home-Card-body">
+                <div class="Home-Card-Number">18,450</div>
+                <div class="Home-Card-Description" style="color: var(--accent-blue);">أوامر الشراء والتوريد
+                </div>
+              </div>
+              <div class="Home-Card-Foot">
+                <div class="Home-Card-Details"><span>الفواتير المدفوعة</span><span>12,150</span></div>
+                <div class="Home-Card-Details"><span>الفواتير المعلقة</span><span>6,300</span></div>
+              </div>
+            </div>
+
+            <div class="Home-Card">
+              <div class="Home-Card-Head">
+                <span class="Card-Lable">حسابات العملاء</span>
+                <div class="Home-Card-Icon Color-Bg-green"><i class="fa-solid fa-users"></i></div>
+              </div>
+              <div class="Home-Card-body">
+                <div class="Home-Card-Number">24,100</div>
+                <div class="Home-Card-Description" style="color: var(--accent-green);">رصيد المديونية الاجمالي</div>
+              </div>
+              <div class="Home-Card-Foot">
+                <div class="Home-Card-Details"><span>العملاء النشطين</span><span>48 حساب</span></div>
+                <div class="Home-Card-Details"><span>المطالبات المتأخرة</span><span>3 عميل</span></div>
+              </div>
+            </div>
+
+            <div class="Home-Card">
+              <div class="Home-Card-Head">
+                <span class="Card-Lable">المورد حساب</span>
+                <div class="Home-Card-Icon Color-Bg-purple"><i class="fa-solid fa-truck-field"></i>
+                </div>
+              </div>
+              <div class="Home-Card-body">
+                <div class="Home-Card-Number">11,500</div>
+                <div class="Home-Card-Description" style="color: var(--accent-purple);">إجمالي رصيد الموردين
+                </div>
+              </div>
+              <div class="Home-Card-Foot">
+                <div class="Home-Card-Details"><span>الموردين المعتمدين</span><span>19 شركة</span></div>
+                <div class="Home-Card-Details"><span>خط الائتمان المفتوح</span><span>5,000 متاح</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="Home-Card">
+              <div class="Home-Card-Head">
+                <span class="Card-Lable">قائمة الدخل</span>
+                <div class="Home-Card-Icon Color-Bg-cyan"><i class="fa-solid fa-scale-balanced"></i></div>
+              </div>
+              <div class="Home-Card-body">
+                <div class="Home-Card-Number">37,500</div>
+                <div class="Home-Card-Description" style="color: var(--accent-cyan);">التدفق التشغيلي الصافي
+                </div>
+              </div>
+              <div class="Home-Card-Foot">
+                <div class="Home-Card-Details"><span>إجمالي الإيرادات</span><span
+                    style="color: var(--accent-green);">52,300</span></div>
+                <div class="Home-Card-Details"><span>إجمالي المصروفات</span><span
+                    style="color: var(--accent-red);">14,800</span></div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="Grand-Tables-Grid">
+            <div class="Container-Table" id="Suppliers">
+              <div class="Container-Table-Header">
+                <h3> <i class="fa-solid fa-user"></i> الموردين</h3>
+                <a href="#">عرض المزيد</a>
+              </div>
+
+              <div class="Container-Table-Body">
+                <table class="Perfect-Table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">
+                        #
+                      </th>
+                      <th>الاسم</th>
+                      <th>إجمالي الدين</th>
+                      <th>الهاتف</th>
+                      <th>عنوان الفواتير</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-user Color-Bg-green"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">شركة الجميل للتجارة</span>
+                            <span class="code">SUP-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">8,400</td>
+                      <td>0542087491</td>
+                      <td>شارع النخيل، حي الروضة، الرياض</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-user Color-Bg-green"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">شركة الجميل للتجارة</span>
+                            <span class="code">SUP-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">8,400</td>
+                      <td>0542087491</td>
+                      <td>شارع النخيل، حي الروضة، الرياض</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-user Color-Bg-green"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">شركة الجميل للتجارة</span>
+                            <span class="code">SUP-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">8,400</td>
+                      <td>0542087491</td>
+                      <td>شارع النخيل، حي الروضة، الرياض</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-user Color-Bg-green"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">شركة الجميل للتجارة</span>
+                            <span class="code">SUP-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">8,400</td>
+                      <td>0542087491</td>
+                      <td>شارع النخيل، حي الروضة، الرياض</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-user Color-Bg-green"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">شركة الجميل للتجارة</span>
+                            <span class="code">SUP-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">8,400</td>
+                      <td>0542087491</td>
+                      <td>شارع النخيل، حي الروضة، الرياض</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="Container-Table" id="Customers">
+              <div class="Container-Table-Header">
+                <h3> <i class="fa-solid fa-user"></i> العملاء</h3>
+                <a href="#">عرض المزيد</a>
+              </div>
+
+              <div class="Container-Table-Body">
+                <table class="Perfect-Table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">
+                        #
+                      </th>
+                      <th>الاسم</th>
+                      <th>إجمالي الدين</th>
+                      <th>الهاتف</th>
+                      <th>عنوان الفواتير</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-user Color-Bg-green"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">اسلام عبدالرحمن</span>
+                            <span class="code">CUS-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">8,400</td>
+                      <td>0542087491</td>
+                      <td>شارع النخيل، حي الروضة، الرياض</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-user Color-Bg-green"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">اسلام عبدالرحمن</span>
+                            <span class="code">CUS-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">8,400</td>
+                      <td>0542087491</td>
+                      <td>شارع النخيل، حي الروضة، الرياض</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-user Color-Bg-green"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">اسلام عبدالرحمن</span>
+                            <span class="code">CUS-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">8,400</td>
+                      <td>0542087491</td>
+                      <td>شارع النخيل، حي الروضة، الرياض</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-user Color-Bg-green"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">اسلام عبدالرحمن</span>
+                            <span class="code">CUS-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">8,400</td>
+                      <td>0542087491</td>
+                      <td>شارع النخيل، حي الروضة، الرياض</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-user Color-Bg-green"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">اسلام عبدالرحمن</span>
+                            <span class="code">CUS-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">8,400</td>
+                      <td>0542087491</td>
+                      <td>شارع النخيل، حي الروضة، الرياض</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="Grand-Tables-Grid">
+            <div class="Container-Table" id="LowStock-Box">
+              <div class="Container-Table-Header">
+                <h3><i class="fa-solid fa-triangle-exclamation"></i> أصناف أوشكت على النفاذ</h3>
+                <a href="#">عرض المزيد</a>
+              </div>
+
+              <div class="Container-Table-Body">
+                <table class="Perfect-Table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">#</th>
+                      <th>اسم الصنف</th>
+                      <th>الكمية المتبقية</th>
+                      <th>الحد الأدنى</th>
+                      <th>الفرع</th>
+                      <th>الحالة</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-cube Color-Bg-red"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">طحينة الجميل 10 لتر </span>
+                            <span class="code">ITM-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">127</td>
+                      <td>200</td>
+                      <td>فرع الزهور</td>
+                      <td><span class="status-badge Color-Bg-red">غير متوفر</span></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-cube Color-Bg-orange"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">طحينة الجميل 10 لتر </span>
+                            <span class="code">ITM-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">127</td>
+                      <td>200</td>
+                      <td>فرع الزهور</td>
+                      <td><span class="status-badge Color-Bg-orange">علي وشك النفاذ</span></td>
+
+                    </tr>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-cube Color-Bg-orange"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">طحينة الجميل 10 لتر </span>
+                            <span class="code">ITM-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">127</td>
+                      <td>200</td>
+                      <td>فرع الزهور</td>
+                      <td><span class="status-badge Color-Bg-orange">علي وشك النفاذ</span></td>
+
+                    </tr>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-cube Color-Bg-orange"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">طحينة الجميل 10 لتر </span>
+                            <span class="code">ITM-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">127</td>
+                      <td>200</td>
+                      <td>فرع الزهور</td>
+                      <td><span class="status-badge Color-Bg-orange">علي وشك النفاذ</span></td>
+
+                    </tr>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-cube Color-Bg-orange"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">طحينة الجميل 10 لتر </span>
+                            <span class="code">ITM-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">127</td>
+                      <td>200</td>
+                      <td>فرع الزهور</td>
+                      <td><span class="status-badge Color-Bg-orange">علي وشك النفاذ</span></td>
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="Container-Table" id="BestSelling-Box">
+              <div class="Container-Table-Header">
+                <h3><i class="fa-solid fa-crown"></i> الأصناف الأكثر مبيعاً</h3>
+                <a href="#">عرض المزيد</a>
+              </div>
+
+              <div class="Container-Table-Body">
+                <table class="Perfect-Table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">#</th>
+                      <th>اسم الصنف</th>
+                      <th>الكمية المباعة</th>
+                      <th>إجمالي المبيعات</th>
+                      <th>الفرع</th>
+                      <th>النسبة</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-cube Color-Bg-green"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">كيلو مشكل لحوم</span>
+                            <span class="code">ITM-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">127</td>
+                      <td>456</td>
+                      <td>فرع الزهور</td>
+                      <td><span class="status-badge Color-Bg-green">15%</span></td>
+
+                    </tr>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-cube Color-Bg-green"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">كيلو مشكل لحوم</span>
+                            <span class="code">ITM-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">127</td>
+                      <td>456</td>
+                      <td>فرع الزهور</td>
+                      <td><span class="status-badge Color-Bg-green">15%</span></td>
+
+                    </tr>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-cube Color-Bg-green"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">كيلو مشكل لحوم</span>
+                            <span class="code">ITM-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">127</td>
+                      <td>456</td>
+                      <td>فرع الزهور</td>
+                      <td><span class="status-badge Color-Bg-green">15%</span></td>
+
+                    </tr>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-cube Color-Bg-green"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">كيلو مشكل لحوم</span>
+                            <span class="code">ITM-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">127</td>
+                      <td>456</td>
+                      <td>فرع الزهور</td>
+                      <td><span class="status-badge Color-Bg-green">15%</span></td>
+
+                    </tr>
+                    <tr>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                        <div class="Name-Cell">
+                          <i class="fa-solid fa-cube Color-Bg-green"></i>
+                          <div class="Name-Cell-info">
+                            <span class="name">كيلو مشكل لحوم</span>
+                            <span class="code">ITM-001</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="color: var(--accent-red); font-weight: 600;">127</td>
+                      <td>456</td>
+                      <td>فرع الزهور</td>
+                      <td><span class="status-badge Color-Bg-green">15%</span></td>
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </main>
+    </div>
+
+    <script src="/Js/01-Main.js"></script>
+    <!-- <%- include('../Partials/scripts') %> -->
+</body>
+
+</html>

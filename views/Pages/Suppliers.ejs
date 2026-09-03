@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+    <div class="WorkSpace">
+
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2><i class="fa-solid fa-user-tie"></i> بيانات الموردين</h2>
+            <p>إدارة الموردين والمبيعات والذمم المدينة</p>
+          </div>
+
+          <div class="Control-bar">
+            <div class="compact-cards-row">
+              <div class="mini-metric-card card-orange">
+                <div class="icon-box"><i class="fa-solid fa-wallet"></i></div>
+                <div class="info-text">
+                  <span class="lbl">إجمالي الذمم</span>
+                  <span class="num" id="TotalReceivables">0 ر.س</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-green">
+                <div class="icon-box"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="info-text">
+                  <span class="lbl">النشطين</span>
+                  <span class="num" id="ActiveSuppliers">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-blue">
+                <div class="icon-box"><i class="fa-solid fa-users"></i></div>
+                <div class="info-text">
+                  <span class="lbl">إجمالي الموردين</span>
+                  <span class="num" id="TotalSuppliers">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-red">
+                <div class="icon-box"><i class="fa-solid fa-circle-exclamation"></i></div>
+                <div class="info-text">
+                  <span class="lbl">تجاوز الحد</span>
+                  <span class="num" id="OverLimitSuppliers">0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="action-buttons-group">
+              <button class="Tool-Btn btn-add-Supplier" onclick="resetForm(); openPopUpWindow('AddNewPopup');">
+                <i class="fa-solid fa-plus"></i> إضافة مورد
+              </button>
+              <button class="Tool-Btn btn-excel" onclick="exportSuppliersExcel()">
+                <i class="fa-solid fa-file-excel"></i> تصدير Excel
+              </button>
+            </div>
+          </div>
+
+          <div class="Container-Table">
+            <div class="Container-Table-Body">
+              <table class="Perfect-Table" id="MainPerfectTable">
+                <thead>
+                  <tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 22%;">
+                      <div class="th-content">الاســـم
+                        <button class="Filter-Btn" data-columnindex="1" data-columnname="name">
+                          <i class="fa-solid fa-filter"></i>
+                        </button>
+                      </div>
+                    </th>
+                    <th style="width: 12%;">
+                      <div class="th-content">الرقم الضريبي
+                        <button class="Filter-Btn" data-columnindex="2" data-columnname="taxNumber">
+                          <i class="fa-solid fa-filter"></i>
+                        </button>
+                      </div>
+                    </th>
+                    <th style="width: 12%;">
+                      <div class="th-content">السجل التجاري
+                        <button class="Filter-Btn" data-columnindex="3" data-columnname="commercialReg">
+                          <i class="fa-solid fa-filter"></i>
+                        </button>
+                      </div>
+                    </th>
+                    <th style="width: 18%;">
+                      <div class="th-content">العنـــوان
+                        <button class="Filter-Btn" data-columnindex="4" data-columnname="address">
+                          <i class="fa-solid fa-filter"></i>
+                        </button>
+                      </div>
+                    </th>
+                    <th style="width: 12%;">
+                      <div class="th-content">رقم الهاتف
+                        <button class="Filter-Btn" data-columnindex="5" data-columnname="phone">
+                          <i class="fa-solid fa-filter"></i>
+                        </button>
+                      </div>
+                    </th>
+                    <th style="width: 12%;">
+                      <div class="th-content">حد الائتمان
+                        <button class="Filter-Btn" data-columnindex="6" data-columnname="creditLimit">
+                          <i class="fa-solid fa-filter"></i>
+                        </button>
+                      </div>
+                    </th>
+                    <th style="width: 12%;">
+                      <div class="th-content">الرصيد الحالي
+                        <button class="Filter-Btn" data-columnindex="7" data-columnname="currentBalance">
+                          <i class="fa-solid fa-filter"></i>
+                        </button>
+                      </div>
+                    </th>
+                    <th style="width: 5%">الإجراء</th>
+                  </tr>
+                </thead>
+                <tbody id="SuppliersTable"></tbody>
+              </table>
+            </div>
+            <div class="Container-Table-Footer">
+              <span class="info-text" id="showingDataMetrics">عرض 0-0 من 0</span>
+              <div id="PaginationPages" class="Pagination-Pages"></div>
+            </div>
+          </div>
+        </main>
+    </div>
+
+    <div class="Container-PopUp-Window" id="AddNewPopup">
+      <div class="PopUp-Window" id="PopUp-Window">
+        <div class="PopUpWindow-Header" id="WindowHeaderDrag">
+          <div class="PopUpWindow-Title">
+            <h3 id="PopupTitle">إضافة مورد جديد</h3>
+            <p id="PopupSubtitle">أدخل بيانات المورد بدقة</p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('AddNewPopup')">
+            <i class="fa fa-xmark"></i>
+          </button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <form id="SupplierForm">
+            <input type="hidden" id="SupplierId" value="">
+            <div class="Form-Section">
+              <h4><i class="fa fa-user"></i> البيانات الأساسية</h4>
+              <div class="grid">
+                <div class="Field">
+                  <label>كود المورد</label>
+                  <div class="input">
+                    <input type="text" disabled id="SupplierCode" placeholder="CUST-XXX">
+                    <i class="fa fa-hashtag"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>اسم المورد</label>
+                  <div class="input">
+                    <input type="text" id="SupplierName" placeholder="اسم المورد">
+                    <i class="fa fa-user"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="grid" style="margin-top: 12px;">
+                <div class="Field">
+                  <label>رقم الهاتف</label>
+                  <div class="input">
+                    <input type="text" id="SupplierPhone" placeholder="0501234567">
+                    <i class="fa fa-phone"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>الرقم الضريبي</label>
+                  <div class="input">
+                    <input type="text" id="SupplierTax" placeholder="314446452800003">
+                    <i class="fa fa-file-invoice"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="Form-Section">
+              <h4><i class="fa fa-phone"></i> معلومات الرصيد</h4>
+              <div class="grid">
+                <div class="Field">
+                  <label>الرصيد الافتتاحي</label>
+                  <div class="input">
+                    <input type="text" id="OpenBalance" placeholder="1000">
+                    <i class="fa fa-money-bill"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>نوع الرصيد</label>
+                  <div class="input SelectInput">
+                    <select id="SupplierStatus">
+                      <option value="credit" selected>دائن</option>
+                      <option value="debit">مدين</option>
+                    </select>
+                    <i class="fa fa-circle-check"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="Form-Section">
+              <h4><i class="fa fa-file-invoice"></i> البيانات التجارية</h4>
+              <div class="grid">
+                <div class="Field">
+                  <label>السجل التجاري</label>
+                  <div class="input">
+                    <input type="text" id="SupplierReg" placeholder="7052765976">
+                    <i class="fa fa-file-contract"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>حد الائتمان</label>
+                  <div class="input">
+                    <input type="number" id="SupplierCreditLimit" value="10000" min="0">
+                    <i class="fa fa-money-bill"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="Form-Section">
+              <h4><i class="fa fa-location-dot"></i> العنوان</h4>
+              <div class="grid">
+                <div class="Field">
+                  <label>المدينة</label>
+                  <div class="input">
+                    <input type="text" id="SupplierCity" placeholder="الدمام">
+                    <i class="fa fa-city"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>الحي / الشارع</label>
+                  <div class="input">
+                    <input type="text" id="SupplierAddress" placeholder="حي الفيصلية، شارع الملك">
+                    <i class="fa fa-map"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="Form-Section">
+              <h4><i class="fa fa-pen"></i> ملاحظات</h4>
+              <div class="Field">
+                <div class="input">
+                  <textarea id="SupplierNotes" placeholder="ملاحظات إضافية..."></textarea>
+                  <i class="fa fa-pen icon-area"></i>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('AddNewPopup')">
+            <i class="fa fa-xmark"></i> إلغاء
+          </button>
+          <button class="apply" onclick="saveSupplier()">
+            <i class="fa fa-save"></i> حفظ المورد
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="Container-PopUp-Window" id="DetailsPopup">
+      <div class="PopUp-Window">
+        <div class="PopUpWindow-Header">
+          <div class="PopUpWindow-Title">
+            <h3>تفاصيل المورد</h3>
+            <p><i class="fa-solid fa-hashtag"></i> <span id="DetailsCode">CUST-001</span></p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('DetailsPopup')">
+            <i class="fa fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="PopUpWindow-Body" id="VoucherDetailsBody">
+          <div class="voucher-details-container">
+            <div class="Watermark">بيانات المورد</div>
+
+            <%- include('../Partials/letterHead') %>
+
+              <div class="Title-Voucher">بيانات المورد</div>
+
+              <div class="voucher-info-grid">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-red">
+                    <i class="fa-solid fa-building"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">اسم المورد</div>
+                    <div class="voucher-info-value" id="DetailsName">شركة الجميل للتجارة</div>
+                    <div class="voucher-info-label" id="DetailsSupCode">SUP-001</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-info-grid Grid-3">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-blue">
+                    <i class="fa-solid fa-credit-card"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الرقم الضريبي</div>
+                    <div class="voucher-info-value" id="DetailsTax">333333333333333333</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-purple">
+                    <i class="fa-solid fa-building-columns"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">السجل التجاري</div>
+                    <div class="voucher-info-value" id="DetailsReg">333333333333333</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-cyan">
+                    <i class="fa-solid fa-hashtag"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">رقم الهاتف</div>
+                    <div class="voucher-info-value" id="DetailsPhone">055555555555</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-notes-section">
+                <div class="voucher-notes-title">
+                  <i class="fa-solid fa-location-dot"></i> العنوان
+                </div>
+                <div class="voucher-notes-text" id="DetailsAddress">المملكة العربية السعودية | الدمام | حي المحمدية
+                </div>
+              </div>
+
+              <div class="voucher-info-grid Grid-3">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-blue">
+                    <i class="fa-solid fa-credit-card"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الرصيد الافتتاحي</div>
+                    <div class="voucher-info-value" id="DetailsOpenBalance">3000</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-purple">
+                    <i class="fa-solid fa-building-columns"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">حد الائتمان</div>
+                    <div class="voucher-info-value" id="DetailsCreditLimit">2000</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-cyan">
+                    <i class="fa-solid fa-hashtag"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الرصيد الحالي</div>
+                    <div class="voucher-info-value" id="DetailsCurrentBalance">1000</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="LetterFoot">
+                <div class="Footer-Left">
+                  <span class="system-badge"><i class="fa-solid fa-shield-halved"></i>ArbahERP v1.0</span>
+                  <span id="DetailsFooterInfo">تم إنشاؤها بواسطة: إسلام عبدالرحمن | 2024/06/09 14:30:25</span>
+                </div>
+                <div class="Footer-Pages">صفحة 1 من 1</div>
+              </div>
+          </div>
+        </div>
+
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('DetailsPopup')">
+            <i class="fa fa-xmark"></i> إغلاق
+          </button>
+          <button class="apply" onclick="PrintAreaFn('#DetailsPopup .PopUpWindow-Body')"><i
+              class="fa-solid fa-print"></i>
+        </div>
+      </div>
+    </div>
+
+
+    <%- include('../Partials/filter') %>
+      <%- include('../Partials/scripts') %>
+
+        <script src="Js/Suppliers.js"></script>
+
+</body>
+
+</html>

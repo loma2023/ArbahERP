@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+
+    <div class="WorkSpace">
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2><i class="fa-solid fa-landmark"></i> الأصول الثابتة</h2>
+            <p>إدارة الأصول الثابتة والإهلاك والقيمة الدفترية</p>
+          </div>
+
+          <div class="Control-bar">
+            <div class="compact-cards-row">
+              <div class="mini-metric-card card-orange">
+                <div class="icon-box"><i class="fa-solid fa-building"></i></div>
+                <div class="info-text">
+                  <span class="lbl">عدد الأصول</span>
+                  <span class="num" id="TotalAssets">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-green">
+                <div class="icon-box"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="info-text">
+                  <span class="lbl">النشطة</span>
+                  <span class="num" id="ActiveAssets">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-blue">
+                <div class="icon-box"><i class="fa-solid fa-money-bill"></i></div>
+                <div class="info-text">
+                  <span class="lbl">القيمة الأصلية</span>
+                  <span class="num" id="TotalOriginalValue">0 ر.س</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-red">
+                <div class="icon-box"><i class="fa-solid fa-chart-line"></i></div>
+                <div class="info-text">
+                  <span class="lbl">مجمع الإهلاك</span>
+                  <span class="num" id="TotalDepreciation">0 ر.س</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-purple">
+                <div class="icon-box"><i class="fa-solid fa-wallet"></i></div>
+                <div class="info-text">
+                  <span class="lbl">القيمة الدفترية</span>
+                  <span class="num" id="NetBookValue">0 ر.س</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="action-buttons-group">
+              <button class="Tool-Btn btn-add-customer" onclick="openPopUpWindow('AddNewPopup'); fetchNextCode();">
+                <i class="fa-solid fa-plus"></i> إضافة أصل
+              </button>
+              <button class="Tool-Btn btn-depreciation" onclick="recordBatchDepreciation()">
+                <i class="fa-solid fa-file-invoice"></i> تسجيل إهلاك الشهر
+              </button>
+              <button class="Tool-Btn btn-excel" onclick="exportAssetsExcel()">
+                <i class="fa-solid fa-file-excel"></i> تصدير Excel
+              </button>
+            </div>
+          </div>
+
+          <div class="Container-Table">
+            <div class="Container-Table-Body">
+              <table class="Perfect-Table" id="MainPerfectTable">
+                <thead>
+                  <tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 15%;">
+                      <div class="th-content">الأصل <i class="fa-solid fa-filter Filter-Btn" data-columnindex="1"
+                          data-columnname="name"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">تاريخ الشراء <i class="fa-solid fa-filter Filter-Btn" data-columnindex="2"
+                          data-columnname="code"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">حساب الأصل <i class="fa-solid fa-filter Filter-Btn" data-columnindex="3"
+                          data-columnname="assetAccountCode"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">الفرع <i class="fa-solid fa-filter Filter-Btn" data-columnindex="4"
+                          data-columnname="branch"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">القيمة الأصلية <i class="fa-solid fa-filter Filter-Btn"
+                          data-columnindex="5" data-columnname="originalValue"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">مجمع الإهلاك <i class="fa-solid fa-filter Filter-Btn" data-columnindex="6"
+                          data-columnname="depreciation"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">القيمة الدفترية <i class="fa-solid fa-filter Filter-Btn"
+                          data-columnindex="7" data-columnname="bookValue"></i></div>
+                    </th>
+                    <th style="width: 8%;">
+                      <div class="th-content">نسبة الإهلاك <i class="fa-solid fa-filter Filter-Btn" data-columnindex="8"
+                          data-columnname="rate"></i></div>
+                    </th>
+                    <th style="width: 9%;">الحالة</th>
+                    <th style="width: 5%;">الإجراء</th>
+                  </tr>
+                </thead>
+                <tbody id="AssetsTable">
+                  <!-- البيانات تُحمّل ديناميكياً من السيرفر -->
+                </tbody>
+              </table>
+            </div>
+            <div class="Container-Table-Footer">
+              <span class="info-text" id="showingDataMetrics">عرض 0 من 0</span>
+              <div id="PaginationPages" class="Pagination-Pages"></div>
+            </div>
+          </div>
+        </main>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!--    نافذة إضافة / تعديل أصل ثابت                          -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div class="Container-PopUp-Window" id="AddNewPopup">
+      <div class="PopUp-Window" id="PopUp-Window">
+        <div class="PopUpWindow-Header" id="WindowHeaderDrag">
+          <div class="PopUpWindow-Title">
+            <h3 id="PopupTitle">إضافة أصل ثابت جديد</h3>
+            <p id="PopupSubtitle">أدخل بيانات الأصل ونسبة الإهلاك</p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('AddNewPopup')"><i
+              class="fa fa-xmark"></i></button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <form id="AssetForm">
+            <input type="hidden" id="AssetId" value="">
+
+            <!-- ═════ البيانات الأساسية ═════ -->
+            <div class="Form-Section">
+
+              <h4><i class="fa fa-building"></i> البيانات الأساسية</h4>
+              <!-- نوع الأصل -->
+              <div class="grid Grid-3" style="margin-bottom: 12px;">
+                <!-- كود الأصل -->
+                <div class="Field">
+                  <label>كود الأصل <span class="required">*</span></label>
+                  <div class="input">
+                    <input type="text" id="AssetCode" disabled placeholder="AST-XXX" readonly>
+                    <i class="fa fa-hashtag"></i>
+                  </div>
+                </div>
+
+                <div class="Field">
+                  <label>نوع الأصل <span class="required">*</span></label>
+                  <div class="input SelectInput">
+                    <select id="AssetType" onchange="togglePaymentSection()">
+                      <option value="new" selected>أصل جديد (شراء)</option>
+                      <option value="existing">أصل موجود (افتتاحي)</option>
+                    </select>
+                    <i class="fa fa-tag"></i>
+                  </div>
+                </div>
+                <!-- حساب الأصل -->
+                <div class="Field">
+                  <label>حساب الأصل <span class="required">*</span></label>
+                  <div class="input SelectInput">
+                    <select id="AssetAccount">
+                      <option value="">اختر الحساب...</option>
+                      <option value="110200">110200 - أراضي</option>
+                      <option value="110201">110201 - مباني</option>
+                      <option value="110202">110202 - سيارات</option>
+                      <option value="110203">110203 - أثاث وتجهيزات</option>
+                      <option value="110204">110204 - حاسب آلي وطابعات</option>
+                      <option value="110205">110205 - تحسينات على المأجور</option>
+                      <option value="110206">110206 - آلات ومعدات</option>
+                    </select>
+                    <i class="fa fa-book"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid Grid-2">
+                <!-- اسم الأصل -->
+                <div class="Field">
+                  <label>اسم الأصل <span class="required">*</span></label>
+                  <div class="input">
+                    <input type="text" id="AssetName" placeholder="اسم الأصل الثابت">
+                    <i class="fa fa-building"></i>
+                  </div>
+                </div>
+                <!-- الفرع - SelectOption -->
+                <div class="Field" data-select="branch">
+                  <label>الفرع</label>
+                  <div class="input SelectInput">
+                    <input type="text" class="select-search" placeholder="..." autocomplete="off">
+                    <input type="hidden" class="select-value" id="BranchId">
+                    <i class="fa fa-user select-icon"></i>
+                  </div>
+                  <div class="SelectOptionDropdown">
+                    <div class="select-content"></div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- ═════ بيانات الدفع (للأصول الجديدة فقط) ═════ -->
+            <div class="Form-Section" id="PaymentSection">
+              <h4><i class="fa fa-credit-card"></i> بيانات الدفع</h4>
+              <div class="grid">
+                <!-- طريقة الدفع -->
+                <div class="Field">
+                  <label>طريقة الدفع <span class="required">*</span></label>
+                  <div class="input SelectInput">
+                    <select id="PaymentMethod" onchange="updatePaymentAccount()">
+                      <option value="cash" selected>الصندوق</option>
+                      <option value="bank">تحويل بنكي</option>
+                      <option value="credit">موردين (آجل)</option>
+                    </select>
+                    <i class="fa fa-wallet"></i>
+                  </div>
+                </div>
+                <!-- حساب الدفع -->
+                <div class="Field" data-select="cashboxes">
+                  <label>الصندوق</label>
+                  <div class="input SelectInput">
+                    <input type="text" class="select-search" placeholder="ابحث عن مركز الصندوق..." autocomplete="off">
+                    <input type="hidden" class="select-value">
+                    <i class="fa fa-box select-icon"></i>
+                  </div>
+                  <div class="SelectOptionDropdown">
+                    <div class="select-content"></div>
+                  </div>
+                </div>
+                <div class="Field" data-select="Banks" style="display: none;">
+                  <label>البنك</label>
+                  <div class="input SelectInput">
+                    <input type="text" class="select-search" placeholder="ابحث عن مركز البنك..." autocomplete="off">
+                    <input type="hidden" class="select-value">
+                    <i class="fa fa-building-columns select-icon"></i>
+                  </div>
+                  <div class="SelectOptionDropdown">
+                    <div class="select-content"></div>
+                  </div>
+                </div>
+                <div class="Field" data-select="supplier" style="display: none;">
+                  <label>اسم المورد</label>
+                  <div class="input SelectInput">
+                    <input type="text" class="select-search" placeholder="..." autocomplete="off">
+                    <input type="hidden" class="select-value" id="SupplierId">
+                    <i class="fa fa-user select-icon"></i>
+                  </div>
+                  <div class="SelectOptionDropdown">
+                    <div class="select-content"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ═════ القيمة والإهلاك ═════ -->
+            <div class="Form-Section">
+              <h4><i class="fa fa-money-bill"></i> القيمة والإهلاك</h4>
+              <div class="grid">
+                <!-- تاريخ الشراء -->
+                <div class="Field">
+                  <label>تاريخ الشراء</label>
+                  <div class="input">
+                    <input type="date" id="AssetPurchaseDate">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                </div>
+                <!-- القيمة الأصلية -->
+                <div class="Field">
+                  <label>القيمة الأصلية <span class="required">*</span></label>
+                  <div class="input">
+                    <input type="number" id="AssetOriginalValue" value="0" min="0" step="0.01">
+                    <i class="fa fa-money-bill"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid" style="margin-top: 12px;">
+                <!-- نسبة الإهلاك -->
+                <div class="Field">
+                  <label>نسبة الإهلاك السنوية % <span class="required">*</span></label>
+                  <div class="input">
+                    <input type="number" id="AssetDepreciationRate" value="10" min="0" max="100" step="0.5">
+                    <i class="fa fa-percent"></i>
+                  </div>
+                </div>
+                <!-- طريقة الإهلاك -->
+                <div class="Field">
+                  <label>طريقة الإهلاك <span class="required">*</span></label>
+                  <div class="input SelectInput">
+                    <select id="DepreciationMethod">
+                      <option value="straight" selected>القسط الثابت</option>
+                      <option value="declining">القيمة المتناقصة</option>
+                      <option value="units">وحدات الإنتاج</option>
+                    </select>
+                    <i class="fa fa-calculator"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ═════ ملاحظات ═════ -->
+            <div class="Form-Section">
+              <h4><i class="fa fa-pen"></i> ملاحظات</h4>
+              <div class="Field">
+                <div class="input">
+                  <textarea id="AssetNotes" placeholder="ملاحظات إضافية..."></textarea>
+                  <i class="fa fa-pen icon-area"></i>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('AddNewPopup'); resetAssetForm();"><i class="fa fa-xmark"></i>
+            إلغاء</button>
+          <button class="apply" onclick="saveAsset()"><i class="fa fa-save"></i> حفظ الأصل</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!--    نافذة عرض التفاصيل                                      -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div class="Container-PopUp-Window" id="DetailsPopup">
+      <div class="PopUp-Window">
+        <div class="PopUpWindow-Header">
+          <div class="PopUpWindow-Title">
+            <h3>تفاصيل الأصل الثابت</h3>
+            <p><i class="fa-solid fa-hashtag"></i> <span id="DetailsCode">-</span></p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('DetailsPopup')"><i
+              class="fa fa-xmark"></i></button>
+        </div>
+        <div class="PopUpWindow-Body" id="AssetDetailsBody">
+          <div class="voucher-details-container">
+            <div class="Watermark">بيانات الأصل</div>
+
+            <%- include('../Partials/letterHead') %>
+
+              <div class="voucher-info-grid">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-green">
+                    <i class="fa-solid fa-building"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">اسم الأصل</div>
+                    <div class="voucher-info-value" id="DetailsName">-</div>
+                    <div class="voucher-info-label" id="DetailsCodeLabel">-</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-info-grid Grid-2">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-blue">
+                    <i class="fa-solid fa-building"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الفرع</div>
+                    <div class="voucher-info-value" id="DetailsBranch">-</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-red">
+                    <i class="fa-solid fa-circle-check"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الحالة</div>
+                    <div class="voucher-info-value" id="DetailsStatus">-</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-info-grid Grid-4">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-green">
+                    <i class="fa-solid fa-money-bill"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">القيمة الأصلية</div>
+                    <div class="voucher-info-value" id="DetailsOriginalValue">-</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-orange">
+                    <i class="fa-solid fa-chart-line"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">مجمع الإهلاك</div>
+                    <div class="voucher-info-value" id="DetailsAccumulated">-</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-blue">
+                    <i class="fa-solid fa-wallet"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">القيمة الدفترية</div>
+                    <div class="voucher-info-value" id="DetailsBookValue">-</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-purple">
+                    <i class="fa-solid fa-percent"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">نسبة الإهلاك</div>
+                    <div class="voucher-info-value" id="DetailsRate">-</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-info-grid Grid-2">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-cyan">
+                    <i class="fa-solid fa-calendar"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">تاريخ الشراء</div>
+                    <div class="voucher-info-value" id="DetailsPurchaseDate">-</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-cyan">
+                    <i class="fa-solid fa-calculator"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">طريقة الإهلاك</div>
+                    <div class="voucher-info-value" id="DetailsMethod">-</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-info-grid Grid-2">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-green">
+                    <i class="fa-solid fa-book"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">حساب الأصل</div>
+                    <div class="voucher-info-value" id="DetailsAssetAccountCode">-</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-orange">
+                    <i class="fa-solid fa-book"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">حساب مجمع الإهلاك</div>
+                    <div class="voucher-info-value" id="DetailsDepreciationAccount">-</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-notes-section">
+                <div class="voucher-notes-title"><i class="fa-solid fa-pen"></i> ملاحظات</div>
+                <div class="voucher-notes-text" id="DetailsNotes">لا توجد ملاحظات</div>
+              </div>
+
+              <div class="LetterFoot">
+                <div class="Footer-Left">
+                  <span class="system-badge"><i class="fa-solid fa-shield-halved"></i>ArbahERP v1.0</span>
+                  <span id="DetailsFooterInfo">تم إنشاؤها بواسطة: - | -</span>
+                </div>
+                <div class="Footer-Pages">صفحة 1 من 1</div>
+              </div>
+          </div>
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('DetailsPopup')"><i class="fa fa-xmark"></i> إغلاق</button>
+          <button class="apply btn-print" onclick="PrintAreaFn('#DetailsPopup .PopUpWindow-Body')"><i
+              class="fa fa-print"></i> طباعة</button>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../Partials/filter') %>
+      <%- include('../Partials/scripts') %>
+
+        <script src="Js/FixedAssets.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+<div class="Advanced-Filter-Dropdown" id="Advanced-Filter-Dropdown">
+  <div class="Filter-Option-Item" onclick="activeTableFilter.sortAZ()">
+    <i class="fa-solid fa-arrow-down-a-z"></i>
+    الفرز تصاعدي (A-Z)
+  </div>
+  <div class="Filter-Option-Item" onclick="activeTableFilter.sortZA()">
+    <i class="fa-solid fa-arrow-down-z-a"></i>
+    الفرز تنازلي (Z-A)
+  </div>
+  <div class="Separator"></div>
+  <div class="Filter-Option-Item" onclick="activeTableFilter.clearFilter()">
+    <i class="fa-solid fa-filter-circle-xmark"></i>
+    إعادة تعيين
+  </div>
+  <div class="Separator"></div>
+  <div class="Filter-Search-input-box input">
+    <input type="text" id="filterSearchInput" placeholder="بحث...">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </div>
+  <div class="Filter-Checkboxes-list" id="filterCheckboxGroup"></div>
+  <div class="Filter-Action-Footer">
+    <button class="Filter-action-btn reset" onclick="activeTableFilter.closeFilter()">إلغاء</button>
+    <button class="Filter-action-btn apply" onclick="activeTableFilter.applyFilter()">تطبيق</button>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- POPUP: تأكيد الحذف -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="Container-PopUp-Window ConfirmPopup" id="ConfirmPopup">
+  <div class="PopUp-Window">
+    <div class="PopUpWindow-Header">
+      <div class="PopUpWindow-Title">
+        <h3> تأكيد الحذف</h3>
+      </div>
+      <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('DeleteConfirmPopup')"><i
+          class="fa fa-xmark"></i></button>
+    </div>
+    <div class="PopUpWindow-Body">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <p>هل أنت متأكد من حذف هذا البنك؟</p>
+      <p id="DeleteConfirmText">سيتم حذف البنك نهائياً إذا لم تكن هناك حركات مالية.</p>
+      <input type="hidden" id="DeleteBankId" value="">
+    </div>
+    <div class="PopUpWindow-Footer">
+      <button class="reset" onclick="closePopUpWindow('DeleteConfirmPopup')"><i class="fa fa-xmark"></i> إلغاء</button>
+      <button class="apply" onclick="confirmDeleteBank()"><i class="fa fa-trash-can"></i>
+        نعم، احذف</button>
+    </div>
+  </div>
+</div>
