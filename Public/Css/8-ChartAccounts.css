@@ -1,0 +1,347 @@
+/* ===== Clean Professional Tree ===== */
+.Tree-Wrapper {
+    background: var(--bg-card);
+    border-radius: var(--radius-main);
+    border: var(--border);
+    overflow: hidden;
+}
+
+.Tree-Header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: var(--bg-main);
+    border-bottom: var(--border);
+}
+
+.Tree-Header h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.Tree-Header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.Tree-Header-actions button {
+    height: 32px;
+    padding: 0 14px;
+    font-size: 12px;
+    border-radius: 6px;
+}
+
+/* Tree body */
+.Tree-Body {
+    padding: 8px 0;
+}
+
+.Tree-Node {
+    position: relative;
+}
+
+.Tree-Row {
+    display: flex;
+    align-items: center;
+    padding: 8px 20px;
+    min-height: 40px;
+    transition: background 0.15s ease;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+}
+
+.Tree-Row:hover {
+    background: var(--bg-hover);
+}
+
+.Tree-Row:hover .Tree-Row-actions {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Indentation levels */
+.tree-l0 {
+    padding-right: 20px;
+}
+
+.tree-l1 {
+    padding-right: 44px;
+}
+
+.tree-l2 {
+    padding-right: 68px;
+}
+
+.tree-l3 {
+    padding-right: 92px;
+}
+
+.tree-l4 {
+    padding-right: 116px;
+}
+
+.tree-l5 {
+    padding-right: 140px;
+}
+
+/* Toggle button */
+.Tree-Toggle {
+    width: 25px;
+    height: 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: var(--border);
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+    cursor: pointer;
+    margin-left: 10px;
+    flex-shrink: 0;
+    background: var(--bg-main);
+    user-select: none;
+}
+
+.Tree-Toggle:hover {
+    border-color: var(--text-sub);
+    background: var(--bg-hover);
+}
+
+.Tree-Toggle.leaf {
+    visibility: hidden;
+    pointer-events: none;
+    margin-left: 10px;
+}
+
+/* Folder icon */
+.tree-icon {
+    margin-left: 8px;
+    font-size: 15px;
+    flex-shrink: 0;
+    color: var(--accent-blue);
+}
+
+.tree-icon.folder {
+    color: #c9a227;
+}
+
+.tree-icon.file {
+    color: #999;
+    font-size: 13px;
+}
+
+[data-theme="dark"] .tree-icon.folder {
+    color: #e5c158;
+}
+
+[data-theme="dark"] .tree-icon.file {
+    color: #aaa;
+}
+
+/* Account name */
+.Tree-Name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.Tree-Name.root {
+    color: var(--accent-blue);
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.Tree-Name.main {
+    color: var(--text-main);
+    font-weight: 700;
+}
+
+.Tree-Name.sub {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.Tree-Name.detail {
+    color: var(--text-sub);
+    font-weight: 500;
+}
+
+/* Code badge - ON THE RIGHT like the image */
+.Tree-Code {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    padding: 3px 10px;
+    background: var(--bg-card);
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+    font-family: 'Courier New', monospace;
+    margin-right: 12px;
+    flex-shrink: 0;
+    border: var(--border);
+    letter-spacing: 0.5px;
+}
+
+/* Row actions - appear on hover */
+.Tree-Row-actions {
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s;
+    margin-right: 8px;
+}
+
+.Tree-Row-actions button {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 5px;
+    font-size: 11px;
+    border: none;
+    background: transparent;
+    color: var(--text-sub);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.Tree-Row-actions button:hover {
+    background: var(--bg-hover);
+}
+
+.Tree-Row-actions button.add:hover {
+    color: var(--accent-green);
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.Tree-Row-actions button.edit:hover {
+    color: var(--accent-blue);
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.Tree-Row-actions button.delete:hover {
+    color: var(--accent-red);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+/* Children container */
+.Tree-Children {
+    display: none;
+}
+
+.Tree-Children.expanded {
+    display: block;
+}
+
+/* Vertical line for tree structure */
+.Tree-Children.has-line {
+    position: relative;
+}
+
+.Tree-Children.has-line::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: #ddd;
+}
+
+[data-theme="dark"] .Tree-Children.has-line::before {
+    background: #444;
+}
+
+/* Type color indicators */
+.tree-type-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-left: 6px;
+    flex-shrink: 0;
+}
+
+.tree-type-dot.assets {
+    background: var(--accent-blue);
+}
+
+.tree-type-dot.liabilities {
+    background: var(--accent-red);
+}
+
+.tree-type-dot.equity {
+    background: var(--accent-purple);
+}
+
+.tree-type-dot.revenue {
+    background: var(--accent-green);
+}
+
+.tree-type-dot.expenses {
+    background: var(--accent-orange);
+}
+
+.loading-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    color: var(--text-secondary, #6b7280);
+    gap: 10px;
+    font-size: 14px;
+}
+
+.loading-spinner i {
+    font-size: 20px;
+    color: var(--primary-color, #3b82f6);
+}
+
+@media (max-width: 700px) {
+    .account-summary-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tree-l1 {
+        padding-right: 30px;
+    }
+
+    .tree-l2 {
+        padding-right: 50px;
+    }
+
+    .tree-l3 {
+        padding-right: 70px;
+    }
+
+    .tree-l4 {
+        padding-right: 90px;
+    }
+
+    .tree-l5 {
+        padding-right: 110px;
+    }
+}
+
+/* Selected row */
+.Tree-Row.selected {
+    background: rgba(16, 185, 129, 0.08) !important;
+}
+
+.Tree-Row.selected .tree-icon,
+.Tree-Row.selected .Tree-Name {
+    color: var(--accent-green);
+    font-weight: 700;
+}
