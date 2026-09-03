@@ -132,7 +132,7 @@ async function startServer() {
         // Don't crash the server if seeding fails
         catch (seedErr) { console.error("❌ Seed error:", seedErr.message); }
         // Start Express server
-        app.listen(PORT, () => { console.log(`🚀🚀 Server running at: http://localhost:${PORT}  🚀🚀`); });
+        module.exports = app;
 
     } catch (err) {
         console.error("❌ Failed to start server:", err.message);
