@@ -1,0 +1,8 @@
+اسم المستخدم
+accislam99_db_user
+
+كلمة المرور 
+ww3tWLpiyAVttvf4
+
+رابط الاتصال بقاعدة البيانات
+mongodb+srv://accislam99_db_user:ww3tWLpiyAVttvf4@cluster0.luixgho.mongodb.net/?appName=Cluster0
