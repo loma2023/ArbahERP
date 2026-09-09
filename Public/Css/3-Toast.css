@@ -1,0 +1,411 @@
+/* ============================================= */
+/* ArbahERP Toast Notification System v6         */
+/* Bottom-Left + RIGHT Border (RTL)              */
+/* Border color changes per type                 */
+/* ============================================= */
+
+.Arbah-Toast-Container {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    right: auto;
+    top: auto;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    pointer-events: none;
+    max-width: 380px;
+    width: 100%;
+    font-family: 'Cairo', sans-serif;
+}
+
+.Arbah-Toast-Item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+    border-right: 4px solid #e2e8f0;
+    /* Default gray border */
+    pointer-events: all;
+    overflow: hidden;
+    transform: translateX(-100px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    min-width: 300px;
+    direction: rtl;
+}
+
+.Arbah-Toast-Item.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.Arbah-Toast-Item.hide {
+    transform: translateX(-100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+/* ============================================= */
+/* Toast Types - RIGHT Border Color Only         */
+/* ============================================= */
+
+/* Success - Green Border */
+.Arbah-Toast-Item.confirm,
+.Arbah-Toast-Item.success {
+    border-right-color: #22c55e !important;
+    border-left: none !important;
+}
+
+.Arbah-Toast-Item.confirm .Arbah-Toast-Icon,
+.Arbah-Toast-Item.success .Arbah-Toast-Icon {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.Arbah-Toast-Item.success .Arbah-Toast-Progress-Bar {
+    background: #22c55e;
+}
+
+/* Error - Red Border */
+.Arbah-Toast-Item.error {
+    border-right-color: #ef4444 !important;
+    border-left: none !important;
+}
+
+.Arbah-Toast-Item.error .Arbah-Toast-Icon {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.Arbah-Toast-Item.error .Arbah-Toast-Progress-Bar {
+    background: #ef4444;
+}
+
+/* Warning - Orange Border */
+.Arbah-Toast-Item.warning {
+    border-right-color: #f59e0b !important;
+    border-left: none !important;
+}
+
+.Arbah-Toast-Item.warning .Arbah-Toast-Icon {
+    background: #fffbeb;
+    color: #d97706;
+}
+
+.Arbah-Toast-Item.warning .Arbah-Toast-Progress-Bar {
+    background: #f59e0b;
+}
+
+/* Info - Blue Border */
+.Arbah-Toast-Item.info {
+    border-right-color: #3b82f6 !important;
+    border-left: none !important;
+}
+
+.Arbah-Toast-Item.info .Arbah-Toast-Icon {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.Arbah-Toast-Item.info .Arbah-Toast-Progress-Bar {
+    background: #3b82f6;
+}
+
+/* ============================================= */
+/* Toast Icon                                      */
+/* ============================================= */
+
+.Arbah-Toast-Icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+}
+
+/* ============================================= */
+/* Toast Content                                   */
+/* ============================================= */
+
+.Arbah-Toast-Content {
+    flex: 1;
+    min-width: 0;
+    text-align: right;
+}
+
+.Arbah-Toast-Title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 2px;
+    line-height: 1.4;
+}
+
+.Arbah-Toast-Message {
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+/* ============================================= */
+/* Toast Button                              */
+/* ============================================= */
+.Arbah-Toast-Buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+
+
+/* ============================================= */
+/* Progress Bar                                    */
+/* ============================================= */
+
+.Arbah-Toast-Progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    overflow: hidden;
+    border-radius: 0 0 12px 0;
+}
+
+.Arbah-Toast-Progress-Bar {
+    height: 100%;
+    width: 100%;
+    transform-origin: left;
+    animation: toastProgress linear forwards;
+}
+
+@keyframes toastProgress {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
+}
+
+/* ============================================= */
+/* RTL Support - Border on RIGHT                 */
+/* ============================================= */
+
+[dir="rtl"] .Arbah-Toast-Container {
+    left: 24px;
+    right: auto;
+    bottom: 24px;
+    top: auto;
+}
+
+[dir="rtl"] .Arbah-Toast-Item {
+    border-right: 4px solid #e2e8f0;
+    border-left: none !important;
+    transform: translateX(-100px);
+    text-align: right;
+    direction: rtl;
+}
+
+[dir="rtl"] .Arbah-Toast-Item.success {
+    border-right-color: #22c55e !important;
+}
+
+[dir="rtl"] .Arbah-Toast-Item.error {
+    border-right-color: #ef4444 !important;
+}
+
+[dir="rtl"] .Arbah-Toast-Item.warning {
+    border-right-color: #f59e0b !important;
+}
+
+[dir="rtl"] .Arbah-Toast-Item.info {
+    border-right-color: #3b82f6 !important;
+}
+
+[dir="rtl"] .Arbah-Toast-Item.show {
+    transform: translateX(0);
+}
+
+[dir="rtl"] .Arbah-Toast-Item.hide {
+    transform: translateX(-100px);
+}
+
+[dir="rtl"] .Arbah-Toast-Progress-Bar {
+    transform-origin: left;
+}
+
+[dir="rtl"] .Arbah-Toast-Progress {
+    border-radius: 0 0 12px 0;
+}
+
+/* ============================================= */
+/* Dark Mode                                       */
+/* ============================================= */
+
+body.Dark-Mood .Arbah-Toast-Item {
+    background: #1e293b;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-right-color: #334155;
+}
+
+body.Dark-Mood .Arbah-Toast-Title {
+    color: #f1f5f9;
+}
+
+body.Dark-Mood .Arbah-Toast-Message {
+    color: #94a3b8;
+}
+
+.Arbah-Toast-Close {
+    border-radius: 50%;
+}
+
+body.Dark-Mood .Arbah-Toast-Close:hover {
+    background: #334155;
+    color: #e2e8f0;
+}
+
+body.Dark-Mood .Arbah-Toast-Item.success .Arbah-Toast-Icon {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+}
+
+body.Dark-Mood .Arbah-Toast-Item.error .Arbah-Toast-Icon {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+}
+
+body.Dark-Mood .Arbah-Toast-Item.warning .Arbah-Toast-Icon {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+}
+
+body.Dark-Mood .Arbah-Toast-Item.info .Arbah-Toast-Icon {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+}
+
+/* ============================================= */
+/* Responsive                                      */
+/* ============================================= */
+
+@media (max-width: 640px) {
+    .Arbah-Toast-Container {
+        bottom: 12px;
+        left: 12px;
+        right: 12px;
+        max-width: none;
+    }
+
+    .Arbah-Toast-Item {
+        min-width: auto;
+        padding: 12px 14px;
+    }
+
+    .Arbah-Toast-Icon {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+
+    .Arbah-Toast-Title {
+        font-size: 12px;
+    }
+
+    .Arbah-Toast-Message {
+        font-size: 11px;
+    }
+}
+
+/* ============================================= */
+/* Toast Action Button                             */
+/* ============================================= */
+
+.Arbah-Toast-Action {
+    margin-top: 8px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Cairo', sans-serif;
+}
+
+.Arbah-Toast-Item.success .Arbah-Toast-Action {
+    color: #16a34a;
+    background: #f0fdf4;
+}
+
+.Arbah-Toast-Item.error .Arbah-Toast-Action {
+    color: #dc2626;
+    background: #fef2f2;
+}
+
+.Arbah-Toast-Item.warning .Arbah-Toast-Action {
+    color: #d97706;
+    background: #fffbeb;
+}
+
+.Arbah-Toast-Item.info .Arbah-Toast-Action {
+    color: #2563eb;
+    background: #eff6ff;
+}
+
+body.Dark-Mood .Arbah-Toast-Item.success .Arbah-Toast-Action {
+    color: #4ade80;
+    background: rgba(34, 197, 94, 0.15);
+}
+
+body.Dark-Mood .Arbah-Toast-Item.error .Arbah-Toast-Action {
+    color: #f87171;
+    background: rgba(239, 68, 68, 0.15);
+}
+
+body.Dark-Mood .Arbah-Toast-Item.warning .Arbah-Toast-Action {
+    color: #fbbf24;
+    background: rgba(245, 158, 11, 0.15);
+}
+
+body.Dark-Mood .Arbah-Toast-Item.info .Arbah-Toast-Action {
+    color: #60a5fa;
+    background: rgba(59, 130, 246, 0.15);
+}
+
+.ConfirmPopup .PopUp-Window {
+    max-width: 450px;
+}
+
+.ConfirmPopup .PopUpWindow-Body {
+    text-align: center;
+    padding: 30px;
+}
+
+.ConfirmPopup .PopUpWindow-Body i {
+    font-size: 45px;
+    color: #fff;
+    margin-bottom: 15px;
+    background: var(--accent-red) !important;
+    border-radius: 50%;
+    padding: 22px;
+}
+
+.ConfirmPopup .PopUpWindow-Body p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+
+}

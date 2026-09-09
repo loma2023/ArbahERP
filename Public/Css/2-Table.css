@@ -1,0 +1,495 @@
+/* =============================================
+Desgin Table
+/* ========================================== */
+.Container-Table2,
+.Container-Table {
+  border: var(--border);
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.Container-Table {
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
+  padding: 8px;
+  border-radius: var(--radius-main);
+}
+
+.CashFlowColumn .Container-Table {
+  padding: 0px;
+}
+
+.Container-Table-Header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 1px 5px 10px;
+}
+
+.Container-Table-Header h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.Container-Table-Header h3 i {
+  padding: 5px;
+  color: var(--accent-green);
+}
+
+.Container-Table-Header a {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-blue);
+}
+
+.Container-AddItem {
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.Container-AddItem .xxxxxxx {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.Container-AddItem .Field {
+  width: 400px;
+  margin-bottom: 0;
+}
+
+.PriceType .Field {
+  width: 220px;
+}
+
+.Container-Table-Body {
+  width: 100%;
+  height: calc(100vh - 335px);
+  overflow-x: auto;
+  position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-clr) transparent;
+}
+
+.Form-Section-Table .Container-Table-Body {
+  height: 350px;
+}
+
+.Grand-Tables-Grid .Container-Table-Body {
+  height: auto !important;
+}
+
+.Container-Table-Receipt .Container-Table-Body {
+  height: 41vh;
+}
+
+.Container-PopUp-Window .Container-Table-Body {
+  max-height: 545px;
+}
+
+/*  */
+.Perfect-Table {
+  width: 100%;
+  text-align: right;
+  /* min-width: 700px; */
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.Perfect-Table thead {
+  background: var(--bg-main);
+  position: sticky;
+  top: 0px;
+  right: 0;
+  z-index: 997;
+}
+
+.Perfect-Table th {
+  padding: 12px;
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 600;
+  border-top: var(--border);
+  border-bottom: var(--border);
+}
+
+.Perfect-Table .th-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#PrintArea .Perfect-Table .item-code,
+.PopUp-Window-invoice .Perfect-Table .item-code {
+  margin-left: 2.5px;
+  border: .5px solid var(--border-clr);
+  padding: 1px 3px;
+  border-radius: 5px;
+  font-size: 9px;
+  font-weight: 400;
+}
+
+.Perfect-Table td {
+  padding: 7px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-sub);
+  border-bottom: var(--border);
+  vertical-align: middle;
+}
+
+.Perfect-Table tbody tr:hover {
+  background: var(--bg-hover);
+}
+
+.Container-PopUp-Window .Perfect-Table th,
+.Container-PopUp-Window .Perfect-Table td {
+  cursor: pointer;
+}
+
+.Container-PopUp-Window .Perfect-Table tbody tr.selected {
+  background: rgba(16, 185, 129, 0.2);
+}
+
+.Perfect-Table input {
+  height: 32px;
+  padding: 0 5px;
+  text-align: center;
+  border: var(--border);
+  background: var(--bg-card);
+  color: var(--text-main);
+  width: 100%;
+}
+
+.Form-Section-Table .Perfect-Table select,
+.Form-Section-Table .Perfect-Table input {
+  width: 100%;
+  height: 40px;
+  padding: 0 40px 0 14px;
+  border-radius: 5px;
+  border: var(--border);
+  background: none;
+  color: var(--text-main);
+  outline: none;
+  font-size: 13px;
+  text-align: start;
+}
+
+.Perfect-Table input:focus {
+  border-color: var(--accent-green);
+}
+
+input[type="number"] {
+  padding-left: 0 !important;
+}
+
+.Perfect-Table input[type="number"]::-webkit-outer-spin-button,
+.Perfect-Table input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.Form-Section-Table .Perfect-Table th,
+.Form-Section-Table .Perfect-Table td {
+  padding: 12px 4px !important;
+}
+
+.Form-Section-Table .Perfect-Table td {
+  padding: 5px 3px !important;
+}
+
+/* =============================================
+Desgin  → Avatar in Table
+/* ========================================== */
+.Name-Cell i {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.Name-Cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.Name-Cell-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+.Name-Cell-info .name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.Name-Cell-info .code {
+  font-size: 11px;
+  color: var(--text-sub);
+  font-family: monospace;
+}
+
+.fa-spin {
+  font-size: 2rem;
+  color: var(--accent-blue);
+}
+
+
+/* =============================================
+Desgin  → Container-Table-Footer
+/* ========================================== */
+.Container-Table-Footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-top: 15px; */
+  padding: 10px 50px;
+  padding-bottom: 0;
+  border-top: 1px dashed var(--border-clr);
+  font-size: 13px;
+  color: var(--text-sub);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.Pagination-Pages {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.Table-Page-Btn {
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text-sub);
+  user-select: none;
+  font-size: 13px;
+  font-weight: 800;
+  border: var(--border);
+}
+
+.Table-Page-Btn.active {
+  background: var(--accent-green);
+  color: #fff;
+}
+
+.Table-Page-Btn:hover:not(.active) {
+  color: var(--text-main);
+  background: var(--bg-hover);
+}
+
+.Table-Page-Btn.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.action-menu-container {
+  position: relative;
+  display: inline-block;
+}
+
+.Action-Row-Btn {
+  height: 32px;
+  width: 32px;
+  padding: 0;
+  background: none;
+  color: var(--text-sub);
+  cursor: pointer;
+  font-size: 15px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unit-badge,
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.unit-badge {
+  margin: 0 2px;
+}
+
+tr.OpenBalance {
+  background: var(--bg-hover);
+}
+
+/* =============================================
+Desgin Advanced-Filter # Table
+/* ========================================== */
+.Advanced-Filter-Dropdown {
+  position: absolute;
+  background: var(--bg-card);
+  border: var(--border);
+  width: 275px;
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1002;
+  border-radius: var(--radius-main);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+
+.Filter-Option-Item {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  font-size: 13px;
+  color: var(--text-main);
+  cursor: pointer;
+  /* border-radius: 5px; */
+}
+
+.check-item:hover,
+.Filter-Option-Item:hover {
+  background: var(--bg-hover);
+}
+
+.Filter-Option-Item i {
+  width: 15px;
+  color: var(--accent-blue);
+}
+
+.Separator {
+  height: 1px;
+  background: var(--border-clr);
+  margin: 3px 0;
+}
+
+.NotFound {
+  text-align: center;
+  padding: 30px;
+  padding: 15px;
+  text-align: center;
+  color: var(--text-sub);
+}
+
+.Filter-Search-input-box {
+  margin: 7px 5px;
+}
+
+.Filter-Checkboxes-list {
+  border-top: var(--border);
+  margin-top: 5px;
+  max-height: 220px;
+  overflow: auto;
+  padding: 5px 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-clr) transparent;
+}
+
+.Filter-Checkbox-Item {
+  padding: 6px 12px;
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.Filter-Checkbox-Item:hover {
+  cursor: pointer;
+  background: var(--bg-hover);
+}
+
+input[type="checkbox"],
+.check-item input {
+  accent-color: var(--accent-green);
+  width: 15px;
+  height: 15px;
+  transition: none !important;
+  animation: none !important;
+  box-shadow: none !important;
+}
+
+.Filter-Action-Footer {
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  border-top: var(--border);
+}
+
+
+/*  التدفقات القدية*/
+.CashFlowColumn {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+}
+
+
+.CenterColumn .Container-Table:last-child {
+  margin-top: 5px;
+}
+
+.cf-section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-main);
+}
+
+.cf-section-header .icon {
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.cf-section-header h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.cf-section-header .amount {
+  margin-right: auto;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.total-row td {
+  font-weight: 700;
+  background: var(--bg-hover);
+  border-top: 2px solid var(--border-clr);
+}
+
+.Category-Row td {
+  font-weight: 700;
+  background: rgba(16, 185, 129, 0.04);
+  border-top: 2px solid var(--border-clr);
+}
+
+.Grand-total-row td {
+  border-top: 3px solid var(--accent-green);
+  border-bottom: 3px solid var(--accent-green);
+  background: rgba(16, 185, 129, 0.08);
+  color: var(--accent-green);
+}

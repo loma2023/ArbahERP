@@ -1,0 +1,733 @@
+/* =============================================
+Container-PopUp-Window
+/* ========================================== */
+.Container-PopUp-Window {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(0px);
+  display: none;
+  z-index: 1001;
+  align-items: center;
+  justify-content: center;
+}
+
+.Container-PopUp-Window.active {
+  display: flex;
+}
+
+/* =============================================
+PopUp-Window
+/* ========================================== */
+.PopUp-Window {
+  position: absolute;
+  width: 100%;
+  max-width: 800px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 2px solid var(--border-clr);
+  border-radius: var(--radius-main);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  z-index: 1002;
+}
+
+.PopUp-Window-invoice {
+  max-width: 1000px;
+  max-height: 97vh;
+}
+
+.PopUp-Window.centered {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* لما يتسحب - نشيل transform */
+.PopUp-Window.dragged {
+  top: auto;
+  left: auto;
+  transform: none;
+}
+
+/* =============================================
+PopUpWindow-Header
+/* ========================================== */
+.PopUpWindow-Header {
+  flex-shrink: 0;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(310deg, var(--accent-green), #189c72);
+  border-bottom: none;
+  cursor: grab;
+  user-select: none;
+  color: white;
+}
+
+.PopUpWindow-Header:active {
+  cursor: grabbing;
+}
+
+.PopUpWindow-Header.dragging {
+  cursor: grabbing;
+}
+
+.PopUpWindow-Title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.PopUpWindow-Title h3 {
+  margin: 0;
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.PopUpWindow-Title p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+}
+
+.PopUpWindow-CloseBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  border: var(--border);
+  color: white;
+  cursor: pointer;
+}
+
+.PopUpWindow-CloseBtn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* =============================================
+PopUpWindow-Body
+/* ========================================== */
+.PopUpWindow-Body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: visible;
+  padding: 20px;
+  position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-clr) transparent;
+  background: var(--bg-main);
+
+}
+
+/* =============================================
+PopUpWindow-Footer
+/* ========================================== */
+.PopUpWindow-Footer {
+  flex-shrink: 0;
+  padding: 14px 20px;
+  display: flex;
+  gap: 8px;
+  border-top: var(--border);
+  background: var(--bg-card);
+  justify-content: flex-end;
+}
+
+/* =============================================
+Search-Box في Popup
+/* ========================================== */
+.Container-PopUp-Window .Search-Box {
+  margin-bottom: 15px;
+}
+
+.Container-PopUp-Window .Search-Box .input input {
+  height: 45px;
+  font-size: 14px;
+}
+
+.Container-PopUp-Window .Search-Box .input i {
+  height: 45px;
+}
+
+/* =============================================
+Form-Section
+/* ========================================== */
+.Form-Section {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: var(--border);
+}
+
+.Form-Section h4 {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--text-sub);
+}
+
+.Details-Receipt-Column-Grid,
+.Form-Section .grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+
+/* =============================================
+ تصميم تفاصيل سند 
+/* ========================================== */
+/* ===== HEADER ===== */
+.LetterHead {
+  color: var(--text-main);
+  padding: 5px 10px;
+  border-bottom: 2px solid var(--accent-green);
+  margin-bottom: 5px;
+  border: var(--border);
+  border-radius: var(--radius-main);
+}
+
+.LetterHead-Content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.Company-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.Company-Logo {
+  flex-shrink: 0;
+}
+
+.Company-Logo img {
+  width: 80px;
+  height: 80px;
+}
+
+.Company-info-Details h1 {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 1px;
+}
+
+.Company-info-Details p {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-sub);
+  line-height: 1.5;
+}
+
+.Company-info-Details-EN * {
+  direction: ltr;
+}
+
+.voucher-amount-section {
+  border: var(--border);
+  border-radius: 8px;
+  padding: 12px 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.voucher-amount-words {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-top: 4px;
+}
+
+.voucher-amount-label {
+  font-size: 12px;
+  color: var(--text-sub);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.voucher-amount-value {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 4px;
+  color: var(--accent-green);
+}
+
+.voucher-info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  margin: 10px 0;
+}
+
+.voucher-info-grid.Grid-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.Form-Section .grid.Grid-3,
+.voucher-info-grid.Grid-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.Form-Section .grid.Grid-4,
+.voucher-info-grid.Grid-4 {
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.voucher-info-card {
+  border: var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.voucher-info-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+  border: var(--border);
+}
+
+.voucher-info-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.voucher-info-label {
+  font-size: 12px;
+  color: var(--text-sub);
+  margin-bottom: 1px;
+  font-weight: 600;
+}
+
+.voucher-info-value {
+  font-size: 14px;
+  color: var(--text-main);
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.voucher-notes-section {
+  border: var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+
+.voucher-notes-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.voucher-notes-text {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.5;
+  padding: 6px 8px;
+  border-radius: 4px;
+  min-height: 36px;
+}
+
+.voucher-signature-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 120px;
+  margin-bottom: 10px;
+  padding-top: 10px;
+}
+
+.voucher-signature-box {
+  text-align: center;
+}
+
+.voucher-signature-line {
+  border-bottom: var(--border);
+  padding-bottom: 20px;
+  margin-bottom: 4px;
+}
+
+.voucher-signature-label {
+  font-size: 12px;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.Watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 60px;
+  font-weight: 900;
+  opacity: 0.025;
+  pointer-events: none;
+  color: #1e293b;
+  white-space: nowrap;
+  z-index: 1001;
+}
+
+.Title-Voucher {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 15px;
+}
+
+/* =============================================
+تصميم القيود
+/* ========================================== */
+.entry-totals-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--bg-main);
+  border-radius: 8px;
+  margin-top: 12px;
+  border: var(--border);
+}
+
+.entry-totals-bar .total-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.entry-totals-bar .total-item .label {
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+.entry-totals-bar .total-item .value {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.entry-totals-bar .total-item .value.debit {
+  color: var(--accent-blue);
+}
+
+.entry-totals-bar .total-item .value.credit {
+  color: var(--accent-red);
+}
+
+.entry-totals-bar .total-item .value.diff {
+  color: var(--accent-orange);
+}
+
+.entry-totals-bar .total-item .value.balanced {
+  color: var(--accent-green);
+}
+
+.entry-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.entry-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.entry-detail-item .label {
+  font-size: 12px;
+  color: var(--text-sub);
+  font-weight: 500;
+}
+
+.entry-detail-item .value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+
+.debit-amount {
+  color: var(--accent-blue);
+  font-weight: 700;
+}
+
+.credit-amount {
+  color: var(--accent-red);
+  font-weight: 700;
+}
+
+
+/* =============================================
+قائمة SelectOption
+/* ========================================== */
+.SelectOptionDropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--bg-card);
+  border: var(--border);
+  border-radius: 0 0 8px 8px;
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.171);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-clr) transparent;
+  animation: slideDown 0.2s ease;
+}
+
+.SelectOptionDropdown.active {
+  display: block;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.SelectOption-Item {
+  cursor: pointer;
+  border-bottom: var(--border);
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+}
+
+.SelectOption-Item.empty {
+  justify-content: start;
+  gap: 10px;
+}
+
+.SelectOption-Item-Balance {
+  font-size: 12px;
+  color: var(--accent-green);
+  font-weight: 600;
+}
+
+.SelectOption-Item:last-child {
+  border-bottom: none;
+}
+
+.SelectOption-Item .Name-Cell .name {
+  margin-bottom: 3px;
+  color: var(--text-main);
+}
+
+.SelectOption-Item .Name-Cell i {
+  width: 35px;
+  height: 35px;
+  font-size: 14px;
+}
+
+/* نفس لون الـ hover لما تنزل بالسهم */
+.SelectOption-Item:hover,
+.SelectOption-Item.keyboard-active,
+.SelectOption-Item.active {
+  background-color: var(--bg-hover);
+  cursor: pointer;
+}
+
+
+/* =============================================
+تفاصيل الفاتورة 
+/* ========================================== */
+.parties-section {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr 0.6fr;
+  gap: 10px;
+  padding: 5px 0;
+}
+
+.party-card {
+  border-radius: 6px;
+  padding: 3px 8px;
+  border: var(--border);
+}
+
+.party-card .card-header-xxxx {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+  padding: 2px;
+  border-bottom: 2px solid var(--border-clr);
+}
+
+.party-card .card-header-xxxx i {
+  width: 20px;
+  height: 20px;
+  background: var(--accent-green);
+  color: white;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+}
+
+.party-card .card-header-xxxx h4 {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-sub);
+}
+
+.party-card .party-details {
+  font-size: 10px;
+  color: var(--text-sub);
+  line-height: 1.6;
+}
+
+.party-details div {
+  display: flex;
+}
+
+.party-details div p:first-child {
+  width: 75px;
+  display: flex;
+  align-items: center;
+}
+
+.NameCustomer {
+  font-size: 13px;
+  font-weight: 700;
+  color: #059669;
+}
+
+.party-card #QRCode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== BOTTOM SECTION ===== */
+.bottom-section {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  align-items: end;
+  gap: 10px;
+  padding: 7px 0;
+}
+
+.totals-card {
+  border-radius: 6px;
+  padding: 5px 12px;
+  border: var(--border);
+}
+
+.totals-card .total-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--border-clr);
+}
+
+.totals-card .total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 0;
+  border-bottom: var(--border);
+  font-size: 10px;
+}
+
+.totals-card .total-row .label {
+  color: var(--text-sub);
+  font-weight: 600;
+  font-size: 9px;
+}
+
+.totals-card .total-row .value {
+  font-weight: 700;
+  color: var(--text-sub);
+}
+
+.totals-card .PaymentStatus {
+  border: none;
+}
+
+.totals-card .total-row.grand-total .label,
+.totals-card .total-row.grand-total .value {
+  color: var(--text-main);
+  font-size: 12px;
+  /* font-weight: 700; */
+}
+
+
+/* ===== SIGNATURES ===== */
+.signature-box {
+  text-align: center;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.signature-line {
+  border-bottom: 2px solid var(--border-clr);
+  padding-bottom: 20px;
+  margin-bottom: 6px;
+  opacity: 0.2;
+}
+
+.signature-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--gray);
+}
+
+/* ===== FOOTER ===== */
+.LetterFoot {
+  padding: 8px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9px;
+  color: var(--text-sub);
+  border-top: var(--border);
+  margin-top: 30px;
+}
+
+.LetterFoot-Invoices {
+  margin-top: 0 !important;
+}
+
+.Footer-Pages {
+  font-weight: 600;
+}
