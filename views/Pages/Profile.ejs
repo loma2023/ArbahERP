@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+
+    <div class="WorkSpace">
+      <%- include('../Partials/header') %>
+
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2>☻ الملف الشخصي</h2>
+            <p>إدارة بياناتك الشخصية والأمان والإعدادات</p>
+          </div>
+
+          <div class="profile-stats-row">
+            <div class="profile-stat-card">
+              <div class="profile-stat-icon green"><i class="fa-solid fa-file-invoice"></i></div>
+              <div class="profile-stat-info">
+                <span class="profile-stat-value">1,248</span>
+                <span class="profile-stat-label">فاتورة تم إنشاؤها</span>
+              </div>
+            </div>
+            <div class="profile-stat-card">
+              <div class="profile-stat-icon blue"><i class="fa-solid fa-users"></i></div>
+              <div class="profile-stat-info">
+                <span class="profile-stat-value">342</span>
+                <span class="profile-stat-label">عميل تم إدارته</span>
+              </div>
+            </div>
+            <div class="profile-stat-card">
+              <div class="profile-stat-icon orange"><i class="fa-solid fa-clock"></i></div>
+              <div class="profile-stat-info">
+                <span class="profile-stat-value">156</span>
+                <span class="profile-stat-label">ساعة عمل هذا الشهر</span>
+              </div>
+            </div>
+            <div class="profile-stat-card">
+              <div class="profile-stat-icon purple"><i class="fa-solid fa-calendar-check"></i></div>
+              <div class="profile-stat-info">
+                <span class="profile-stat-value">23</span>
+                <span class="profile-stat-label">يوماً منذ الانضمام</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-layout">
+            <!-- Sidebar -->
+            <div class="profile-sidebar-card">
+              <div class="profile-avatar-wrapper">
+                <img src="/Img/UserImg.jpeg" alt="Profile" class="profile-avatar" id="ProfileAvatar">
+                <div class="profile-avatar-edit" onclick="changeAvatar()" title="تغيير الصورة">
+                  <i class="fa-solid fa-camera"></i>
+                </div>
+              </div>
+              <div class="profile-sidebar-info">
+                <div class="profile-name" id="ProfileDisplayName">أحمد محمد</div>
+                <div class="profile-role"><i class="fa-solid fa-shield-halved"></i> مدير النظام</div>
+                <div class="profile-email" id="ProfileDisplayEmail">ahmed@arbah-erp.com</div>
+                <div class="profile-status-row">
+                  <div class="profile-status-dot"></div>
+                  <span class="profile-status-text">متصل الآن</span>
+                </div>
+              </div>
+              <div class="profile-sidebar-actions">
+                <button class="profile-sidebar-btn primary" onclick="saveProfile()"><i
+                    class="fa-solid fa-floppy-disk"></i>
+                  حفظ التغييرات</button>
+                <button class="profile-sidebar-btn" onclick="printProfile()"><i class="fa-solid fa-print"></i>
+                  طباعة البيانات</button>
+                <button class="profile-sidebar-btn danger" onclick="logout()"><i
+                    class="fa-solid fa-right-from-bracket"></i>
+                  تسجيل الخروج</button>
+              </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="profile-content-card">
+              <!-- Tabs -->
+              <div class="profile-tabs-header">
+                <button class="profile-tab-btn active" onclick="switchTab(this, 'tab-info')">
+                  <i class="fa-regular fa-id-card"></i> البيانات الشخصية
+                </button>
+                <button class="profile-tab-btn" onclick="switchTab(this, 'tab-security')">
+                  <i class="fa-solid fa-shield-halved"></i> الأمان
+                </button>
+                <button class="profile-tab-btn" onclick="switchTab(this, 'tab-activity')">
+                  <i class="fa-solid fa-clock-rotate-left"></i> النشاط
+                </button>
+                <button class="profile-tab-btn" onclick="switchTab(this, 'tab-notifications')">
+                  <i class="fa-regular fa-bell"></i> الإشعارات
+                </button>
+              </div>
+
+              <!-- Tab: Personal Info -->
+              <div class="profile-tab-content active" id="tab-info">
+                <div class="profile-section-title"><i class="fa-solid fa-user"></i> البيانات الأساسية</div>
+                <div class="profile-form-grid">
+                  <div class="Field">
+                    <label>الاسم الكامل</label>
+                    <div class="input">
+                      <input type="text" id="FullName" value="أحمد محمد عبدالله">
+                      <i class="fa fa-user"></i>
+                    </div>
+                  </div>
+                  <div class="Field">
+                    <label>اسم المستخدم</label>
+                    <div class="input">
+                      <input type="text" id="Username" value="ahmed.mohammed">
+                      <i class="fa fa-at"></i>
+                    </div>
+                  </div>
+                  <div class="Field">
+                    <label>البريد الإلكتروني</label>
+                    <div class="input">
+                      <input type="email" id="Email" value="ahmed@arbah-erp.com">
+                      <i class="fa fa-envelope"></i>
+                    </div>
+                  </div>
+                  <div class="Field">
+                    <label>رقم الهاتف</label>
+                    <div class="input">
+                      <input type="text" id="Phone" value="0501234567">
+                      <i class="fa fa-phone"></i>
+                    </div>
+                  </div>
+                  <div class="Field">
+                    <label>الدور الوظيفي</label>
+                    <div class="input SelectInput">
+                      <select id="Role">
+                        <option value="admin" selected="">مدير النظام</option>
+                        <option value="accountant">محاسب</option>
+                        <option value="sales">مندوب مبيعات</option>
+                        <option value="viewer">مشاهد فقط</option>
+                      </select>
+                      <i class="fa fa-user-shield"></i>
+                    </div>
+                  </div>
+                  <div class="Field">
+                    <label>القسم</label>
+                    <div class="input SelectInput">
+                      <select id="Department">
+                        <option value="management" selected="">الإدارة العليا</option>
+                        <option value="finance">المالية</option>
+                        <option value="sales">المبيعات</option>
+                        <option value="inventory">المخزون</option>
+                      </select>
+                      <i class="fa fa-building"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="profile-section-title"><i class="fa-solid fa-location-dot"></i> العنوان</div>
+                <div class="profile-form-grid">
+                  <div class="Field">
+                    <label>المدينة</label>
+                    <div class="input">
+                      <input type="text" id="City" value="الرياض">
+                      <i class="fa fa-city"></i>
+                    </div>
+                  </div>
+                  <div class="Field">
+                    <label>الحي / المنطقة</label>
+                    <div class="input">
+                      <input type="text" id="District" value="حي العليا">
+                      <i class="fa fa-map"></i>
+                    </div>
+                  </div>
+                  <div class="Field profile-full-width">
+                    <label>العنوان التفصيلي</label>
+                    <div class="input">
+                      <textarea id="FullAddress"
+                        placeholder="أدخل العنوان التفصيلي...">شارع التحلية، برج المملكة، الطابق 25</textarea>
+                      <i class="fa fa-location-dot icon-area"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="profile-section-title"><i class="fa-solid fa-pen"></i> نبذة شخصية</div>
+                <div class="profile-form-grid">
+                  <div class="Field profile-full-width">
+                    <div class="input">
+                      <textarea id="Bio"
+                        placeholder="اكتب نبذة قصيرة عنك...">مدير نظام ArbahERP مع خبرة 5 سنوات في إدارة الأنظمة المحاسبية والمخزونية.</textarea>
+                      <i class="fa fa-pen icon-area"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="profile-actions-footer">
+                  <button class="btn-reset-profile" onclick="resetProfile()"><i class="fa-solid fa-rotate-left"></i>
+                    إعادة
+                    تعيين</button>
+                  <button class="btn-save-profile" onclick="saveProfile()"><i class="fa-solid fa-floppy-disk"></i> حفظ
+                    التغييرات</button>
+                </div>
+              </div>
+
+              <!-- Tab: Security -->
+              <div class="profile-tab-content" id="tab-security">
+                <div class="profile-section-title"><i class="fa-solid fa-lock"></i> كلمة المرور</div>
+                <div class="profile-form-grid">
+                  <div class="Field">
+                    <label>كلمة المرور الحالية</label>
+                    <div class="input">
+                      <input type="password" id="CurrentPassword" placeholder="••••••••">
+                      <i class="fa fa-lock"></i>
+                    </div>
+                  </div>
+                  <div class="Field">
+                    <label>كلمة المرور الجديدة</label>
+                    <div class="input">
+                      <input type="password" id="NewPassword" placeholder="••••••••">
+                      <i class="fa fa-key"></i>
+                    </div>
+                  </div>
+                  <div class="Field">
+                    <label>تأكيد كلمة المرور الجديدة</label>
+                    <div class="input">
+                      <input type="password" id="ConfirmPassword" placeholder="••••••••">
+                      <i class="fa fa-check-double"></i>
+                    </div>
+                  </div>
+                  <div class="Field">
+                    <label style="visibility: hidden;">زر</label>
+                    <button class="btn-save-profile" style="width: 100%;" onclick="changePassword()"><i
+                        class="fa-solid fa-rotate"></i> تغيير كلمة المرور</button>
+                  </div>
+                </div>
+
+                <div class="profile-section-title"><i class="fa-solid fa-shield-halved"></i> إعدادات الأمان
+                </div>
+                <div class="security-item">
+                  <div class="security-info">
+                    <div class="security-icon green"><i class="fa-solid fa-mobile-screen"></i></div>
+                    <div class="security-text">
+                      <div class="security-title">المصادقة الثنائية (2FA)</div>
+                      <div class="security-desc">تفعيل رمز التحقق عبر تطبيق Google Authenticator</div>
+                    </div>
+                  </div>
+                  <button class="security-action" onclick="toggle2FA()"><i class="fa-solid fa-toggle-on"></i>
+                    مفعل</button>
+                </div>
+                <div class="security-item">
+                  <div class="security-info">
+                    <div class="security-icon blue"><i class="fa-solid fa-fingerprint"></i></div>
+                    <div class="security-text">
+                      <div class="security-title">تسجيل الدخول البيومتري</div>
+                      <div class="security-desc">استخدام البصمة أو Face ID لتسجيل الدخول</div>
+                    </div>
+                  </div>
+                  <button class="security-action" onclick="toggleBiometric()"><i class="fa-solid fa-toggle-off"></i>
+                    معطل</button>
+                </div>
+                <div class="security-item">
+                  <div class="security-info">
+                    <div class="security-icon orange"><i class="fa-solid fa-clock"></i></div>
+                    <div class="security-text">
+                      <div class="security-title">مهلة الجلسة</div>
+                      <div class="security-desc">تسجيل الخروج تلقائياً بعد 30 دقيقة من عدم النشاط</div>
+                    </div>
+                  </div>
+                  <button class="security-action" onclick="changeSessionTimeout()"><i class="fa-solid fa-pen"></i>
+                    تعديل</button>
+                </div>
+                <div class="security-item">
+                  <div class="security-info">
+                    <div class="security-icon red"><i class="fa-solid fa-key"></i></div>
+                    <div class="security-text">
+                      <div class="security-title">مفاتيح API</div>
+                      <div class="security-desc">إدارة مفاتيح الوصول للتكامل مع الأنظمة الخارجية</div>
+                    </div>
+                  </div>
+                  <button class="security-action" onclick="manageAPIKeys()"><i class="fa-solid fa-gear"></i>
+                    إدارة</button>
+                </div>
+
+                <div class="profile-section-title"><i class="fa-solid fa-desktop"></i> الجلسات النشطة</div>
+                <div class="session-item">
+                  <div class="session-info">
+                    <div class="session-icon"><i class="fa-solid fa-desktop"></i></div>
+                    <div class="session-details">
+                      <div class="session-device">Chrome على Windows</div>
+                      <div class="session-meta">الرياض، السعودية · IP: 192.168.1.105</div>
+                    </div>
+                  </div>
+                  <div class="session-actions">
+                    <span class="session-badge current">الجلسة الحالية</span>
+                  </div>
+                </div>
+                <div class="session-item">
+                  <div class="session-info">
+                    <div class="session-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+                    <div class="session-details">
+                      <div class="session-device">Safari على iPhone</div>
+                      <div class="session-meta">جدة، السعودية · IP: 192.168.1.210 · منذ 2 ساعة</div>
+                    </div>
+                  </div>
+                  <div class="session-actions">
+                    <span class="session-badge other">نشط</span>
+                    <button class="session-logout-btn" onclick="logoutSession(this)"><i class="fa-solid fa-xmark"></i>
+                      إنهاء</button>
+                  </div>
+                </div>
+                <div class="session-item">
+                  <div class="session-info">
+                    <div class="session-icon"><i class="fa-solid fa-tablet-screen-button"></i></div>
+                    <div class="session-details">
+                      <div class="session-device">Edge على Android</div>
+                      <div class="session-meta">الدمام، السعودية · IP: 192.168.1.88 · منذ يوم</div>
+                    </div>
+                  </div>
+                  <div class="session-actions">
+                    <span class="session-badge other">نشط</span>
+                    <button class="session-logout-btn" onclick="logoutSession(this)"><i class="fa-solid fa-xmark"></i>
+                      إنهاء</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab: Activity -->
+              <div class="profile-tab-content" id="tab-activity">
+                <div class="profile-section-title"><i class="fa-solid fa-clock-rotate-left"></i> سجل النشاط
+                </div>
+                <div class="activity-timeline">
+                  <div class="activity-item">
+                    <div class="activity-dot green"></div>
+                    <div class="activity-content">
+                      <div class="activity-header">
+                        <span class="activity-title">تسجيل دخول ناجح</span>
+                        <span class="activity-time">منذ 5 دقائق</span>
+                      </div>
+                      <div class="activity-desc">تم تسجيل الدخول من Chrome على Windows · IP: 192.168.1.105
+                      </div>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-dot blue"></div>
+                    <div class="activity-content">
+                      <div class="activity-header">
+                        <span class="activity-title">إنشاء فاتورة مبيعات</span>
+                        <span class="activity-time">منذ 30 دقيقة</span>
+                      </div>
+                      <div class="activity-desc">تم إنشاء فاتورة مبيعات رقم SAL-0042 بقيمة 12,500 ر.س
+                        للعميل اسلام عبدالرحمن</div>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-dot blue"></div>
+                    <div class="activity-content">
+                      <div class="activity-header">
+                        <span class="activity-title">تحديث بيانات عميل</span>
+                        <span class="activity-time">منذ ساعة</span>
+                      </div>
+                      <div class="activity-desc">تم تعديل بيانات العميل محمد العبد · تحديث رقم الهاتف وحد
+                        الائتمان</div>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-dot orange"></div>
+                    <div class="activity-content">
+                      <div class="activity-header">
+                        <span class="activity-title">تصدير تقرير</span>
+                        <span class="activity-time">منذ 3 ساعات</span>
+                      </div>
+                      <div class="activity-desc">تم تصدير تقرير المبيعات الشهري إلى Excel · يونيو 2026
+                      </div>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-dot red"></div>
+                    <div class="activity-content">
+                      <div class="activity-header">
+                        <span class="activity-title">محاولة تسجيل دخول فاشلة</span>
+                        <span class="activity-time">منذ 5 ساعات</span>
+                      </div>
+                      <div class="activity-desc">محاولة تسجيل دخول بكلمة مرور خاطئة · IP: 203.45.12.88 ·
+                        تم حظر مؤقت</div>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-dot green"></div>
+                    <div class="activity-content">
+                      <div class="activity-header">
+                        <span class="activity-title">تغيير كلمة المرور</span>
+                        <span class="activity-time">منذ يومين</span>
+                      </div>
+                      <div class="activity-desc">تم تغيير كلمة المرور بنجاح · IP: 192.168.1.105</div>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-dot blue"></div>
+                    <div class="activity-content">
+                      <div class="activity-header">
+                        <span class="activity-title">إضافة صنف جديد</span>
+                        <span class="activity-time">منذ 3 أيام</span>
+                      </div>
+                      <div class="activity-desc">تم إضافة صنف "SSD Samsung 1TB" إلى المخزون · كود: ITM-021
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab: Notifications -->
+              <div class="profile-tab-content" id="tab-notifications">
+                <div class="profile-section-title"><i class="fa-solid fa-bell"></i> إعدادات الإشعارات</div>
+                <div class="notif-setting-row">
+                  <div class="notif-setting-info">
+                    <div class="notif-setting-title">إشعارات المبيعات</div>
+                    <div class="notif-setting-desc">إشعار عند إنشاء فاتورة مبيعات جديدة</div>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" checked="">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="notif-setting-row">
+                  <div class="notif-setting-info">
+                    <div class="notif-setting-title">إشعارات المخزون</div>
+                    <div class="notif-setting-desc">تنبيه عند انخفاض المخزون عن الحد الأدنى</div>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" checked="">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="notif-setting-row">
+                  <div class="notif-setting-info">
+                    <div class="notif-setting-title">إشعارات العملاء</div>
+                    <div class="notif-setting-desc">تنبيه عند تجاوز العميل حد الائتمان</div>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" checked="">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="notif-setting-row">
+                  <div class="notif-setting-info">
+                    <div class="notif-setting-title">إشعارات النظام</div>
+                    <div class="notif-setting-desc">تحديثات النظام والصيانة الدورية</div>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="notif-setting-row">
+                  <div class="notif-setting-info">
+                    <div class="notif-setting-title">إشعارات البريد الإلكتروني</div>
+                    <div class="notif-setting-desc">إرسال نسخة من الإشعارات إلى بريدك الإلكتروني</div>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" checked="">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="notif-setting-row">
+                  <div class="notif-setting-info">
+                    <div class="notif-setting-title">إشعارات SMS</div>
+                    <div class="notif-setting-desc">إرسال إشعارات عبر الرسائل النصية للتنبيهات المهمة</div>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+
+                <div class="profile-section-title" style="margin-top: 24px;"><i class="fa-solid fa-clock"></i>
+                  أوقات عدم الإزعاج</div>
+                <div class="profile-form-grid">
+                  <div class="Field">
+                    <label>من</label>
+                    <div class="input">
+                      <input type="time" id="QuietFrom" value="22:00">
+                      <i class="fa fa-clock"></i>
+                    </div>
+                  </div>
+                  <div class="Field">
+                    <label>إلى</label>
+                    <div class="input">
+                      <input type="time" id="QuietTo" value="07:00">
+                      <i class="fa fa-clock"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="profile-actions-footer">
+                  <button class="btn-reset-profile" onclick="resetNotifications()"><i
+                      class="fa-solid fa-rotate-left"></i>
+                    إعادة تعيين</button>
+                  <button class="btn-save-profile" onclick="saveNotifications()"><i class="fa-solid fa-floppy-disk"></i>
+                    حفظ
+                    الإعدادات</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </main>
+    </div>
+
+
+    <%- include('../Partials/filter') %>
+      <%- include('../Partials/scripts') %>
+
+        <script>
+          // ===== Tab Switching =====
+          function switchTab(btn, tabId) {
+            // Remove active from all tabs
+            document.querySelectorAll('.profile-tab-btn').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.profile-tab-content').forEach(c => c.classList.remove('active'));
+
+            // Activate clicked tab
+            btn.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+          }
+
+          // ===== Profile Actions =====
+          function saveProfile() {
+            const name = document.getElementById('FullName').value;
+            const email = document.getElementById('Email').value;
+
+            // Update display
+            document.getElementById('ProfileDisplayName').textContent = name;
+            document.getElementById('ProfileDisplayEmail').textContent = email;
+
+            alert('تم حفظ البيانات بنجاح! ✅');
+          }
+
+          function resetProfile() {
+            if (confirm('هل أنت متأكد من إعادة تعيين جميع التغييرات؟')) {
+              document.getElementById('FullName').value = 'أحمد محمد عبدالله';
+              document.getElementById('Username').value = 'ahmed.mohammed';
+              document.getElementById('Email').value = 'ahmed@arbah-erp.com';
+              document.getElementById('Phone').value = '0501234567';
+              document.getElementById('Role').value = 'admin';
+              document.getElementById('Department').value = 'management';
+              document.getElementById('City').value = 'الرياض';
+              document.getElementById('District').value = 'حي العليا';
+              document.getElementById('FullAddress').value = 'شارع التحلية، برج المملكة، الطابق 25';
+              document.getElementById('Bio').value = 'مدير نظام ArbahERP مع خبرة 5 سنوات في إدارة الأنظمة المحاسبية والمخزونية.';
+              alert('تم إعادة التعيين ✅');
+            }
+          }
+
+          function changeAvatar() {
+            alert('سيتم فتح نافذة اختيار الصورة... 📷');
+          }
+
+          function printProfile() {
+            window.print();
+          }
+
+          function logout() {
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+              alert('تم تسجيل الخروج بنجاح 👋');
+              // window.location.href = 'Login.html';
+            }
+          }
+
+          // ===== Security Actions =====
+          function changePassword() {
+            const current = document.getElementById('CurrentPassword').value;
+            const newPass = document.getElementById('NewPassword').value;
+            const confirm = document.getElementById('ConfirmPassword').value;
+
+            if (!current || !newPass || !confirm) {
+              alert('يرجى ملء جميع الحقول');
+              return;
+            }
+            if (newPass !== confirm) {
+              alert('كلمة المرور الجديدة غير متطابقة');
+              return;
+            }
+            if (newPass.length < 6) {
+              alert('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
+              return;
+            }
+
+            alert('تم تغيير كلمة المرور بنجاح! 🔒');
+            document.getElementById('CurrentPassword').value = '';
+            document.getElementById('NewPassword').value = '';
+            document.getElementById('ConfirmPassword').value = '';
+          }
+
+          function toggle2FA() {
+            alert('تم تبديل حالة المصادقة الثنائية');
+          }
+
+          function toggleBiometric() {
+            alert('تم تبديل حالة التسجيل البيومتري');
+          }
+
+          function changeSessionTimeout() {
+            const minutes = prompt('أدخل عدد الدقائق:', '30');
+            if (minutes) {
+              alert('تم تعيين مهلة الجلسة إلى ' + minutes + ' دقيقة');
+            }
+          }
+
+          function manageAPIKeys() {
+            alert('سيتم فتح صفحة إدارة مفاتيح API');
+          }
+
+          function logoutSession(btn) {
+            if (confirm('هل أنت متأكد من إنهاء هذه الجلسة؟')) {
+              const sessionItem = btn.closest('.session-item');
+              sessionItem.style.opacity = '0.5';
+              sessionItem.style.transform = 'translateX(20px)';
+              setTimeout(() => sessionItem.remove(), 300);
+            }
+          }
+
+          // ===== Notifications =====
+          function saveNotifications() {
+            alert('تم حفظ إعدادات الإشعارات بنجاح! 🔔');
+          }
+
+          function resetNotifications() {
+            if (confirm('هل أنت متأكد من إعادة تعيين إعدادات الإشعارات؟')) {
+              document.querySelectorAll('#tab-notifications .toggle-switch input').forEach(input => {
+                input.checked = false;
+              });
+              document.querySelectorAll('#tab-notifications .toggle-switch input')[0].checked = true;
+              document.querySelectorAll('#tab-notifications .toggle-switch input')[1].checked = true;
+              document.querySelectorAll('#tab-notifications .toggle-switch input')[2].checked = true;
+              document.querySelectorAll('#tab-notifications .toggle-switch input')[4].checked = true;
+              alert('تم إعادة التعيين ✅');
+            }
+          }
+
+          // ===== Keyboard Shortcuts =====
+          document.addEventListener('keydown', function (e) {
+            if (e.ctrlKey && e.key === 's') {
+              e.preventDefault();
+              saveProfile();
+            }
+          });
+        </script>
+</body>
+
+</html>

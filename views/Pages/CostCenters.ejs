@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+
+    <div class="WorkSpace">
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2>☻ مراكز التكلفة</h2>
+            <p>تتبع التكاليف حسب الأقسام والمشاريع والفروع</p>
+          </div>
+
+          <div class="Control-bar">
+            <div class="compact-cards-row">
+              <div class="mini-metric-card card-orange">
+                <div class="icon-box"><i class="fa-solid fa-layer-group"></i></div>
+                <div class="info-text">
+                  <span class="lbl">عدد المراكز</span>
+                  <span class="num" id="TotalCostCenters">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-green">
+                <div class="icon-box"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="info-text">
+                  <span class="lbl">النشطة</span>
+                  <span class="num" id="ActiveCenters">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-blue">
+                <div class="icon-box"><i class="fa-solid fa-money-bill"></i></div>
+                <div class="info-text">
+                  <span class="lbl">إجمالي التكاليف</span>
+                  <span class="num" id="TotalCosts">0.00 ر.س</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-purple">
+                <div class="icon-box"><i class="fa-solid fa-sitemap"></i></div>
+                <div class="info-text">
+                  <span class="lbl">مراكز رئيسية</span>
+                  <span class="num" id="MainCenters">0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="action-buttons-group">
+              <button class="Tool-Btn btn-add-customer" onclick="openPopUpWindow('AddNewPopup'); resetForm();"><i
+                  class="fa-solid fa-plus"></i> إضافة مركز</button>
+              <button class="Tool-Btn btn-excel" onclick="exportCostCentersExcel()"><i
+                  class="fa-solid fa-file-excel"></i>
+                تصدير Excel</button>
+            </div>
+          </div>
+
+          <div class="Container-Table">
+            <div class="Container-Table-Body">
+              <table class="Perfect-Table" id="MainPerfectTable">
+                <thead>
+                  <tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 18%;">
+                      <div class="th-content">المركز <i class="fa-solid fa-filter Filter-Btn" data-columnindex="1"
+                          data-columnname="name"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">الكود <i class="fa-solid fa-filter Filter-Btn" data-columnindex="2"
+                          data-columnname="code"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">النوع <i class="fa-solid fa-filter Filter-Btn" data-columnindex="3"
+                          data-columnname="type"></i></div>
+                    </th>
+                    <th style="width: 15%;">
+                      <div class="th-content">المركز الأب <i class="fa-solid fa-filter Filter-Btn" data-columnindex="4"
+                          data-columnname="parent"></i></div>
+                    </th>
+                    <th style="width: 12%;">
+                      <div class="th-content">الفرع <i class="fa-solid fa-filter Filter-Btn" data-columnindex="5"
+                          data-columnname="branch"></i></div>
+                    </th>
+                    <th style="width: 12%;">
+                      <div class="th-content">التكلفة الحالية <i class="fa-solid fa-filter Filter-Btn"
+                          data-columnindex="6" data-columnname="cost"></i></div>
+                    </th>
+                    <th style="width: 12%;">
+                      <div class="th-content">الميزانية <i class="fa-solid fa-filter Filter-Btn" data-columnindex="7"
+                          data-columnname="budget"></i></div>
+                    </th>
+                    <th style="width: 8%;">الحالة</th>
+                  </tr>
+                </thead>
+                <tbody id="CostCentersTable">
+                  <!-- البيانات هتتحمل ديناميكي من JavaScript -->
+                </tbody>
+              </table>
+            </div>
+            <div class="Container-Table-Footer">
+              <span class="info-text" id="showingDataMetrics">عرض 0-0 من 0</span>
+              <div id="PaginationPages" class="Pagination-Pages"></div>
+            </div>
+          </div>
+        </main>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!--    Popup: إضافة / تعديل مركز تكلفة                         -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div class="Container-PopUp-Window" id="AddNewPopup">
+      <div class="PopUp-Window" id="PopUp-Window">
+        <div class="PopUpWindow-Header" id="WindowHeaderDrag">
+          <div class="PopUpWindow-Title">
+            <h3 id="PopupTitle">إضافة مركز تكلفة جديد</h3>
+            <p id="PopupSubtitle">أدخل بيانات مركز التكلفة والميزانية</p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('AddNewPopup')"><i
+              class="fa fa-xmark"></i></button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <form id="CostCenterForm">
+            <input type="hidden" id="CostCenterId" value="">
+            <div class="Form-Section">
+              <h4><i class="fa fa-layer-group"></i> البيانات الأساسية</h4>
+              <div class="grid">
+                <div class="Field">
+                  <label>كود المركز</label>
+                  <div class="input"><input type="text" id="CostCenterCode" placeholder="CC-XXX" readonly><i
+                      class="fa fa-hashtag"></i></div>
+                </div>
+                <div class="Field">
+                  <label>اسم المركز <span class="required">*</span></label>
+                  <div class="input"><input type="text" id="CostCenterName" placeholder="اسم مركز التكلفة"><i
+                      class="fa fa-layer-group"></i></div>
+                </div>
+              </div>
+              <div class="grid" style="margin-top: 12px;">
+                <div class="Field">
+                  <label>النوع</label>
+                  <div class="input SelectInput">
+                    <select id="CenterType" onchange="handleCenterTypeChange()">
+                      <option value="main">رئيسي</option>
+                      <option value="sub">فرعي</option>
+                    </select>
+                    <i class="fa fa-sitemap"></i>
+                  </div>
+                </div>
+                <div class="Field" id="ParentCenterField" style="display: none;">
+                  <label>المركز الأب</label>
+                  <div class="input SelectInput">
+                    <select id="ParentCenter">
+                      <option value="">اختر المركز الأب...</option>
+                    </select>
+                    <i class="fa fa-sitemap"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="Form-Section">
+              <h4><i class="fa fa-building"></i> الفرع والميزانية</h4>
+              <div class="grid">
+                <div class="Field">
+                  <label>الفرع</label>
+                  <div class="input"><input type="text" id="CenterBranch" placeholder="اسم الفرع"><i
+                      class="fa fa-building"></i></div>
+                </div>
+                <div class="Field">
+                  <label>الميزانية السنوية</label>
+                  <div class="input"><input type="number" id="CenterBudget" value="0" min="0" step="0.01"><i
+                      class="fa fa-money-bill"></i></div>
+                </div>
+              </div>
+              <div class="grid" style="margin-top: 12px;">
+                <div class="Field">
+                  <label>الحالة</label>
+                  <div class="input SelectInput">
+                    <select id="CenterStatus">
+                      <option value="active">نشط</option>
+                      <option value="inactive">غير نشط</option>
+                      <option value="closed">مغلق</option>
+                    </select>
+                    <i class="fa fa-circle-check"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="Form-Section">
+              <h4><i class="fa fa-pen"></i> ملاحظات</h4>
+              <div class="Field">
+                <div class="input">
+                  <textarea id="CenterNotes" placeholder="ملاحظات إضافية..."></textarea>
+                  <i class="fa fa-pen icon-area"></i>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('AddNewPopup')"><i class="fa fa-xmark"></i> إلغاء</button>
+          <button class="apply" onclick="saveCostCenter()"><i class="fa fa-save"></i> حفظ المركز</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!--    Popup: عرض تفاصيل مركز التكلفة                          -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div class="Container-PopUp-Window" id="DetailsPopup">
+      <div class="PopUp-Window">
+        <div class="PopUpWindow-Header">
+          <div class="PopUpWindow-Title">
+            <h3>تفاصيل مركز التكلفة</h3>
+            <p><i class="fa-solid fa-hashtag"></i> <span id="DetailsCode">--</span></p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('DetailsPopup')"><i
+              class="fa fa-xmark"></i></button>
+        </div>
+        <div class="PopUpWindow-Body" id="VoucherDetailsBody">
+          <div class="voucher-details-container">
+            <div class="Watermark">بيانات مركز التكلفة</div>
+
+            <%- include('../Partials/letterHead') %>
+
+              <div class="voucher-info-grid">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-green">
+                    <i class="fa-solid fa-layer-group"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">اسم المركز</div>
+                    <div class="voucher-info-value" id="DetailCenterName">--</div>
+                    <div class="voucher-info-label" id="DetailCenterCode">--</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-info-grid Grid-3">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-blue">
+                    <i class="fa-solid fa-sitemap"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">النوع</div>
+                    <div class="voucher-info-value" id="DetailType">--</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-purple">
+                    <i class="fa-solid fa-building"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الفرع</div>
+                    <div class="voucher-info-value" id="DetailBranch">--</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-cyan">
+                    <i class="fa-solid fa-circle-check"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الحالة</div>
+                    <div class="voucher-info-value" id="DetailStatus">--</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-info-grid Grid-2">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-orange">
+                    <i class="fa-solid fa-money-bill"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الميزانية السنوية</div>
+                    <div class="voucher-info-value" id="DetailBudget">0.00 ر.س</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-red">
+                    <i class="fa-solid fa-wallet"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">التكلفة الحالية</div>
+                    <div class="voucher-info-value" id="DetailCurrentCost">0.00 ر.س</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-info-card" style="margin-top: 12px;">
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">نسبة استهلاك الميزانية</div>
+                  <div class="progress-bar-container"
+                    style="width: 100%; background: #eee; border-radius: 8px; height: 24px; margin-top: 8px;">
+                    <div id="DetailBudgetUsage" class="progress-bar"
+                      style="height: 100%; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; transition: width 0.3s;">
+                      0%</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-notes-section" id="NotesSection" style="display: none;">
+                <div class="voucher-notes-title"><i class="fa-solid fa-pen"></i> ملاحظات</div>
+                <div class="voucher-notes-text" id="DetailNotes">--</div>
+              </div>
+
+              <div class="LetterFoot">
+                <div class="Footer-Left">
+                  <span class="system-badge"><i class="fa-solid fa-shield-halved"></i>ArbahERP v1.0</span>
+                  <span id="DetailCreatedBy">تم إنشاؤها: --</span>
+                </div>
+                <div class="Footer-Pages">صفحة 1 من 1</div>
+              </div>
+          </div>
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('DetailsPopup')"><i class="fa fa-xmark"></i> إغلاق</button>
+          <button class="apply btn-print" onclick="PrintAreaFn('#DetailsPopup .PopUpWindow-Body')"><i
+              class="fa fa-print"></i> طباعة</button>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../Partials/filter') %>
+      <%- include('../Partials/scripts') %>
+        <script src="JS/CostCenters.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+
+    <div class="WorkSpace">
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2><i class="fa-solid fa-book-open"></i> دفتر الأستاذ العام</h2>
+            <p>عرض الحركات والقيود اليومية لكل حساب</p>
+          </div>
+
+          <div class="ledger-header" id="LedgerHeader">
+            <div class="ledger-header-info">
+              <div class="ledger-header-icon"><i class="fa-solid fa-book-open"></i></div>
+              <div>
+                <div class="ledger-header-title" id="AccountTitle">اختار حساب</div>
+                <div class="ledger-header-subtitle" id="AccountSubtitle"></div>
+              </div>
+            </div>
+            <div class="ledger-header-balance">
+              <div class="label">الرصيد الحالي</div>
+              <div class="value positive" id="CurrentBalance">0.00</div>
+            </div>
+          </div>
+
+          <div class="Filter-bar">
+            <!-- اختيار الحساب -->
+            <div class="Field" data-select="account" style="flex: .7;">
+              <label>اسم الحساب</label>
+              <div class="input SelectInput">
+                <input type="text" class="select-search" placeholder="..." autocomplete="off">
+                <input type="hidden" class="select-value" id="accountId">
+                <i class="fa fa-user select-icon"></i>
+              </div>
+              <div class="SelectOptionDropdown">
+                <div class="select-content"></div>
+              </div>
+            </div>
+
+            <!-- من تاريخ -->
+            <div class="Field">
+              <label>من تاريخ</label>
+              <div class="input">
+                <input type="date" data-filter="date-from">
+                <i class="fa-solid fa-calendar"></i>
+              </div>
+            </div>
+
+            <!-- إلى تاريخ -->
+            <div class="Field">
+              <label>إلى تاريخ</label>
+              <div class="input">
+                <input type="date" data-filter="date-to">
+                <i class="fa-solid fa-calendar"></i>
+              </div>
+            </div>
+
+            <!-- زرار بحث -->
+            <button class="Tool-Btn" onclick="activeTableFilter?.applyAllFilters()">
+              <i class="fa-solid fa-search"></i> بحث
+            </button>
+
+            <!-- مسح -->
+            <button class="Tool-Btn" onclick="activeTableFilter?.clearFilter()">
+              <i class="fa-solid fa-rotate-left"></i> مسح
+            </button>
+
+            <button class="Tool-Btn btn-excel" onclick="openPrintPopup()">
+              <i class="fa-solid fa-print"></i> طباعة الكشف
+            </button>
+          </div>
+
+          <div class="Container-Table" id="ContainerLedgerTable">
+            <div class="Container-Table-Body" style="height: 87vh;">
+              <table class="Perfect-Table" id="MainPerfectTable">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>التاريخ</th>
+                    <th>البيان</th>
+                    <th>نوع المستند</th>
+                    <th>رقم المستند</th>
+                    <th>مدين</th>
+                    <th>دائن</th>
+                    <th>الرصيد</th>
+                    <th>رقم القيد</th>
+                    <th>النوع</th>
+                  </tr>
+                </thead>
+                <tbody id="LedgerTable">
+                  <tr>
+                    <td colspan="10" style="text-align:center;padding:60px 20px;color:#9ca3af;">
+                      <i class="fa-solid fa-book-open" style="font-size:3rem;margin-bottom:16px;display:block;"></i>
+                      <h4>اختر حساباً لعرض كشفه</h4>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="Container-Table-Footer">
+              <span class="info-text" id="showingDataMetrics">عرض 0-0 من 0</span>
+              <div id="PaginationPages" class="Pagination-Pages"></div>
+            </div>
+          </div>
+        </main>
+    </div>
+
+    <div class="Container-PopUp-Window" id="DetailsPopup">
+      <div class="PopUp-Window" style="width: 1100px; max-width: 98vw;">
+        <div class="PopUpWindow-Header" id="WindowHeaderDrag">
+          <div class="PopUpWindow-Title">
+            <h3 id="PopupTitle"><i class="fa-solid fa-book-open"></i> كشف حساب</h3>
+            <p id="PopupSubtitle">---</p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('DetailsPopup')">
+            <i class="fa fa-xmark"></i></button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <div class="Watermark">دفتر الاستاذ</div>
+
+          <%- include('../Partials/letterHead') %>
+
+            <div class="Title-Voucher">دفتر الاستاذ</div>
+
+            <!-- رأس كشف الحساب -->
+            <div class="voucher-info-grid">
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-green">
+                  <i class="fa-solid fa-folder-tree"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">اسم الحساب</div>
+                  <div class="voucher-info-value" id="LedgerPrintAccountName">شركة الجميل للتجارة</div>
+                  <div class="voucher-info-label" id="LedgerPrintAccountInfo">SUP-001</div>
+                </div>
+              </div>
+            </div>
+            <!-- كروت الملخص -->
+            <div class="voucher-info-grid Grid-4">
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-blue">
+                  <i class="fa-solid fa-wallet"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">الرصيد الافتتاحي </div>
+                  <div class="voucher-info-value" id="LedgerPrintOpeningBal">0.00</div>
+                </div>
+              </div>
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-purple">
+                  <i class="fa-solid fa-arrow-down"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">اجمالي المدين</div>
+                  <div class="voucher-info-value" id="LedgerPrintTotalDebit">0.00</div>
+                </div>
+              </div>
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-cyan">
+                  <i class="fa-solid fa-arrow-up"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">اجمالي الدائن</div>
+                  <div class="voucher-info-value" id="LedgerPrintTotalCredit">0.00</div>
+                </div>
+              </div>
+              <div class="voucher-info-card">
+                <div class="voucher-info-icon Color-Bg-green">
+                  <i class="fa-solid fa-hashtag"></i>
+                </div>
+                <div class="voucher-info-content">
+                  <div class="voucher-info-label">الرصيد الختامي</div>
+                  <div class="voucher-info-value" id="LedgerPrintClosingBalCard">0.00</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- جدول كشف الحساب -->
+            <div class="Container-Table2">
+              <table class="Perfect-Table ledger-print-table" id="LedgerPrintTable">
+                <thead>
+                  <tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 9%;">التاريخ</th>
+                    <th style="width: 29%;">البيان</th>
+                    <th style="width: 9%;">نوع المستند</th>
+                    <th style="width: 9%;">رقم المستند</th>
+                    <th style="width: 9%;">مدين</th>
+                    <th style="width: 9%;">دائن</th>
+                    <th style="width: 9%;">الرصيد</th>
+                    <th style="width: 9%;">رقم القيد</th>
+                    <th style="width: 5%;">النوع</th>
+                  </tr>
+                </thead>
+                <tbody id="LedgerPrintTableBody">
+                  <!-- يملأها JS -->
+                </tbody>
+              </table>
+            </div>
+
+
+            <div class="LetterFoot">
+              <div class="Footer-Left">
+                <span class="system-badge"><i class="fa-solid fa-shield-halved"></i>ArbahERP v1.0</span>
+                <span id="DetailsFooterInfo">تم إنشاؤها بواسطة: إسلام عبدالرحمن | 2024/06/09 14:30:25</span>
+              </div>
+              <div class="Footer-Pages">صفحة 1 من 1</div>
+            </div>
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('DetailsPopup')"><i class="fa fa-xmark"></i> إغلاق</button>
+          <button class="apply" onclick="PrintAreaFn('#DetailsPopup .PopUpWindow-Body')"><i
+              class="fa-solid fa-print"></i> طباعة</button>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../Partials/filter') %>
+      <%- include('../Partials/scripts') %>
+
+        <script src="/Js/Ledger.js"></script>
+</body>
+
+</html>

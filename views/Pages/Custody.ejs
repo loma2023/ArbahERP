@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+
+    <div class="WorkSpace">
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2>☻ إدارة العهد</h2>
+            <p>تسجيل وتسوية العهد والسلف للموظفين</p>
+          </div>
+
+          <div class="Control-bar">
+            <div class="compact-cards-row">
+              <div class="mini-metric-card card-orange">
+                <div class="icon-box"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                <div class="info-text">
+                  <span class="lbl">إجمالي العهد</span>
+                  <span class="num" id="TotalAdvances">85,000 ر.س</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-red">
+                <div class="icon-box"><i class="fa-solid fa-circle-exclamation"></i></div>
+                <div class="info-text">
+                  <span class="lbl">العهد المستحقة</span>
+                  <span class="num" id="PendingAdvances">32,500 ر.س</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-green">
+                <div class="icon-box"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="info-text">
+                  <span class="lbl">العهد المسددة</span>
+                  <span class="num" id="SettledAdvances">52,500 ر.س</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-blue">
+                <div class="icon-box"><i class="fa-solid fa-users"></i></div>
+                <div class="info-text">
+                  <span class="lbl">عدد الموظفين</span>
+                  <span class="num" id="EmployeesCount">12</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="action-buttons-group">
+              <button class="Tool-Btn btn-add-customer" onclick="openPopUpWindow('AddNewPopup');">
+                <i class="fa-solid fa-plus"></i> تسجيل عهدة
+              </button>
+              <button class="Tool-Btn btn-excel" onclick="exportAdvancesExcel()">
+                <i class="fa-solid fa-file-excel"></i> تصدير Excel
+              </button>
+            </div>
+          </div>
+
+          <div class="Filter-bar">
+            <div class="Field">
+              <label>حالة العهدة</label>
+              <div class="input SelectInput">
+                <select id="FilterAdvanceStatus">
+                  <option value="all">الكل</option>
+                  <option value="pending">مستحقة</option>
+                  <option value="partial">مسددة جزئياً</option>
+                  <option value="settled">مسددة بالكامل</option>
+                  <option value="overdue">متأخرة</option>
+                </select>
+                <i class="fa-solid fa-filter"></i>
+              </div>
+            </div>
+            <div class="Field">
+              <label>الموظف</label>
+              <div class="input SelectInput">
+                <select id="FilterEmployee">
+                  <option value="all">الكل</option>
+                  <option value="emp1">أحمد محمد</option>
+                  <option value="emp2">خالد عبدالله</option>
+                  <option value="emp3">سامي العتيبي</option>
+                </select>
+                <i class="fa-solid fa-user"></i>
+              </div>
+            </div>
+            <div class="Field">
+              <label>من تاريخ</label>
+              <div class="input"><input type="date" id="FilterFromDate"><i class="fa-solid fa-calendar"></i></div>
+            </div>
+            <div class="Field">
+              <label>إلى تاريخ</label>
+              <div class="input"><input type="date" id="FilterToDate"><i class="fa-solid fa-calendar"></i></div>
+            </div>
+            <div class="Field wide">
+              <label>بحث</label>
+              <div class="input"><input type="text" id="FilterSearch" placeholder="رقم العهدة، اسم الموظف..."><i
+                  class="fa-solid fa-search"></i></div>
+            </div>
+            <button class="Tool-Btn btn-excel" onclick="filterAdvances()"><i class="fa-solid fa-search"></i>
+              بحث</button>
+          </div>
+
+          <div class="Container-Table">
+            <div class="Container-Table-Header">
+              <h3><i class="fa-solid fa-list-ol"></i> سجل العهد</h3>
+            </div>
+            <div class="Container-Table-Body">
+              <table class="Perfect-Table" id="MainPerfectTable">
+                <thead>
+                  <tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 10%;">
+                      <div class="th-content">رقم العهدة <i class="fa-solid fa-filter Filter-Btn" data-columnindex="1"
+                          data-columnname="advanceNo"></i></div>
+                    </th>
+                    <th style="width: 18%;">
+                      <div class="th-content">الموظف <i class="fa-solid fa-filter Filter-Btn" data-columnindex="2"
+                          data-columnname="employee"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">تاريخ العهدة <i class="fa-solid fa-filter Filter-Btn" data-columnindex="3"
+                          data-columnname="date"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">تاريخ الاستحقاق <i class="fa-solid fa-filter Filter-Btn"
+                          data-columnindex="4" data-columnname="dueDate"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">المبلغ <i class="fa-solid fa-filter Filter-Btn" data-columnindex="5"
+                          data-columnname="amount"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">المسدد <i class="fa-solid fa-filter Filter-Btn" data-columnindex="6"
+                          data-columnname="paid"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">المتبقي <i class="fa-solid fa-filter Filter-Btn" data-columnindex="7"
+                          data-columnname="remaining"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">الحالة <i class="fa-solid fa-filter Filter-Btn" data-columnindex="8"
+                          data-columnname="status"></i></div>
+                    </th>
+                    <th style="width: 9%;">الإجراء</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-id="1">
+                    <td class="row-number">1</td>
+                    <td>ADV-001</td>
+                    <td>
+                      <div class="Name-Cell">
+                        <i class="fa-solid fa-user Color-Bg-green"></i>
+                        <div class="Name-Cell-info">
+                          <span class="name">إسلام عبدالرحمن</span>
+                          <span class="code">EMP-001</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>2024-06-01</td>
+                    <td>2024-06-15</td>
+                    <td>5,000</td>
+                    <td>5,000</td>
+                    <td>0</td>
+                    <td>
+                      <span class="status-badge Color-Bg-green">مسددة</span>
+                    </td>
+                    <td>
+                      <div class="action-menu-container">
+                        <button class="Action-Row-Btn"><i class="fa-solid fa-ellipsis"></i></button>
+                        <div class="Profile-Dropdown">
+                          <a class="Profile-Link" onclick="openSettlementPopup(1)">
+                            <i class="fa-solid fa-money-bill-wave"></i> تسوية</a>
+                          <a class="Profile-Link" onclick="openPopUpWindow('DetailsPopup');">
+                            <i class="fa-solid fa-eye"></i> عرض التفاصيل</a>
+                          <div class="Separator"></div>
+                          <a class="Profile-Link">
+                            <i class="fa-solid fa-trash-can"></i> حذف </a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr data-id="2">
+                    <td class="row-number">2</td>
+                    <td>ADV-002</td>
+                    <td>
+                      <div class="Name-Cell">
+                        <i class="fa-solid fa-user Color-Bg-orange"></i>
+                        <div class="Name-Cell-info">
+                          <span class="name">عبدالعال السعيد</span>
+                          <span class="code">EMP-002</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>2024-06-05</td>
+                    <td>2024-06-20</td>
+                    <td>10,000</td>
+                    <td>3,000</td>
+                    <td>7,000</td>
+                    <td>
+                      <span class="status-badge Color-Bg-orange">مسددة جزئياً</span>
+                    </td>
+                    <td>
+                      <div class="action-menu-container">
+                        <button class="Action-Row-Btn"><i class="fa-solid fa-ellipsis"></i></button>
+                        <div class="Profile-Dropdown">
+                          <a class="Profile-Link" onclick="openSettlementPopup(2)">
+                            <i class="fa-solid fa-money-bill-wave"></i> تسوية</a>
+                          <a class="Profile-Link" onclick="openPopUpWindow('DetailsPopup');">
+                            <i class="fa-solid fa-eye"></i> عرض التفاصيل</a>
+                          <div class="Separator"></div>
+                          <a class="Profile-Link">
+                            <i class="fa-solid fa-trash-can"></i> حذف </a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr data-id="3">
+                    <td class="row-number">3</td>
+                    <td>ADV-003</td>
+                    <td>
+                      <div class="Name-Cell">
+                        <i class="fa-solid fa-user Color-Bg-red"></i>
+                        <div class="Name-Cell-info">
+                          <span class="name">اسماعيل عبدالعال</span>
+                          <span class="code">EMP-003</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>2024-05-20</td>
+                    <td>2024-06-05</td>
+                    <td>8,000</td>
+                    <td>0</td>
+                    <td>8,000</td>
+                    <td>
+                      <span class="status-badge Color-Bg-red">متأخرة</span>
+                    </td>
+                    <td>
+                      <div class="action-menu-container">
+                        <button class="Action-Row-Btn"><i class="fa-solid fa-ellipsis"></i></button>
+                        <div class="Profile-Dropdown">
+                          <a class="Profile-Link" onclick="openSettlementPopup(3)">
+                            <i class="fa-solid fa-money-bill-wave"></i> تسوية</a>
+                          <a class="Profile-Link" onclick="openPopUpWindow('DetailsPopup');">
+                            <i class="fa-solid fa-eye"></i> عرض التفاصيل</a>
+                          <div class="Separator"></div>
+                          <a class="Profile-Link">
+                            <i class="fa-solid fa-trash-can"></i> حذف </a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr data-id="4">
+                    <td class="row-number">4</td>
+                    <td>ADV-004</td>
+                    <td>
+                      <div class="Name-Cell">
+                        <i class="fa-solid fa-user Color-Bg-blue"></i>
+                        <div class="Name-Cell-info">
+                          <span class="name">احمد متولي بيشه</span>
+                          <span class="code">EMP-004</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>2024-06-18</td>
+                    <td>2024-07-02</td>
+                    <td>15,000</td>
+                    <td>0</td>
+                    <td>15,000</td>
+                    <td>
+                      <span class="status-badge Color-Bg-blue">مستحقة</span>
+                    </td>
+                    <td>
+                      <div class="action-menu-container">
+                        <button class="Action-Row-Btn"><i class="fa-solid fa-ellipsis"></i></button>
+                        <div class="Profile-Dropdown">
+                          <a class="Profile-Link" onclick="openSettlementPopup(4)">
+                            <i class="fa-solid fa-money-bill-wave"></i> تسوية</a>
+                          <a class="Profile-Link" onclick="openPopUpWindow('DetailsPopup');">
+                            <i class="fa-solid fa-eye"></i> عرض التفاصيل</a>
+                          <div class="Separator"></div>
+                          <a class="Profile-Link">
+                            <i class="fa-solid fa-trash-can"></i> حذف </a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="Container-Table-Footer">
+              <span class="info-text" id="showingDataMetrics">عرض 1-4 من 15</span>
+              <div id="PaginationPages" class="Pagination-Pages"></div>
+            </div>
+          </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Advance Popup -->
+    <div class="Container-PopUp-Window" id="AddNewPopup">
+      <div class="PopUp-Window" id="PopUp-Window">
+        <div class="PopUpWindow-Header" id="WindowHeaderDrag">
+          <div class="PopUpWindow-Title">
+            <h3 id="PopupTitle">تسجيل عهدة جديدة</h3>
+            <p id="PopupSubtitle">أدخل بيانات العهدة والموظف</p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('AddNewPopup')">
+            <i class="fa fa-xmark"></i></button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <form id="AdvanceForm">
+            <input type="hidden" id="AdvanceId" value="">
+            <div class="Form-Section">
+              <h4><i class="fa fa-hand-holding-dollar"></i> بيانات العهدة</h4>
+              <div class="grid">
+                <div class="Field">
+                  <label>رقم العهدة</label>
+                  <div class="input"><input type="text" disabled id="AdvanceCode" placeholder="ADV-XXX"><i
+                      class="fa fa-hashtag"></i></div>
+                </div>
+                <div class="Field">
+                  <label>التاريخ</label>
+                  <div class="input"><input type="date" id="AdvanceDate"><i class="fa fa-calendar"></i></div>
+                </div>
+              </div>
+              <div class="grid" style="margin-top: 12px;">
+                <div class="Field">
+                  <label>الموظف</label>
+                  <div class="input SelectInput">
+                    <select id="AdvanceEmployee">
+                      <option value="">اختر الموظف</option>
+                      <option value="emp1">إسلام عبدالرحمن</option>
+                      <option value="emp2">عبدالعال السعيد</option>
+                      <option value="emp3">اسماعيل عبدالعال</option>
+                      <option value="emp4">احمد متولي بيشه</option>
+                    </select>
+                    <i class="fa fa-user"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>المبلغ</label>
+                  <div class="input"><input type="number" id="AdvanceAmount" placeholder="0.00" min="0"><i
+                      class="fa fa-money-bill"></i></div>
+                </div>
+              </div>
+            </div>
+            <div class="Form-Section">
+              <h4><i class="fa fa-calendar-days"></i> التواريخ والملاحظات</h4>
+              <div class="grid">
+                <div class="Field">
+                  <label>تاريخ الاستحقاق</label>
+                  <div class="input"><input type="date" id="AdvanceDueDate"><i class="fa fa-calendar-check"></i></div>
+                </div>
+                <div class="Field">
+                  <label>طريقة الدفع</label>
+                  <div class="input SelectInput">
+                    <select id="PaymentMethod">
+                      <option value="cash">نقدي</option>
+                      <option value="bank">تحويل بنكي</option>
+                      <option value="check">شيك</option>
+                    </select>
+                    <i class="fa fa-credit-card"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="Field" style="margin-top: 12px;">
+                <label>الغرض من العهدة</label>
+                <div class="input">
+                  <textarea id="AdvancePurpose" placeholder="وصف الغرض من العهدة..."></textarea>
+                  <i class="fa fa-pen icon-area"></i>
+                </div>
+              </div>
+              <div class="Field" style="margin-top: 12px;">
+                <label>ملاحظات</label>
+                <div class="input">
+                  <textarea id="AdvanceNotes" placeholder="ملاحظات إضافية..."></textarea>
+                  <i class="fa fa-pen icon-area"></i>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('AddNewPopup')"><i class="fa fa-xmark"></i> إلغاء</button>
+          <button class="apply" onclick="saveAdvance()"><i class="fa fa-save"></i> حفظ العهدة</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settlement Popup -->
+    <div class="Container-PopUp-Window" id="SettlementPopup">
+      <div class="PopUp-Window" id="PopUp-Window">
+        <div class="PopUpWindow-Header" id="WindowHeaderDrag">
+          <div class="PopUpWindow-Title">
+            <h3>تسوية العهدة</h3>
+            <p>تسجيل مبلغ التسوية للعهدة</p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('SettlementPopup')">
+            <i class="fa fa-xmark"></i></button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <form id="SettlementForm">
+            <input type="hidden" id="SettlementAdvanceId" value="">
+            <div class="Form-Section">
+              <div class="details-stats-row" style="margin-bottom: 20px;">
+                <div class="stat-box stat-orange">
+                  <div class="stat-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                  <div class="stat-value" id="SettlementTotal">0</div>
+                  <div class="stat-label">إجمالي العهدة</div>
+                </div>
+                <div class="stat-box stat-green">
+                  <div class="stat-icon"><i class="fa-solid fa-check-circle"></i></div>
+                  <div class="stat-value" id="SettlementPaid">0</div>
+                  <div class="stat-label">المسدد</div>
+                </div>
+                <div class="stat-box stat-red">
+                  <div class="stat-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+                  <div class="stat-value" id="SettlementRemaining">0</div>
+                  <div class="stat-label">المتبقي</div>
+                </div>
+              </div>
+              <div class="grid">
+                <div class="Field">
+                  <label>مبلغ التسوية</label>
+                  <div class="input"><input type="number" id="SettlementAmount" placeholder="0.00" min="0"><i
+                      class="fa fa-money-bill"></i></div>
+                </div>
+                <div class="Field">
+                  <label>تاريخ التسوية</label>
+                  <div class="input"><input type="date" id="SettlementDate"><i class="fa fa-calendar"></i></div>
+                </div>
+              </div>
+              <div class="grid" style="margin-top: 12px;">
+                <div class="Field">
+                  <label>طريقة التسوية</label>
+                  <div class="input SelectInput">
+                    <select id="SettlementMethod">
+                      <option value="cash">نقدي</option>
+                      <option value="bank">تحويل بنكي</option>
+                      <option value="salary">خصم من الراتب</option>
+                      <option value="check">شيك</option>
+                    </select>
+                    <i class="fa fa-credit-card"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>رقم المرجع</label>
+                  <div class="input"><input type="text" id="SettlementRef" placeholder="رقم الإيصال أو التحويل"><i
+                      class="fa fa-hashtag"></i></div>
+                </div>
+              </div>
+              <div class="Field" style="margin-top: 12px;">
+                <label>ملاحظات التسوية</label>
+                <div class="input">
+                  <textarea id="SettlementNotes" placeholder="ملاحظات..."></textarea>
+                  <i class="fa fa-pen icon-area"></i>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('SettlementPopup')"><i class="fa fa-xmark"></i> إلغاء</button>
+          <button class="apply" onclick="saveSettlement()"><i class="fa fa-save"></i> حفظ التسوية</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Details Popup -->
+    <div class="Container-PopUp-Window" id="DetailsPopup">
+      <div class="PopUp-Window">
+        <div class="PopUpWindow-Header">
+          <div class="PopUpWindow-Title">
+            <h3>تفاصيل العهدة</h3>
+            <p><i class="fa-solid fa-hashtag"></i> <span id="DetailsCode">ADV-001</span></p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('DetailsPopup')"><i
+              class="fa fa-xmark"></i></button>
+        </div>
+
+        <div class="PopUpWindow-Body">
+          <!-- Stats Row -->
+          <div class="details-stats-row">
+            <div class="stat-box stat-orange">
+              <div class="stat-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+              <div class="stat-value" id="StatValue1">0</div>
+              <div class="stat-label">إجمالي العهدة</div>
+            </div>
+            <div class="stat-box stat-green">
+              <div class="stat-icon"><i class="fa-solid fa-check-circle"></i></div>
+              <div class="stat-value" id="StatValue2">0</div>
+              <div class="stat-label">المسدد</div>
+            </div>
+            <div class="stat-box stat-red">
+              <div class="stat-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+              <div class="stat-value" id="StatValue3">0</div>
+              <div class="stat-label">المتبقي</div>
+            </div>
+          </div>
+
+          <!-- Info Cards Grid -->
+          <div class="info-cards-grid">
+            <!-- بيانات العهدة -->
+            <div class="info-card">
+              <div class="card-header">
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+                <span>بيانات العهدة</span>
+              </div>
+              <div class="card-body">
+                <div class="info-item">
+                  <div class="info-icon"><i class="fa-solid fa-hashtag"></i></div>
+                  <div class="info-content">
+                    <div class="info-label">رقم العهدة</div>
+                    <div class="info-value" id="CardAdvanceNo">-</div>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-icon"><i class="fa-solid fa-calendar"></i></div>
+                  <div class="info-content">
+                    <div class="info-label">تاريخ العهدة</div>
+                    <div class="info-value" id="CardDate">-</div>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                  <div class="info-content">
+                    <div class="info-label">تاريخ الاستحقاق</div>
+                    <div class="info-value" id="CardDueDate">-</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- بيانات الموظف -->
+            <div class="info-card">
+              <div class="card-header">
+                <i class="fa-solid fa-user"></i>
+                <span>بيانات الموظف</span>
+              </div>
+              <div class="card-body">
+                <div class="info-item">
+                  <div class="info-icon"><i class="fa-solid fa-user"></i></div>
+                  <div class="info-content">
+                    <div class="info-label">اسم الموظف</div>
+                    <div class="info-value" id="CardEmployee">-</div>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-icon"><i class="fa-solid fa-id-card"></i></div>
+                  <div class="info-content">
+                    <div class="info-label">الرقم الوظيفي</div>
+                    <div class="info-value" id="CardEmpCode">-</div>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-icon"><i class="fa-solid fa-building"></i></div>
+                  <div class="info-content">
+                    <div class="info-label">القسم</div>
+                    <div class="info-value" id="CardDept">-</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- المبالغ -->
+            <div class="info-card">
+              <div class="card-header">
+                <i class="fa-solid fa-money-bill"></i>
+                <span>المبالغ</span>
+              </div>
+              <div class="card-body">
+                <div class="info-item">
+                  <div class="info-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                  <div class="info-content">
+                    <div class="info-label">المبلغ الكلي</div>
+                    <div class="info-value" id="CardAmount">-</div>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-icon"><i class="fa-solid fa-check-circle"></i></div>
+                  <div class="info-content">
+                    <div class="info-label">المسدد</div>
+                    <div class="info-value" id="CardPaid">-</div>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+                  <div class="info-content">
+                    <div class="info-label">المتبقي</div>
+                    <div class="info-value" id="CardRemaining">-</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- الغرض والملاحظات -->
+            <div class="info-card">
+              <div class="card-header">
+                <i class="fa-solid fa-file-lines"></i>
+                <span>الغرض والملاحظات</span>
+              </div>
+              <div class="card-body">
+                <div class="info-item">
+                  <div class="info-icon"><i class="fa-solid fa-bullseye"></i></div>
+                  <div class="info-content">
+                    <div class="info-label">الغرض</div>
+                    <div class="info-value" id="CardPurpose">-</div>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-icon"><i class="fa-solid fa-credit-card"></i></div>
+                  <div class="info-content">
+                    <div class="info-label">طريقة الدفع</div>
+                    <div class="info-value" id="CardPaymentMethod">-</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- سجل التسويات - Full Width -->
+            <div class="info-card full-width">
+              <div class="card-header">
+                <i class="fa-solid fa-list-ol"></i>
+                <span>سجل التسويات</span>
+              </div>
+              <div class="card-body">
+                <table class="Perfect-Table" style="margin: 0;">
+                  <thead>
+                    <tr>
+                      <th style="width: 5%;">#</th>
+                      <th style="width: 20%;">التاريخ</th>
+                      <th style="width: 20%;">المبلغ</th>
+                      <th style="width: 25%;">طريقة التسوية</th>
+                      <th style="width: 30%;">الملاحظات</th>
+                    </tr>
+                  </thead>
+                  <tbody id="SettlementHistoryBody">
+                    <tr>
+                      <td class="text-center">1</td>
+                      <td class="text-center">2024-06-10</td>
+                      <td class="text-center">2,000 ر.س</td>
+                      <td class="text-center">نقدي</td>
+                      <td class="text-center">تسوية أولى</td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">2</td>
+                      <td class="text-center">2024-06-15</td>
+                      <td class="text-center">3,000 ر.س</td>
+                      <td class="text-center">تحويل بنكي</td>
+                      <td class="text-center">تسوية نهائية</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('DetailsPopup')"><i class="fa fa-xmark"></i> إغلاق</button>
+          <button class="apply" onclick="openSettlementPopupFromDetails()"><i class="fa-solid fa-money-bill-wave"></i>
+            تسوية</button>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../Partials/filter') %>
+      <%- include('../Partials/scripts') %>
+
+        <script>
+          // Settlement popup functions
+          function openSettlementPopup(advanceId) {
+            // Here you would fetch the advance data and populate the stats
+            document.getElementById('SettlementAdvanceId').value = advanceId;
+            document.getElementById('SettlementDate').value = new Date().toISOString().split('T')[0];
+
+            // Mock data - replace with actual data fetch
+            const mockData = {
+              1: { total: 5000, paid: 5000, remaining: 0 },
+              2: { total: 10000, paid: 3000, remaining: 7000 },
+              3: { total: 8000, paid: 0, remaining: 8000 },
+              4: { total: 15000, paid: 0, remaining: 15000 }
+            };
+
+            const data = mockData[advanceId] || { total: 0, paid: 0, remaining: 0 };
+            document.getElementById('SettlementTotal').textContent = data.total.toLocaleString() + ' ر.س';
+            document.getElementById('SettlementPaid').textContent = data.paid.toLocaleString() + ' ر.س';
+            document.getElementById('SettlementRemaining').textContent = data.remaining.toLocaleString() + ' ر.س';
+
+            openPopUpWindow('SettlementPopup');
+          }
+
+          function openSettlementPopupFromDetails() {
+            const advanceId = document.getElementById('DetailsCode').dataset.id;
+            openSettlementPopup(advanceId);
+          }
+
+          function saveSettlement() {
+            const amount = document.getElementById('SettlementAmount').value;
+            const date = document.getElementById('SettlementDate').value;
+            const method = document.getElementById('SettlementMethod').value;
+            const ref = document.getElementById('SettlementRef').value;
+            const notes = document.getElementById('SettlementNotes').value;
+
+            if (!amount || amount <= 0) {
+              showToast('يرجى إدخال مبلغ التسوية', 'error');
+              return;
+            }
+
+            // Here you would send the data to the server
+            showToast('تم حفظ التسوية بنجاح', 'success');
+            closePopUpWindow('SettlementPopup');
+          }
+
+          function saveAdvance() {
+            const code = document.getElementById('AdvanceCode').value;
+            const date = document.getElementById('AdvanceDate').value;
+            const employee = document.getElementById('AdvanceEmployee').value;
+            const amount = document.getElementById('AdvanceAmount').value;
+            const dueDate = document.getElementById('AdvanceDueDate').value;
+            const purpose = document.getElementById('AdvancePurpose').value;
+
+            if (!employee) {
+              showToast('يرجى اختيار الموظف', 'error');
+              return;
+            }
+            if (!amount || amount <= 0) {
+              showToast('يرجى إدخال المبلغ', 'error');
+              return;
+            }
+
+            showToast('تم حفظ العهدة بنجاح', 'success');
+            closePopUpWindow('AddNewPopup');
+          }
+
+          function filterAdvances() {
+            // Filter logic here
+            showToast('تم تطبيق الفلتر', 'info');
+          }
+
+          function exportAdvancesExcel() {
+            showToast('جاري تصدير البيانات...', 'info');
+          }
+        </script>
+</body>
+
+</html>

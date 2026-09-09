@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+
+    <div class="WorkSpace">
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2>☻ تعريف المناديب</h2>
+            <p>إدارة مناديب المبيعات والحسابات المحاسبية المرتبطة</p>
+          </div>
+
+          <div class="Control-bar">
+            <div class="compact-cards-row">
+              <div class="mini-metric-card card-orange">
+                <div class="icon-box"><i class="fa-solid fa-user-tie"></i></div>
+                <div class="info-text">
+                  <span class="lbl">عدد المناديب</span>
+                  <span class="num" id="TotalSalesReps">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-green">
+                <div class="icon-box"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="info-text">
+                  <span class="lbl">النشطين</span>
+                  <span class="num" id="ActiveSalesReps">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-blue">
+                <div class="icon-box"><i class="fa-solid fa-money-bill"></i></div>
+                <div class="info-text">
+                  <span class="lbl">إجمالي المستحقات</span>
+                  <span class="num" id="TotalReceivables">0.00 ر.س</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-red">
+                <div class="icon-box"><i class="fa-solid fa-circle-exclamation"></i></div>
+                <div class="info-text">
+                  <span class="lbl">تجاوز الحد</span>
+                  <span class="num" id="OverLimitReps">0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="action-buttons-group">
+              <button class="Tool-Btn btn-add-customer" onclick="openPopUpWindow('AddNewPopup'); resetForm();"><i
+                  class="fa-solid fa-plus"></i> إضافة مندوب</button>
+              <button class="Tool-Btn btn-excel" onclick="exportSalesRepsExcel()"><i class="fa-solid fa-file-excel"></i>
+                تصدير Excel</button>
+            </div>
+          </div>
+
+          <div class="Container-Table">
+            <div class="Container-Table-Body">
+              <table class="Perfect-Table" id="MainPerfectTable">
+                <thead>
+                  <tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 20%;">
+                      <div class="th-content">المندوب <i class="fa-solid fa-filter Filter-Btn" data-columnindex="1"
+                          data-columnname="name"></i></div>
+                    </th>
+                    <th style="width: 12%;">
+                      <div class="th-content">الهاتف <i class="fa-solid fa-filter Filter-Btn" data-columnindex="2"
+                          data-columnname="phone"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">المدينة <i class="fa-solid fa-filter Filter-Btn" data-columnindex="3"
+                          data-columnname="city"></i></div>
+                    </th>
+                    <th style="width: 12%;">
+                      <div class="th-content">الفرع <i class="fa-solid fa-filter Filter-Btn" data-columnindex="4"
+                          data-columnname="branch"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">حد الائتمان <i class="fa-solid fa-filter Filter-Btn" data-columnindex="5"
+                          data-columnname="creditLimit"></i></div>
+                    </th>
+                    <th style="width: 12%;">
+                      <div class="th-content">الرصيد الحالي <i class="fa-solid fa-filter Filter-Btn"
+                          data-columnindex="6" data-columnname="balance"></i></div>
+                    </th>
+                    <th style="width: 9%;">الحالة</th>
+                    <th style="width: 5%;">الإجراء</th>
+                  </tr>
+                </thead>
+                <tbody id="SalesRepsTable">
+                  <!-- البيانات هتتحمل ديناميكي -->
+                </tbody>
+              </table>
+            </div>
+            <div class="Container-Table-Footer">
+              <span class="info-text" id="showingDataMetrics">عرض 0-0 من 0</span>
+              <div id="PaginationPages" class="Pagination-Pages"></div>
+            </div>
+          </div>
+        </main>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!--    Popup: إضافة / تعديل مندوب                              -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div class="Container-PopUp-Window" id="AddNewPopup">
+      <div class="PopUp-Window" id="PopUp-Window">
+        <div class="PopUpWindow-Header" id="WindowHeaderDrag">
+          <div class="PopUpWindow-Title">
+            <h3 id="PopupTitle">إضافة مندوب جديد</h3>
+            <p id="PopupSubtitle">أدخل بيانات المندوب بدقة</p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('AddNewPopup')"><i
+              class="fa fa-xmark"></i></button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <form id="SalesRepForm">
+            <input type="hidden" id="SalesRepId" value="">
+            <div class="Form-Section">
+              <h4><i class="fa fa-user-tie"></i> البيانات الأساسية</h4>
+              <div class="grid">
+                <div class="Field">
+                  <label>كود المندوب</label>
+                  <div class="input"><input type="text" id="SalesRepCode" placeholder="REP-XXX" readonly><i
+                      class="fa fa-hashtag"></i></div>
+                </div>
+                <div class="Field">
+                  <label>اسم المندوب <span class="required">*</span></label>
+                  <div class="input"><input type="text" id="SalesRepName" placeholder="اسم المندوب"><i
+                      class="fa fa-user"></i></div>
+                </div>
+              </div>
+              <div class="grid" style="margin-top: 12px;">
+                <div class="Field">
+                  <label>رقم الهاتف <span class="required">*</span></label>
+                  <div class="input"><input type="text" id="SalesRepPhone" placeholder="05XXXXXXXX"><i
+                      class="fa fa-phone"></i></div>
+                </div>
+                <div class="Field">
+                  <label>البريد الإلكتروني</label>
+                  <div class="input"><input type="email" id="SalesRepEmail" placeholder="email@example.com"><i
+                      class="fa fa-envelope"></i></div>
+                </div>
+              </div>
+            </div>
+            <div class="Form-Section">
+              <h4><i class="fa fa-id-card"></i> بيانات الهوية</h4>
+              <div class="grid">
+                <div class="Field">
+                  <label>رقم الهوية</label>
+                  <div class="input"><input type="text" id="SalesRepIdNumber" placeholder="رقم الهوية/الإقامة"><i
+                      class="fa fa-id-card"></i></div>
+                </div>
+                <div class="Field">
+                  <label>الجنسية</label>
+                  <div class="input"><input type="text" id="SalesRepNationality" placeholder="الجنسية"><i
+                      class="fa fa-globe"></i></div>
+                </div>
+              </div>
+            </div>
+            <div class="Form-Section">
+              <h4><i class="fa fa-building"></i> الفرع والمنطقة</h4>
+              <div class="grid">
+                <div class="Field">
+                  <label>الفرع</label>
+                  <div class="input"><input type="text" id="SalesRepBranch" placeholder="الفرع"><i
+                      class="fa fa-building"></i></div>
+                </div>
+                <div class="Field">
+                  <label>المدينة</label>
+                  <div class="input"><input type="text" id="SalesRepCity" placeholder="المدينة"><i
+                      class="fa fa-city"></i></div>
+                </div>
+              </div>
+            </div>
+            <div class="Form-Section">
+              <h4><i class="fa fa-book"></i> البيانات المحاسبية</h4>
+              <div class="grid">
+                <div class="Field">
+                  <label>الرصيد الافتتاحي</label>
+                  <div class="input"><input type="number" id="OpenBalance" value="0" min="0" step="0.01"><i
+                      class="fa fa-money-bill"></i></div>
+                </div>
+                <div class="Field">
+                  <label>نوع الرصيد</label>
+                  <div class="input SelectInput">
+                    <select id="SalesRepBalanceType">
+                      <option value="debit">مدين</option>
+                      <option value="credit">دائن</option>
+                    </select>
+                    <i class="fa fa-scale-balanced"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="grid" style="margin-top: 12px;">
+                <div class="Field">
+                  <label>حد الائتمان</label>
+                  <div class="input"><input type="number" id="SalesRepCreditLimit" value="0" min="0" step="0.01"><i
+                      class="fa fa-credit-card"></i></div>
+                </div>
+                <div class="Field">
+                  <label>الحالة</label>
+                  <div class="input SelectInput">
+                    <select id="SalesRepStatus">
+                      <option value="active">نشط</option>
+                      <option value="inactive">غير نشط</option>
+                      <option value="suspended">موقوف</option>
+                    </select>
+                    <i class="fa fa-circle-check"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="Form-Section">
+              <h4><i class="fa fa-pen"></i> ملاحظات</h4>
+              <div class="Field">
+                <div class="input">
+                  <textarea id="SalesRepNotes" placeholder="ملاحظات إضافية..."></textarea>
+                  <i class="fa fa-pen icon-area"></i>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('AddNewPopup')"><i class="fa fa-xmark"></i> إلغاء</button>
+          <button class="apply" onclick="saveSalesRep()"><i class="fa fa-save"></i> حفظ المندوب</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!--    Popup: عرض تفاصيل المندوب                               -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div class="Container-PopUp-Window" id="DetailsPopup">
+      <div class="PopUp-Window">
+        <div class="PopUpWindow-Header">
+          <div class="PopUpWindow-Title">
+            <h3>تفاصيل المندوب</h3>
+            <p><i class="fa-solid fa-hashtag"></i> <span id="DetailsCode">--</span></p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('DetailsPopup')"><i
+              class="fa fa-xmark"></i></button>
+        </div>
+        <div class="PopUpWindow-Body" id="VoucherDetailsBody">
+          <div class="voucher-details-container">
+            <div class="Watermark">بيانات المندوب</div>
+
+            <%- include('../Partials/letterHead') %>
+
+              <div class="voucher-info-grid">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-green">
+                    <i class="fa-solid fa-user-tie"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">اسم المندوب</div>
+                    <div class="voucher-info-value" id="DetailsName">--</div>
+                    <div class="voucher-info-label" id="DetailsSupCode">--</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-info-grid Grid-3">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-blue">
+                    <i class="fa-solid fa-phone"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">رقم الهاتف</div>
+                    <div class="voucher-info-value" id="DetailsPhone">--</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-purple">
+                    <i class="fa-solid fa-envelope"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">البريد الإلكتروني</div>
+                    <div class="voucher-info-value" id="DetailsEmail">--</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-cyan">
+                    <i class="fa-solid fa-id-card"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">رقم الهوية</div>
+                    <div class="voucher-info-value" id="DetailsIdNumber">--</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-info-grid Grid-3">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-green">
+                    <i class="fa-solid fa-city"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">المدينة</div>
+                    <div class="voucher-info-value" id="DetailsCity">--</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-orange">
+                    <i class="fa-solid fa-building"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الفرع</div>
+                    <div class="voucher-info-value" id="DetailsBranch">--</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-red">
+                    <i class="fa-solid fa-globe"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الجنسية</div>
+                    <div class="voucher-info-value" id="DetailsNationality">--</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-info-grid Grid-3">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-green">
+                    <i class="fa-solid fa-money-bill"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الرصيد الافتتاحي</div>
+                    <div class="voucher-info-value" id="DetailsOpenBalance">0.00 ر.س</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-orange">
+                    <i class="fa-solid fa-wallet"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الرصيد الحالي</div>
+                    <div class="voucher-info-value" id="DetailsCurrentBalance">0.00 ر.س</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-red">
+                    <i class="fa-solid fa-credit-card"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">حد الائتمان</div>
+                    <div class="voucher-info-value" id="DetailsCreditLimit">0.00 ر.س</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-info-grid Grid-2">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-purple">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">نوع الرصيد</div>
+                    <div class="voucher-info-value" id="DetailsBalanceType">--</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-cyan">
+                    <i class="fa-solid fa-circle-check"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الحالة</div>
+                    <div class="voucher-info-value" id="DetailsStatus">--</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-info-grid" style="margin-top: 16px;">
+                <div class="voucher-info-card" style="flex: 1 1 100%;">
+                  <div class="voucher-info-icon Color-Bg-blue">
+                    <i class="fa-solid fa-pen"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">ملاحظات</div>
+                    <div class="voucher-info-value" id="DetailsNotes">--</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-info-grid" style="margin-top: 16px;">
+                <div class="voucher-info-card" style="flex: 1 1 100%;">
+                  <div class="voucher-info-content" style="padding: 0;">
+                    <div class="voucher-info-label"
+                      style="background: #f0f2f5; padding: 8px 16px; border-radius: 8px 8px 0 0; font-weight: 600; color: #2c3e50;">
+                      <i class="fa-solid fa-book"></i> الحساب المحاسبي المرتبط
+                    </div>
+                    <div style="padding: 16px;">
+                      <div class="voucher-info-value" id="DetailsAccountInfo">لم يتم ربط حساب محاسبي</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+          </div>
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('DetailsPopup')"><i class="fa fa-xmark"></i> إغلاق</button>
+          <button class="apply" onclick="printDetails()"><i class="fa fa-print"></i> طباعة</button>
+        </div>
+      </div>
+    </div>
+
+
+    <%- include('../Partials/filter') %>
+      <%- include('../Partials/scripts') %>
+
+
+        <script src="/Js/SalesReps.js"></script>
+
+</body>
+
+</html>

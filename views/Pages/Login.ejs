@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/Css/1-Main.css">
+  <link rel="stylesheet" href="/Css/7-Auth.css">
+  <title>
+    <%= title %>
+  </title>
+  <style>
+    .auth-toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      z-index: 9999;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      font-family: 'Cairo', sans-serif;
+      font-size: 14px;
+      min-width: 280px;
+      justify-content: flex-start;
+    }
+
+    .auth-toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .auth-toast-success {
+      border-right: 4px solid var(--accent-green, #22c55e);
+    }
+
+    .auth-toast-error {
+      border-right: 4px solid var(--accent-red, #ef4444);
+    }
+
+    .auth-toast-info {
+      border-right: 4px solid var(--accent-blue, #3b82f6);
+    }
+
+    .auth-toast i {
+      font-size: 18px;
+    }
+
+    .auth-toast-success i {
+      color: var(--accent-green, #22c55e);
+    }
+
+    .auth-toast-error i {
+      color: var(--accent-red, #ef4444);
+    }
+
+    .auth-toast-info i {
+      color: var(--accent-blue, #3b82f6);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="auth-bg-decoration">
+    <div class="circle-1"></div>
+    <div class="circle-2"></div>
+    <div class="dots"></div>
+  </div>
+
+  <button class="auth-dark-toggle" id="darkModeToggle" title="تبديل الوضع المظلم">
+    <i class="fa-regular fa-moon"></i>
+  </button>
+
+  <div class="auth-login-wrapper">
+    <!-- Branding Side -->
+    <div class="auth-branding">
+      <img src="/Img/Logo-with-text2.png" alt="ArbahERP" class="auth-branding-logo">
+      <h1 class="auth-branding-title">أرباح ERP</h1>
+      <p class="auth-branding-subtitle">نظام إدارة الموارد المؤسسي المتكامل</p>
+
+      <div class="auth-branding-features">
+        <div class="auth-branding-feature">
+          <i class="fa-solid fa-chart-line"></i>
+          <span class="auth-branding-feature-text">تقارير مالية متقدمة</span>
+        </div>
+        <div class="auth-branding-feature">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span class="auth-branding-feature-text">إدارة المخزون الذكية</span>
+        </div>
+        <div class="auth-branding-feature">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <span class="auth-branding-feature-text">فواتير إلكترونية ZATCA</span>
+        </div>
+        <div class="auth-branding-feature">
+          <i class="fa-solid fa-users"></i>
+          <span class="auth-branding-feature-text">إدارة العملاء والموردين</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Side -->
+    <div class="auth-login-form-side">
+      <div class="auth-form-header">
+        <h2>مرحباً بعودتك! 👋</h2>
+        <p>سجل دخولك للوصول إلى لوحة التحكم</p>
+      </div>
+
+      <form class="auth-login-form" id="loginForm" onsubmit="return handleLogin(event)">
+        <div class="Field" id="emailField">
+          <label>البريد الإلكتروني أو اسم المستخدم</label>
+          <div class="input">
+            <input type="text" id="email" placeholder="أدخل بريدك الإلكتروني" autocomplete="email">
+            <i class="fa fa-envelope"></i>
+          </div>
+          <span class="auth-error-message">يرجى إدخال بريد إلكتروني صحيح</span>
+        </div>
+
+        <div class="Field" id="passwordField">
+          <label>كلمة المرور</label>
+          <div class="input">
+            <input type="password" id="password" placeholder="أدخل كلمة المرور" autocomplete="current-password">
+            <i class="fa fa-lock"></i>
+            <button type="button" class="auth-toggle-password" onclick="togglePassword()">
+              <i class="fa-regular fa-eye" id="eyeIcon"></i>
+            </button>
+          </div>
+          <span class="auth-error-message">كلمة المرور مطلوبة</span>
+        </div>
+
+        <div class="auth-form-options">
+          <label class="auth-remember-me">
+            <input type="checkbox" id="rememberMe">
+            <span>تذكرني</span>
+          </label>
+          <a href="#" class="auth-forgot-link" onclick="forgotPassword()">نسيت كلمة المرور؟</a>
+        </div>
+
+        <button type="submit" class="auth-login-btn" id="loginBtn">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          تسجيل الدخول
+        </button>
+
+        <div class="auth-divider">أو سجل دخولك باستخدام</div>
+
+        <p class="auth-register-link">
+          ليس لديك حساب؟ <a href="/Register">سجل الآن</a>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <script src="/Js/auth.js"></script>
+  <script>
+    // Redirect if already logged in
+    if (RouteGuard.redirectIfAuth()) {
+      // Already handled by redirectIfAuth
+    }
+
+    // Dark mode toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    darkModeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('Dark-Mood');
+      const icon = darkModeToggle.querySelector('i');
+      if (document.body.classList.contains('Dark-Mood')) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+      } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+      }
+    });
+
+    // Toggle password visibility
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const eyeIcon = document.getElementById('eyeIcon');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+      }
+    }
+
+    // Handle login
+    async function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const loginBtn = document.getElementById('loginBtn');
+      const emailField = document.getElementById('emailField');
+      const passwordField = document.getElementById('passwordField');
+      let hasError = false;
+
+      emailField.classList.remove('auth-error');
+      passwordField.classList.remove('auth-error');
+
+      if (!email) {
+        emailField.classList.add('auth-error');
+        hasError = true;
+      }
+      if (!password) {
+        passwordField.classList.add('auth-error');
+        hasError = true;
+      }
+      if (hasError) return false;
+
+      // Show loading
+      loginBtn.classList.add('loading');
+      loginBtn.disabled = true;
+      const originalText = loginBtn.innerHTML;
+      loginBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري تسجيل الدخول...';
+
+      try {
+        const result = await API.login({ email, password });
+
+        if (result.ok) {
+          Auth.setToken(result.data.token);
+          Auth.setUser(result.data.data.user);
+
+          Toast.success('تم تسجيل الدخول بنجاح!');
+
+          loginBtn.innerHTML = '<i class="fa-solid fa-check"></i> تم تسجيل الدخول!';
+          loginBtn.classList.remove('loading');
+          loginBtn.classList.add('success');
+
+          setTimeout(() => {
+            window.location.href = '/index';
+          }, 1000);
+        } else {
+          loginBtn.classList.remove('loading');
+          loginBtn.disabled = false;
+          loginBtn.innerHTML = originalText;
+
+          if (result.data?.needsVerification) {
+            Toast.error('الحساب غير مُفعَّل. سيتم تحويلك لصفحة التحقق...');
+            setTimeout(() => {
+              window.location.href = '/Register?step=2&email=' + encodeURIComponent(result.data.email);
+            }, 2000);
+            return;
+          }
+
+          Toast.error(result.data?.message || 'البريد الإلكتروني أو كلمة المرور غير صحيحة');
+
+          document.querySelector('.auth-login-form').classList.add('shake');
+          setTimeout(() => {
+            document.querySelector('.auth-login-form').classList.remove('shake');
+          }, 500);
+        }
+      } catch (error) {
+        loginBtn.classList.remove('loading');
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = originalText;
+        Toast.error('حدث خطأ في الاتصال بالخادم');
+      }
+
+      return false;
+    }
+
+    async function forgotPassword() {
+      const email = document.getElementById('email').value.trim();
+      if (!email) {
+        Toast.info('يرجى إدخال بريدك الإلكتروني أولاً');
+        document.getElementById('email').focus();
+        return;
+      }
+
+      const result = await API.forgotPassword(email);
+      if (result.ok) {
+        Toast.success('تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني');
+      } else {
+        Toast.error(result.data?.message || 'حدث خطأ. يرجى المحاولة لاحقاً');
+      }
+    }
+
+    // Remove error on input
+    document.getElementById('email').addEventListener('input', function () {
+      document.getElementById('emailField').classList.remove('auth-error');
+    });
+    document.getElementById('password').addEventListener('input', function () {
+      document.getElementById('passwordField').classList.remove('auth-error');
+    });
+  </script>
+</body>
+
+</html>

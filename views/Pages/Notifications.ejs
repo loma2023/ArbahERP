@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+    <link rel="stylesheet" href="/css/9-Notifications.css">
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+
+    <div class="WorkSpace">
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2>☻ مركز الإشعارات</h2>
+            <p>إدارة ومراجعة جميع إشعارات النظام والتنبيهات</p>
+          </div>
+
+          <div class="Control-bar">
+            <div class="compact-cards-row">
+              <div class="mini-metric-card card-orange">
+                <div class="icon-box"><i class="fa-solid fa-bell"></i></div>
+                <div class="info-text">
+                  <span class="lbl">جميع الإشعارات</span>
+                  <span class="num" id="statAll">24</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-green">
+                <div class="icon-box"><i class="fa-solid fa-envelope-open-text"></i></div>
+                <div class="info-text">
+                  <span class="lbl">غير مقروءة</span>
+                  <span class="num" id="statUnread">6</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-blue">
+                <div class="icon-box"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="info-text">
+                  <span class="lbl">عاجلة </span>
+                  <span class="num" id="statUrgent">10</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-red">
+                <div class="icon-box"><i class="fa-solid fa-calendar-day"></i></div>
+                <div class="info-text">
+                  <span class="lbl">اليوم </span>
+                  <span class="num" id="statToday">3</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="action-buttons-group">
+              <button class="Tool-Btn btn-add-customer" onclick="markAllAsRead()"><i class="fa-solid fa-plus"></i> تحديد
+                الكل كمقروء</button>
+              <button class="Tool-Btn btn-delete-all" onclick="deleteSelected()"><i class="fa-solid fa-trash-can"></i>
+                حذف
+                المحدد</button>
+            </div>
+          </div>
+
+          <div class="notifications-layout">
+            <!-- Sidebar Filters -->
+            <div class="notifications-sidebar">
+              <div class="sidebar-header">
+                <h3><i class="fa-solid fa-filter"></i> التصفية</h3>
+                <span class="unread-badge" id="sidebarUnreadBadge">8</span>
+              </div>
+
+              <div class="filter-group">
+                <div class="filter-group-title">الحالة</div>
+                <div class="filter-item active" data-filter="all" onclick="filterNotifications('all', this)">
+                  <div class="filter-label">
+                    <div class="filter-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--accent-blue);"><i
+                        class="fa-solid fa-layer-group"></i></div>
+                    جميع الإشعارات
+                  </div>
+                  <span class="filter-count">24</span>
+                </div>
+                <div class="filter-item" data-filter="unread" onclick="filterNotifications('unread', this)">
+                  <div class="filter-label">
+                    <div class="filter-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--accent-green);"><i
+                        class="fa-solid fa-envelope"></i></div>
+                    غير مقروءة
+                  </div>
+                  <span class="filter-count">8</span>
+                </div>
+                <div class="filter-item" data-filter="read" onclick="filterNotifications('read', this)">
+                  <div class="filter-label">
+                    <div class="filter-icon" style="background: rgba(100, 116, 139, 0.1); color: var(--text-sub);"><i
+                        class="fa-solid fa-envelope-open"></i></div>
+                    مقروءة
+                  </div>
+                  <span class="filter-count">16</span>
+                </div>
+              </div>
+
+              <div class="filter-group">
+                <div class="filter-group-title">النوع</div>
+                <div class="filter-item type-sales" data-type="sales" onclick="filterByType('sales', this)">
+                  <div class="filter-label">
+                    <div class="filter-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                    المبيعات
+                  </div>
+                  <span class="filter-count">6</span>
+                </div>
+                <div class="filter-item type-inventory" data-type="inventory" onclick="filterByType('inventory', this)">
+                  <div class="filter-label">
+                    <div class="filter-icon"><i class="fa-solid fa-cube"></i></div>
+                    المخزون
+                  </div>
+                  <span class="filter-count">4</span>
+                </div>
+                <div class="filter-item type-accounts" data-type="accounts" onclick="filterByType('accounts', this)">
+                  <div class="filter-label">
+                    <div class="filter-icon"><i class="fa-solid fa-book"></i></div>
+                    الحسابات
+                  </div>
+                  <span class="filter-count">8</span>
+                </div>
+                <div class="filter-item type-system" data-type="system" onclick="filterByType('system', this)">
+                  <div class="filter-label">
+                    <div class="filter-icon"><i class="fa-solid fa-gear"></i></div>
+                    النظام
+                  </div>
+                  <span class="filter-count">3</span>
+                </div>
+                <div class="filter-item type-security" data-type="security" onclick="filterByType('security', this)">
+                  <div class="filter-label">
+                    <div class="filter-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    الأمان
+                  </div>
+                  <span class="filter-count">3</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="notifications-content">
+              <div class="notifications-header">
+                <div class="notifications-header-left">
+                  <h2><i class="fa-solid fa-list" style="color: var(--accent-green);"></i> قائمة الإشعارات</h2>
+                </div>
+              </div>
+
+              <div class="notifications-list" id="notificationsList">
+                <!-- Notifications will be rendered here -->
+              </div>
+            </div>
+          </div>
+        </main>
+    </div>
+
+    <!-- Notification Detail Popup -->
+    <div class="Container-PopUp-Window" id="NotificationDetailPopup">
+      <div class="PopUp-Window notification-detail-popup">
+        <div class="PopUpWindow-Header" id="WindowHeaderDrag">
+          <div class="PopUpWindow-Title">
+            <h3>تفاصيل الإشعار</h3>
+            <p>مراجعة تفاصيل الإشعار والإجراءات المتاحة</p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('NotificationDetailPopup')">
+            <i class="fa fa-xmark"></i>
+          </button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <div id="notificationDetailContent">
+            <!-- Content will be loaded dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <%- include('../Partials/filter') %>
+      <%- include('../Partials/scripts') %>
+
+        <script>
+          // ===== Notifications Data =====
+          const notificationsData = [
+            {
+              id: 1,
+              title: "فاتورة مبيعات جديدة",
+              text: "تم إنشاء فاتورة مبيعات جديدة رقم <strong>INV-2024-00156</strong> للعميل <strong>شركة الجميل للتجارة</strong> بقيمة <strong>15,750 ر.س</strong>",
+              type: "sales",
+              typeLabel: "المبيعات",
+              icon: "fa-cart-shopping",
+              time: "من 5 دقائق",
+              date: "2024-06-22 14:30",
+              unread: true,
+              urgent: false
+            },
+            {
+              id: 2,
+              title: "تنبيه المخزون",
+              text: "الصنف <strong>لابتوب Dell XPS 15</strong> وصل للحد الأدنى من المخزون. الكمية المتاحة: <strong>3</strong> والحد الأدنى: <strong>5</strong>",
+              type: "inventory",
+              typeLabel: "المخزون",
+              icon: "fa-cube",
+              time: "من 15 دقيقة",
+              date: "2024-06-22 14:20",
+              unread: true,
+              urgent: true
+            },
+            {
+              id: 3,
+              title: "قيد يومي جديد",
+              text: "تم تسجيل قيد يومي جديد: <strong>قيد-0001</strong> بقيمة <strong>25,000 ر.س</strong> في دفتر الأستاذ العام",
+              type: "accounts",
+              typeLabel: "الحسابات",
+              icon: "fa-book",
+              time: "من 30 دقيقة",
+              date: "2024-06-22 14:05",
+              unread: true,
+              urgent: false
+            },
+            {
+              id: 4,
+              title: "تجاوز حد الائتمان",
+              text: "العميل <strong>اسلام عبدالرحمن</strong> تجاوز حد الائتمان المسموح. الرصيد الحالي: <strong>12,500 ر.س</strong> وحد الائتمان: <strong>10,000 ر.س</strong>",
+              type: "sales",
+              typeLabel: "المبيعات",
+              icon: "fa-triangle-exclamation",
+              time: "من ساعة",
+              date: "2024-06-22 13:30",
+              unread: true,
+              urgent: true
+            },
+            {
+              id: 5,
+              title: "نسخة احتياطية ناجحة",
+              text: "تم إنشاء نسخة احتياطية تلقائية بنجاح. حجم النسخة: <strong>45.2 MB</strong> وتم الاحتفاظ بها في المسار المحدد",
+              type: "system",
+              typeLabel: "النظام",
+              icon: "fa-cloud-arrow-up",
+              time: "من ساعتين",
+              date: "2024-06-22 12:00",
+              unread: false,
+              urgent: false
+            },
+            {
+              id: 6,
+              title: "تسجيل دخول من جهاز جديد",
+              text: "تم تسجيل الدخول إلى النظام من جهاز جديد. <strong>Chrome على Windows</strong> - IP: <strong>192.168.1.105</strong>",
+              type: "security",
+              typeLabel: "الأمان",
+              icon: "fa-shield-halved",
+              time: "من 3 ساعات",
+              date: "2024-06-22 11:15",
+              unread: true,
+              urgent: true
+            },
+            {
+              id: 7,
+              title: "فاتورة مشتريات",
+              text: "تم استلام فاتورة مشتريات رقم <strong>PUR-2024-0089</strong> من المورد <strong>شركة التقنية المتقدمة</strong> بقيمة <strong>8,400 ر.س</strong>",
+              type: "sales",
+              typeLabel: "المبيعات",
+              icon: "fa-bag-shopping",
+              time: "من 4 ساعات",
+              date: "2024-06-22 10:00",
+              unread: false,
+              urgent: false
+            },
+            {
+              id: 8,
+              title: "تحويل مخزني",
+              text: "تم تنفيذ تحويل مخزني من <strong>المستودع الرئيسي</strong> إلى <strong>فرع جدة</strong>. عدد الأصناف: <strong>12</strong>",
+              type: "inventory",
+              typeLabel: "المخزون",
+              icon: "fa-truck-moving",
+              time: "من 5 ساعات",
+              date: "2024-06-22 09:00",
+              unread: false,
+              urgent: false
+            },
+            {
+              id: 9,
+              title: "سند قبض جديد",
+              text: "تم تسجيل سند قبض رقم <strong>REC-2024-0045</strong> بقيمة <strong>5,000 ر.س</strong> من العميل <strong>مؤسسة النور</strong>",
+              type: "accounts",
+              typeLabel: "الحسابات",
+              icon: "fa-file-invoice-dollar",
+              time: "أمس",
+              date: "2024-06-21 16:45",
+              unread: false,
+              urgent: false
+            },
+            {
+              id: 10,
+              title: "تحديث النظام",
+              text: "يتوفر تحديث جديد للنظام <strong>ArbahERP v2.1.0</strong>. يتضمن تحسينات في الأداء وإصلاحات أمنية مهمة",
+              type: "system",
+              typeLabel: "النظام",
+              icon: "fa-rotate",
+              time: "أمس",
+              date: "2024-06-21 10:00",
+              unread: true,
+              urgent: false
+            },
+            {
+              id: 11,
+              title: "تقرير الآجل",
+              text: "تقرير الآجل الشهري جاهز للمراجعة. إجمالي الذمم المدينة: <strong>62,000 ر.س</strong> - العملاء المتأخرين: <strong>3</strong>",
+              type: "accounts",
+              typeLabel: "الحسابات",
+              icon: "fa-chart-pie",
+              time: "من يومين",
+              date: "2024-06-20 09:00",
+              unread: false,
+              urgent: false
+            },
+            {
+              id: 12,
+              title: "محاولة دخول فاشلة",
+              text: "محاولة تسجيل دخول فاشلة من IP: <strong>203.45.12.88</strong>. يرجى مراجعة إعدادات الأمان",
+              type: "security",
+              typeLabel: "الأمان",
+              icon: "fa-lock",
+              time: "من يومين",
+              date: "2024-06-20 08:30",
+              unread: true,
+              urgent: true
+            }
+          ];
+
+          let currentFilter = 'all';
+          let currentTypeFilter = null;
+          let selectedNotifications = new Set();
+
+          // ===== Render Notifications =====
+          function renderNotifications() {
+            const list = document.getElementById('notificationsList');
+            let filtered = notificationsData;
+
+            // Apply status filter
+            if (currentFilter === 'unread') {
+              filtered = filtered.filter(n => n.unread);
+            } else if (currentFilter === 'read') {
+              filtered = filtered.filter(n => !n.unread);
+            }
+
+            // Apply type filter
+            if (currentTypeFilter) {
+              filtered = filtered.filter(n => n.type === currentTypeFilter);
+            }
+
+            if (filtered.length === 0) {
+              list.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon"><i class="fa-solid fa-bell-slash"></i></div>
+            <h3>لا توجد إشعارات</h3>
+            <p>لا توجد إشعارات مطابقة للتصفية المحددة</p>
+          </div>
+        `;
+              return;
+            }
+
+            list.innerHTML = filtered.map(notification => `
+        <div class="notification-row ${notification.unread ? 'unread' : ''} ${selectedNotifications.has(notification.id) ? 'selected' : ''}" 
+             data-id="${notification.id}" onclick="showNotificationDetail(${notification.id})">
+          <div class="notification-checkbox" onclick="event.stopPropagation(); toggleSelect(${notification.id})">
+            <input type="checkbox" ${selectedNotifications.has(notification.id) ? 'checked' : ''}>
+          </div>
+          <div class="notification-icon ${notification.type}">
+            <i class="fa-solid ${notification.icon}"></i>
+          </div>
+          <div class="notification-body">
+            <div class="notification-title">
+              ${notification.unread ? '<span class="unread-dot"></span>' : ''}
+              ${notification.title}
+            </div>
+            <div class="notification-text">${notification.text}</div>
+            <div class="notification-meta">
+              <span class="time"><i class="fa-regular fa-clock"></i> ${notification.time}</span>
+              <span class="status-badge ${notification.type}">${notification.typeLabel}</span>
+              ${notification.urgent ? '<span style="color: var(--accent-red); font-weight: 700;"><i class="fa-solid fa-triangle-exclamation"></i> عاجل</span>' : ''}
+            </div>
+          </div>
+          <div class="notification-actions">
+            <button class="btn-mark" title="تحديد كمقروء" onclick="event.stopPropagation(); toggleRead(${notification.id})">
+              <i class="fa-solid ${notification.unread ? 'fa-envelope-open' : 'fa-envelope'}"></i>
+            </button>
+            <button class="btn-delete" title="حذف" onclick="event.stopPropagation(); deleteNotification(${notification.id})">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+            updateStats();
+          }
+
+          // ===== Filter Functions =====
+          function filterNotifications(filter, element) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-item[data-filter]').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+            renderNotifications();
+          }
+
+          function filterByType(type, element) {
+            if (currentTypeFilter === type) {
+              currentTypeFilter = null;
+              element.classList.remove('active');
+            } else {
+              currentTypeFilter = type;
+              document.querySelectorAll('.filter-item[data-type]').forEach(item => item.classList.remove('active'));
+              element.classList.add('active');
+            }
+            renderNotifications();
+          }
+
+          // ===== Selection =====
+          function toggleSelect(id) {
+            if (selectedNotifications.has(id)) {
+              selectedNotifications.delete(id);
+            } else {
+              selectedNotifications.add(id);
+            }
+            renderNotifications();
+          }
+
+          // ===== Mark as Read =====
+          function toggleRead(id) {
+            const notification = notificationsData.find(n => n.id === id);
+            if (notification) {
+              notification.unread = !notification.unread;
+              renderNotifications();
+              updateHeaderBadge();
+            }
+          }
+
+          function markAllAsRead() {
+            let count = 0;
+            notificationsData.forEach(n => {
+              if (n.unread) {
+                n.unread = false;
+                count++;
+              }
+            });
+            renderNotifications();
+            updateHeaderBadge();
+            if (count > 0) {
+              ArbahToast.success(`تم تحديد ${count} إشعار كمقروء`);
+            } else {
+              ArbahToast.info('لا توجد إشعارات غير مقروءة');
+            }
+          }
+
+          // ===== Delete =====
+          function deleteNotification(id) {
+            if (confirm('هل أنت متأكد من حذف هذا الإشعار؟')) {
+              const index = notificationsData.findIndex(n => n.id === id);
+              if (index > -1) {
+                notificationsData.splice(index, 1);
+                selectedNotifications.delete(id);
+                renderNotifications();
+                updateHeaderBadge();
+                ArbahToast.success('تم حذف الإشعار بنجاح');
+              }
+            }
+          }
+
+          function deleteSelected() {
+            if (selectedNotifications.size === 0) {
+              ArbahToast.warning('يرجى تحديد إشعارات للحذف');
+              return;
+            }
+            if (confirm(`هل أنت متأكد من حذف ${selectedNotifications.size} إشعار محدد؟`)) {
+              for (let id of selectedNotifications) {
+                const index = notificationsData.findIndex(n => n.id === id);
+                if (index > -1) notificationsData.splice(index, 1);
+              }
+              selectedNotifications.clear();
+              renderNotifications();
+              updateHeaderBadge();
+              ArbahToast.success('تم حذف الإشعارات المحددة بنجاح');
+            }
+          }
+
+          // ===== Show Detail =====
+          function showNotificationDetail(id) {
+            const notification = notificationsData.find(n => n.id === id);
+            if (!notification) return;
+
+            // Mark as read when opened
+            if (notification.unread) {
+              notification.unread = false;
+              renderNotifications();
+              updateHeaderBadge();
+            }
+
+            const content = document.getElementById('notificationDetailContent');
+            content.innerHTML = `
+        <div class="notification-detail-header">
+          <div class="icon ${notification.type}" style="background: rgba(var(--accent-${notification.type === 'sales' ? 'orange' : notification.type === 'inventory' ? 'purple' : notification.type === 'accounts' ? 'blue' : notification.type === 'security' ? 'red' : 'gray'}, 0.1); color: var(--accent-${notification.type === 'sales' ? 'orange' : notification.type === 'inventory' ? 'purple' : notification.type === 'accounts' ? 'blue' : notification.type === 'security' ? 'red' : 'gray'});">
+            <i class="fa-solid ${notification.icon}"></i>
+          </div>
+          <div class="info">
+            <h3>${notification.title}</h3>
+            <span><i class="fa-regular fa-clock"></i> ${notification.date} | ${notification.time}</span>
+          </div>
+        </div>
+        <div class="notification-detail-body">
+          <p>${notification.text}</p>
+          <div class="detail-row">
+            <span class="label">النوع</span>
+            <span class="value" style="display: flex; align-items: center; gap: 6px;">
+              <span class="status-badge ${notification.type}">${notification.typeLabel}</span>
+            </span>
+          </div>
+          <div class="detail-row">
+            <span class="label">الحالة</span>
+            <span class="value" style="color: ${notification.unread ? 'var(--accent-green)' : 'var(--text-sub)'};">
+              ${notification.unread ? '<i class="fa-solid fa-envelope"></i> غير مقروء' : '<i class="fa-solid fa-envelope-open"></i> مقروء'}
+            </span>
+          </div>
+          ${notification.urgent ? `
+          <div class="detail-row">
+            <span class="label">الأولوية</span>
+            <span class="value" style="color: var(--accent-red);"><i class="fa-solid fa-triangle-exclamation"></i> عاجل</span>
+          </div>
+          ` : ''}
+        </div>
+        <div class="notification-detail-actions">
+          <button class="btn-mark-read" onclick="toggleRead(${notification.id}); closePopUpWindow('NotificationDetailPopup');">
+            <i class="fa-solid ${notification.unread ? 'fa-envelope-open' : 'fa-envelope'}"></i>
+            ${notification.unread ? 'تحديد كمقروء' : 'تحديد كغير مقروء'}
+          </button>
+          <button class="btn-go-to" onclick="closePopUpWindow('NotificationDetailPopup');">
+            <i class="fa-solid fa-arrow-right"></i> الذهاب للصفحة
+          </button>
+        </div>
+      `;
+
+            openPopUpWindow('NotificationDetailPopup');
+          }
+
+          // ===== Update Stats =====
+          function updateStats() {
+            const all = notificationsData.length;
+            const unread = notificationsData.filter(n => n.unread).length;
+            const urgent = notificationsData.filter(n => n.urgent).length;
+            const today = notificationsData.filter(n => n.date.startsWith('2024-06-22')).length;
+
+            document.getElementById('statAll').textContent = all;
+            document.getElementById('statUnread').textContent = unread;
+            document.getElementById('statUrgent').textContent = urgent;
+            document.getElementById('statToday').textContent = today;
+            document.getElementById('sidebarUnreadBadge').textContent = unread;
+
+            // Update filter counts
+            document.querySelector('[data-filter="all"] .filter-count').textContent = all;
+            document.querySelector('[data-filter="unread"] .filter-count').textContent = unread;
+            document.querySelector('[data-filter="read"] .filter-count').textContent = all - unread;
+          }
+
+          function updateHeaderBadge() {
+            const unread = notificationsData.filter(n => n.unread).length;
+            const dot = document.querySelector('.Notification-Icon .Notification-Dot');
+            if (dot) {
+              dot.style.display = unread > 0 ? 'block' : 'none';
+            }
+          }
+
+          // ===== Popup Functions =====
+          function openPopUpWindow(popupId) {
+            document.getElementById(popupId).classList.add('active');
+          }
+
+          function closePopUpWindow(popupId) {
+            document.getElementById(popupId).classList.remove('active');
+          }
+
+          // ===== Logout =====
+          function logout() {
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+              ArbahToast.success('تم تسجيل الخروج بنجاح');
+              setTimeout(() => {
+                window.location.href = 'Login.html';
+              }, 1500);
+            }
+          }
+
+          // ===== Initialize =====
+          document.addEventListener('DOMContentLoaded', function () {
+            renderNotifications();
+            updateHeaderBadge();
+          });
+        </script>
+</body>
+
+</html>

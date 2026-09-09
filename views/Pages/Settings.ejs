@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+
+    <div class="WorkSpace">
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2>☻ الإعدادات</h2>
+            <p>إدارة إعدادات النظام والمستخدمين والنسخ الاحتياطي</p>
+          </div>
+
+          <div class="settings-layout">
+            <!-- Left: Content -->
+            <div class="settings-content" id="SettingsContent">
+
+              <!-- ===== COMPANY INFO ===== -->
+              <div class="content-section active" id="section-company">
+                <div class="settings-content-header">
+                  <div>
+                    <h3><i class="fa-solid fa-building"></i> بيانات الشركة</h3>
+                    <p>إدارة بيانات الشركة الأساسية المستخدمة في الفواتير والتقارير</p>
+                  </div>
+                </div>
+
+                <div class="settings-section-block">
+                  <div class="settings-section-title"><i class="fa-solid fa-circle-info"></i> المعلومات
+                    الأساسية</div>
+                  <div class="settings-form-grid">
+                    <div class="Field">
+                      <label>اسم الشركة (عربي)</label>
+                      <div class="input"><input type="text" id="CompanyNameAr" value="شركة أرباح التجارية"><i
+                          class="fa fa-building"></i></div>
+                    </div>
+                    <div class="Field">
+                      <label>اسم الشركة (إنجليزي)</label>
+                      <div class="input"><input type="text" id="CompanyNameEn" value="Business Profits Company"><i
+                          class="fa fa-building"></i></div>
+                    </div>
+                    <div class="Field">
+                      <label>الرقم الضريبي</label>
+                      <div class="input"><input type="text" id="CompanyTax" value="311234567890003"><i
+                          class="fa fa-file-invoice"></i></div>
+                    </div>
+                    <div class="Field">
+                      <label>السجل التجاري</label>
+                      <div class="input"><input type="text" id="CompanyReg" value="1010123456"><i
+                          class="fa fa-file-contract"></i></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="settings-section-block">
+                  <div class="settings-section-title"><i class="fa-solid fa-phone"></i> معلومات التواصل</div>
+                  <div class="settings-form-grid">
+                    <div class="Field">
+                      <label>الهاتف</label>
+                      <div class="input"><input type="text" id="CompanyPhone" value="01158347657"><i
+                          class="fa fa-phone"></i></div>
+                    </div>
+                    <div class="Field">
+                      <label>البريد الإلكتروني</label>
+                      <div class="input"><input type="email" id="CompanyEmail" value="info@arbah-erp.com"><i
+                          class="fa fa-envelope"></i></div>
+                    </div>
+                    <div class="Field">
+                      <label>العنوان</label>
+                      <div class="input"><input type="text" id="CompanyAddress"
+                          value="الرياض، حي العليا، شارع التحلية"><i class="fa fa-map-marker"></i>
+                      </div>
+                    </div>
+                    <div class="Field">
+                      <label>الموقع الإلكتروني</label>
+                      <div class="input"><input type="text" id="CompanyWebsite" value="www.arbah-erp.com"><i
+                          class="fa fa-globe"></i></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="settings-section-block">
+                  <div class="settings-section-title"><i class="fa-solid fa-image"></i> الشعار</div>
+                  <div class="settings-form-grid">
+                    <div class="Field file-upload-field">
+                      <label>شعار الشركة</label>
+                      <div class="input">
+                        <input type="text" value="لم يتم اختيار أي ملف" readonly>
+                        <button class="file-upload-btn"><i class="fa-solid fa-upload"></i> اختيار
+                          ملف</button>
+                        <i class="fa fa-image"></i>
+                      </div>
+                    </div>
+                    <div class="Field file-upload-field">
+                      <label>ختم الشركة الإلكتروني</label>
+                      <div class="input">
+                        <input type="text" value="لم يتم اختيار أي ملف" readonly>
+                        <button class="file-upload-btn"><i class="fa-solid fa-upload"></i> اختيار
+                          ملف</button>
+                        <i class="fa fa-stamp"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="settings-actions">
+                  <button class="btn-reset" onclick="resetSettings()"><i class="fa-solid fa-rotate-left"></i>
+                    إعادة تعيين</button>
+                  <button class="btn-save" onclick="saveSettings()"><i class="fa-solid fa-floppy-disk"></i>
+                    حفظ الإعدادات</button>
+                </div>
+              </div>
+
+              <!-- ===== SYSTEM SETTINGS ===== -->
+              <div class="content-section" id="section-system">
+                <div class="settings-content-header">
+                  <div>
+                    <h3><i class="fa-solid fa-gear"></i> إعدادات النظام</h3>
+                    <p>إدارة الإعدادات العامة للنظام والتفضيلات</p>
+                  </div>
+                </div>
+
+                <div class="settings-section-block">
+                  <div class="settings-section-title"><i class="fa-solid fa-globe"></i> اللغة والمنطقة</div>
+                  <div class="settings-form-grid">
+                    <div class="Field">
+                      <label>اللغة الافتراضية</label>
+                      <div class="input SelectInput">
+                        <select id="DefaultLanguage">
+                          <option value="ar" selected>العربية</option>
+                          <option value="en">English</option>
+                        </select>
+                        <i class="fa fa-language"></i>
+                      </div>
+                    </div>
+                    <div class="Field">
+                      <label>العملة الافتراضية</label>
+                      <div class="input SelectInput">
+                        <select id="DefaultCurrency">
+                          <option value="SAR" selected>ريال سعودي (SAR)</option>
+                          <option value="USD">دولار أمريكي (USD)</option>
+                          <option value="EUR">يورو (EUR)</option>
+                        </select>
+                        <i class="fa fa-coins"></i>
+                      </div>
+                    </div>
+                    <div class="Field">
+                      <label>التوقيت</label>
+                      <div class="input SelectInput">
+                        <select id="Timezone">
+                          <option value="Asia/Riyadh" selected>الرياض (GMT+3)</option>
+                          <option value="Asia/Dubai">دبي (GMT+4)</option>
+                          <option value="UTC">UTC</option>
+                        </select>
+                        <i class="fa fa-clock"></i>
+                      </div>
+                    </div>
+                    <div class="Field">
+                      <label>تنسيق التاريخ</label>
+                      <div class="input SelectInput">
+                        <select id="DateFormat">
+                          <option value="dd/MM/yyyy" selected>DD/MM/YYYY</option>
+                          <option value="yyyy-MM-dd">YYYY-MM-DD</option>
+                          <option value="MM/dd/yyyy">MM/DD/YYYY</option>
+                        </select>
+                        <i class="fa fa-calendar"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="settings-section-block">
+                  <div class="settings-section-title"><i class="fa-solid fa-toggle-on"></i> الخيارات العامة
+                  </div>
+                  <div class="toggle-row">
+                    <div class="toggle-info">
+                      <span class="toggle-label">الوضع المظلم الافتراضي</span>
+                      <span class="toggle-desc">تفعيل الوضع المظلم لجميع المستخدمين الجدد</span>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="DarkModeDefault">
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="toggle-row">
+                    <div class="toggle-info">
+                      <span class="toggle-label">التنبيهات الصوتية</span>
+                      <span class="toggle-desc">تشغيل صوت عند استلام إشعارات جديدة</span>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="SoundNotifications" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="toggle-row">
+                    <div class="toggle-info">
+                      <span class="toggle-label">تسجيل الدخول التلقائي</span>
+                      <span class="toggle-desc">البقاء متصلاً لمدة 30 يوماً</span>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="AutoLogin">
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="toggle-row">
+                    <div class="toggle-info">
+                      <span class="toggle-label">تتبع نشاط المستخدمين</span>
+                      <span class="toggle-desc">تسجيل جميع العمليات للمراجعة والتدقيق</span>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="UserActivityLog" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="settings-actions">
+                  <button class="btn-reset" onclick="resetSettings()"><i class="fa-solid fa-rotate-left"></i>
+                    إعادة تعيين</button>
+                  <button class="btn-save" onclick="saveSettings()"><i class="fa-solid fa-floppy-disk"></i>
+                    حفظ الإعدادات</button>
+                </div>
+              </div>
+
+              <!-- ===== USERS ===== -->
+              <div class="content-section" id="section-users">
+                <div class="settings-content-header">
+                  <div>
+                    <h3><i class="fa-solid fa-users-gear"></i> المستخدمين والصلاحيات</h3>
+                    <p>إدارة حسابات المستخدمين وأدوارهم في النظام</p>
+                  </div>
+                </div>
+
+                <div class="settings-section-block">
+                  <div class="settings-section-title"><i class="fa-solid fa-users"></i> المستخدمون النشطون
+                  </div>
+                  <div class="user-card">
+                    <img src="Assets/Img/UserImg.jpeg" class="user-card-avatar" alt="Admin">
+                    <div class="user-card-info">
+                      <div class="user-card-name">أحمد محمد</div>
+                      <div class="user-card-role">مدير النظام | admin@arbah.com</div>
+                    </div>
+                    <span class="user-card-status active">نشط</span>
+                    <div class="user-card-actions">
+                      <button title="تعديل"><i class="fa-regular fa-pen-to-square"></i></button>
+                    </div>
+                  </div>
+                  <div class="user-card">
+                    <div class="user-card-avatar"
+                      style="background: var(--accent-blue); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;">
+                      خ</div>
+                    <div class="user-card-info">
+                      <div class="user-card-name">خالد العبد</div>
+                      <div class="user-card-role">محاسب | khaled@arbah.com</div>
+                    </div>
+                    <span class="user-card-status active">نشط</span>
+                    <div class="user-card-actions">
+                      <button title="تعديل"><i class="fa-regular fa-pen-to-square"></i></button>
+                    </div>
+                  </div>
+                  <div class="user-card">
+                    <div class="user-card-avatar"
+                      style="background: var(--accent-purple); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;">
+                      س</div>
+                    <div class="user-card-info">
+                      <div class="user-card-name">سعيد علي</div>
+                      <div class="user-card-role">مندوب مبيعات | saeed@arbah.com</div>
+                    </div>
+                    <span class="user-card-status inactive">غير نشط</span>
+                    <div class="user-card-actions">
+                      <button title="تعديل"><i class="fa-regular fa-pen-to-square"></i></button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="settings-section-block">
+                  <div class="settings-section-title"><i class="fa-solid fa-user-plus"></i> إضافة مستخدم جديد
+                  </div>
+                  <div class="settings-form-grid">
+                    <div class="Field">
+                      <label>الاسم الكامل</label>
+                      <div class="input"><input type="text" id="NewUserName" placeholder="اسم المستخدم"><i
+                          class="fa fa-user"></i></div>
+                    </div>
+                    <div class="Field">
+                      <label>البريد الإلكتروني</label>
+                      <div class="input"><input type="email" id="NewUserEmail" placeholder="email@company.com"><i
+                          class="fa fa-envelope"></i></div>
+                    </div>
+                    <div class="Field">
+                      <label>الدور</label>
+                      <div class="input SelectInput">
+                        <select id="NewUserRole">
+                          <option value="admin">مدير النظام</option>
+                          <option value="accountant">محاسب</option>
+                          <option value="sales">مندوب مبيعات</option>
+                          <option value="viewer">مشاهد فقط</option>
+                        </select>
+                        <i class="fa fa-user-shield"></i>
+                      </div>
+                    </div>
+                    <div class="Field">
+                      <label>رقم الهاتف</label>
+                      <div class="input"><input type="text" id="NewUserPhone" placeholder="0501234567"><i
+                          class="fa fa-phone"></i></div>
+                    </div>
+                  </div>
+                  <button class="Tool-Btn btn-add-customer" style="margin-top: 16px;" onclick="addUser()"><i
+                      class="fa fa-plus"></i> إضافة مستخدم</button>
+                </div>
+
+                <div class="settings-actions">
+                  <button class="btn-reset" onclick="resetSettings()"><i class="fa-solid fa-rotate-left"></i>
+                    إعادة تعيين</button>
+                  <button class="btn-save" onclick="saveSettings()"><i class="fa-solid fa-floppy-disk"></i>
+                    حفظ الإعدادات</button>
+                </div>
+              </div>
+
+              <!-- ===== FINANCE ===== -->
+              <div class="content-section" id="section-finance">
+                <div class="settings-content-header">
+                  <div>
+                    <h3><i class="fa-solid fa-money-bill-wave"></i> الإعدادات المالية</h3>
+                    <p>إدارة الإعدادات المحاسبية والضريبية</p>
+                  </div>
+                </div>
+
+                <div class="settings-section-block">
+                  <div class="settings-section-title"><i class="fa-solid fa-percent"></i> الضرائب</div>
+                  <div class="settings-form-grid">
+                    <div class="Field">
+                      <label>نسبة ضريبة القيمة المضافة (%)</label>
+                      <div class="input"><input type="number" id="VatRate" value="15" min="0" max="100"><i
+                          class="fa fa-percent"></i></div>
+                    </div>
+                    <div class="Field">
+                      <label>نوع الضريبة الافتراضي</label>
+                      <div class="input SelectInput">
+                        <select id="DefaultTaxType">
+                          <option value="inclusive">شاملة في السعر</option>
+                          <option value="exclusive" selected>مضافة على السعر</option>
+                        </select>
+                        <i class="fa fa-file-invoice"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="settings-section-block">
+                  <div class="settings-section-title"><i class="fa-solid fa-money-bill"></i> العملات والحسابات
+                  </div>
+                  <div class="settings-form-grid">
+                    <div class="Field">
+                      <label>العملة الأساسية</label>
+                      <div class="input SelectInput">
+                        <select id="BaseCurrency">
+                          <option value="SAR" selected>ريال سعودي (SAR)</option>
+                          <option value="USD">دولار أمريكي (USD)</option>
+                        </select>
+                        <i class="fa fa-coins"></i>
+                      </div>
+                    </div>
+                    <div class="Field">
+                      <label>الخزينة الافتراضية</label>
+                      <div class="input SelectInput">
+                        <select id="DefaultCashBox">
+                          <option value="main" selected>الخزينة الرئيسية</option>
+                          <option value="riyadh">خزينة فرع الرياض</option>
+                          <option value="jeddah">خزينة فرع جدة</option>
+                        </select>
+                        <i class="fa fa-box"></i>
+                      </div>
+                    </div>
+                    <div class="Field">
+                      <label>البنك الافتراضي</label>
+                      <div class="input SelectInput">
+                        <select id="DefaultBank">
+                          <option value="ahli" selected>البنك الأهلي</option>
+                          <option value="rajhi">بنك الراجحي</option>
+                        </select>
+                        <i class="fa fa-building-columns"></i>
+                      </div>
+                    </div>
+                    <div class="Field">
+                      <label>المخزن الافتراضي</label>
+                      <div class="input SelectInput">
+                        <select id="DefaultWarehouse">
+                          <option value="main" selected>المستودع الرئيسي</option>
+                          <option value="shaabi">مخزن الشعبي</option>
+                          <option value="ahsa">مخزن الأحساء</option>
+                        </select>
+                        <i class="fa fa-warehouse"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="settings-section-block">
+                  <div class="settings-section-title"><i class="fa-solid fa-file-invoice"></i> الفواتير</div>
+                  <div class="toggle-row">
+                    <div class="toggle-info">
+                      <span class="toggle-label">تفعيل الفواتير الإلكترونية (ZATCA)</span>
+                      <span class="toggle-desc">ربط النظام مع هيئة الزكاة والضريبة</span>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="ZatcaEnabled" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="toggle-row">
+                    <div class="toggle-info">
+                      <span class="toggle-label">إنشاء QR Code تلقائياً</span>
+                      <span class="toggle-desc">إضافة رمز الاستجابة السريعة على كل فاتورة</span>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="AutoQRCode" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="toggle-row">
+                    <div class="toggle-info">
+                      <span class="toggle-label">السماح بالسعر السالب</span>
+                      <span class="toggle-desc">السماح بإدخال أسعار سالبة في الفواتير</span>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="AllowNegativePrice">
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="settings-actions">
+                  <button class="btn-reset" onclick="resetSettings()"><i class="fa-solid fa-rotate-left"></i>
+                    إعادة تعيين</button>
+                  <button class="btn-save" onclick="saveSettings()"><i class="fa-solid fa-floppy-disk"></i>
+                    حفظ الإعدادات</button>
+                </div>
+              </div>
+
+              <!-- ===== MODULES ===== -->
+              <div class="content-section" id="section-modules">
+                <div class="settings-content-header">
+                  <div>
+                    <h3><i class="fa-solid fa-cubes"></i> الوحدات والإضافات</h3>
+                    <p>تفعيل/تعطيل وحدات النظام المختلفة</p>
+                  </div>
+                </div>
+
+                <div class="settings-section-block">
+                  <div class="settings-section-title"><i class="fa-solid fa-cubes"></i> الوحدات الأساسية</div>
+                  <div class="module-card">
+                    <div class="module-card-info">
+                      <div class="module-card-icon"
+                        style="background: rgba(16, 185, 129, 0.1); color: var(--accent-green);"><i
+                          class="fa fa-receipt"></i></div>
+                      <div>
+                        <div class="module-card-title">الفواتير</div>
+                        <div class="module-card-desc">فواتير المبيعات والمشتريات</div>
+                      </div>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" checked disabled>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="module-card">
+                    <div class="module-card-info">
+                      <div class="module-card-icon"
+                        style="background: rgba(59, 130, 246, 0.1); color: var(--accent-blue);">
+                        <i class="fa fa-file-invoice-dollar"></i>
+                      </div>
+                      <div>
+                        <div class="module-card-title">السندات</div>
+                        <div class="module-card-desc">سندات القبض والدفع</div>
+                      </div>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="module-card">
+                    <div class="module-card-info">
+                      <div class="module-card-icon"
+                        style="background: rgba(139, 92, 246, 0.1); color: var(--accent-purple);"><i
+                          class="fa fa-users"></i></div>
+                      <div>
+                        <div class="module-card-title">العملاء والموردين</div>
+                        <div class="module-card-desc">إدارة العملاء والموردين</div>
+                      </div>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="module-card">
+                    <div class="module-card-info">
+                      <div class="module-card-icon"
+                        style="background: rgba(255, 148, 66, 0.1); color: var(--accent-orange);"><i
+                          class="fa fa-boxes-stacked"></i></div>
+                      <div>
+                        <div class="module-card-title">المخزون</div>
+                        <div class="module-card-desc">إدارة المخزون والأصناف</div>
+                      </div>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="module-card">
+                    <div class="module-card-info">
+                      <div class="module-card-icon"
+                        style="background: rgba(6, 182, 212, 0.1); color: var(--accent-cyan);">
+                        <i class="fa fa-book"></i>
+                      </div>
+                      <div>
+                        <div class="module-card-title">الحسابات العامة</div>
+                        <div class="module-card-desc">دفتر الأستاذ وشجرة الحسابات</div>
+                      </div>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="settings-actions">
+                  <button class="btn-reset" onclick="resetSettings()"><i class="fa-solid fa-rotate-left"></i>
+                    إعادة تعيين</button>
+                  <button class="btn-save" onclick="saveSettings()"><i class="fa-solid fa-floppy-disk"></i>
+                    حفظ الإعدادات</button>
+                </div>
+              </div>
+
+              <!-- ===== BACKUP ===== -->
+              <div class="content-section" id="section-backup">
+                <div class="settings-content-header">
+                  <div>
+                    <h3><i class="fa-solid fa-cloud-arrow-up"></i> النسخ الاحتياطي</h3>
+                    <p>إدارة النسخ الاحتياطية التلقائية واليدوية</p>
+                  </div>
+                </div>
+
+                <div class="settings-section-block">
+                  <div class="settings-section-title"><i class="fa-solid fa-clock"></i> النسخ الاحتياطية
+                    التلقائية</div>
+                  <div class="settings-form-grid">
+                    <div class="Field">
+                      <label>التكرار</label>
+                      <div class="input SelectInput">
+                        <select id="BackupFrequency">
+                          <option value="daily" selected>يومي</option>
+                          <option value="weekly">أسبوعي</option>
+                          <option value="monthly">شهري</option>
+                        </select>
+                        <i class="fa fa-clock"></i>
+                      </div>
+                    </div>
+                    <div class="Field">
+                      <label>وقت النسخ الاحتياطي</label>
+                      <div class="input"><input type="time" id="BackupTime" value="02:00"><i class="fa fa-clock"></i>
+                      </div>
+                    </div>
+                    <div class="Field">
+                      <label>الاحتفاظ بالنسخ (أيام)</label>
+                      <div class="input"><input type="number" id="BackupRetention" value="30" min="1"><i
+                          class="fa fa-calendar"></i></div>
+                    </div>
+                    <div class="Field">
+                      <label>المسار</label>
+                      <div class="input"><input type="text" id="BackupPath" value="/backups/arbah-erp"><i
+                          class="fa fa-folder"></i></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="settings-section-block">
+                  <div class="settings-section-title"><i class="fa-solid fa-history"></i> النسخ الاحتياطية
+                    السابقة</div>
+                  <div class="backup-card">
+                    <div class="backup-card-info">
+                      <div class="backup-card-icon"><i class="fa-solid fa-database"></i></div>
+                      <div>
+                        <div class="backup-card-title">نسخة احتياطية تلقائية</div>
+                        <div class="backup-card-date">2024-06-11 02:00 | 45.2 MB</div>
+                      </div>
+                    </div>
+                    <div class="backup-card-actions">
+                      <button class="Tool-Btn btn-excel" style="height: 30px; padding: 0 10px; font-size: 11px;"><i
+                          class="fa fa-download"></i> تحميل</button>
+                      <button class="Tool-Btn"
+                        style="height: 30px; padding: 0 10px; font-size: 11px; color: var(--accent-red);"><i
+                          class="fa fa-trash"></i></button>
+                    </div>
+                  </div>
+                  <div class="backup-card">
+                    <div class="backup-card-info">
+                      <div class="backup-card-icon"><i class="fa-solid fa-database"></i></div>
+                      <div>
+                        <div class="backup-card-title">نسخة احتياطية تلقائية</div>
+                        <div class="backup-card-date">2024-06-10 02:00 | 44.8 MB</div>
+                      </div>
+                    </div>
+                    <div class="backup-card-actions">
+                      <button class="Tool-Btn btn-excel" style="height: 30px; padding: 0 10px; font-size: 11px;"><i
+                          class="fa fa-download"></i> تحميل</button>
+                      <button class="Tool-Btn"
+                        style="height: 30px; padding: 0 10px; font-size: 11px; color: var(--accent-red);"><i
+                          class="fa fa-trash"></i></button>
+                    </div>
+                  </div>
+                  <div class="backup-card">
+                    <div class="backup-card-info">
+                      <div class="backup-card-icon"><i class="fa-solid fa-database"></i></div>
+                      <div>
+                        <div class="backup-card-title">نسخة احتياطية يدوية</div>
+                        <div class="backup-card-date">2024-06-08 14:30 | 44.5 MB</div>
+                      </div>
+                    </div>
+                    <div class="backup-card-actions">
+                      <button class="Tool-Btn btn-excel" style="height: 30px; padding: 0 10px; font-size: 11px;"><i
+                          class="fa fa-download"></i> تحميل</button>
+                      <button class="Tool-Btn"
+                        style="height: 30px; padding: 0 10px; font-size: 11px; color: var(--accent-red);"><i
+                          class="fa fa-trash"></i></button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="settings-actions">
+                  <button class="btn-backup" onclick="createBackup()"><i class="fa-solid fa-cloud-arrow-up"></i> إنشاء
+                    نسخة
+                    احتياطية الآن</button>
+                  <button class="btn-save" onclick="saveSettings()"><i class="fa-solid fa-floppy-disk"></i>
+                    حفظ الإعدادات</button>
+                </div>
+              </div>
+
+              <!-- ===== APPEARANCE ===== -->
+              <div class="content-section" id="section-appearance">
+                <div class="settings-content-header">
+                  <div>
+                    <h3><i class="fa-solid fa-paintbrush"></i> المظهر</h3>
+                    <p>تخصيص مظهر النظام والألوان</p>
+                  </div>
+                </div>
+
+                <div class="settings-section-block">
+                  <div class="settings-section-title"><i class="fa-solid fa-palette"></i> اللون الرئيسي</div>
+                  <div class="color-picker-row">
+                    <div class="color-option active" style="background: #10b981;"
+                      onclick="selectColor(this, '#10b981')">
+                    </div>
+                    <div class="color-option" style="background: #3b82f6;" onclick="selectColor(this, '#3b82f6')"></div>
+                    <div class="color-option" style="background: #8b5cf6;" onclick="selectColor(this, '#8b5cf6')"></div>
+                    <div class="color-option" style="background: #f97316;" onclick="selectColor(this, '#f97316')"></div>
+                    <div class="color-option" style="background: #ef4444;" onclick="selectColor(this, '#ef4444')"></div>
+                    <div class="color-option" style="background: #06b6d4;" onclick="selectColor(this, '#06b6d4')"></div>
+                    <div class="color-option" style="background: #ec4899;" onclick="selectColor(this, '#ec4899')"></div>
+                    <div class="color-option" style="background: #6366f1;" onclick="selectColor(this, '#6366f1')"></div>
+                  </div>
+                </div>
+
+                <div class="settings-section-block">
+                  <div class="settings-section-title"><i class="fa-solid fa-font"></i> الخط</div>
+                  <div class="settings-form-grid">
+                    <div class="Field">
+                      <label>حجم الخط الأساسي</label>
+                      <div class="input SelectInput">
+                        <select id="FontSize">
+                          <option value="small">صغير</option>
+                          <option value="medium" selected>متوسط</option>
+                          <option value="large">كبير</option>
+                        </select>
+                        <i class="fa fa-font"></i>
+                      </div>
+                    </div>
+                    <div class="Field">
+                      <label>نوع الخط</label>
+                      <div class="input SelectInput">
+                        <select id="FontFamily">
+                          <option value="cairo" selected>Cairo</option>
+                          <option value="tajawal">Tajawal</option>
+                          <option value="noto">Noto Sans Arabic</option>
+                        </select>
+                        <i class="fa fa-font"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="settings-section-block">
+                  <div class="settings-section-title"><i class="fa-solid fa-desktop"></i> العرض</div>
+                  <div class="toggle-row">
+                    <div class="toggle-info">
+                      <span class="toggle-label">الشريط الجانبي المضغوط</span>
+                      <span class="toggle-desc">تقليص حجم القائمة الجانبية تلقائياً</span>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="CompactSidebar">
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="toggle-row">
+                    <div class="toggle-info">
+                      <span class="toggle-label">إخفاء الأرقام في الجدول</span>
+                      <span class="toggle-desc">إظهار الأرقام باللغة العربية بدلاً من الإنجليزية</span>
+                    </div>
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="ArabicNumbers">
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="settings-actions">
+                  <button class="btn-reset" onclick="resetSettings()"><i class="fa-solid fa-rotate-left"></i>
+                    إعادة تعيين</button>
+                  <button class="btn-save" onclick="saveSettings()"><i class="fa-solid fa-floppy-disk"></i>
+                    حفظ الإعدادات</button>
+                </div>
+              </div>
+            </div>
+            <!-- Right: Sidebar -->
+            <div class="settings-sidebar">
+              <div class="sidebar-group active-group" data-section="company">
+                <div class="sidebar-group-header active" onclick="showGroupSection('company', this)">
+                  <div class="group-info">
+                    <i class="fa-solid fa-building"></i>
+                    <span>بيانات الشركة</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sidebar-group" data-section="system">
+                <div class="sidebar-group-header" onclick="showGroupSection('system', this)">
+                  <div class="group-info">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>إعدادات النظام</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sidebar-group" data-section="users">
+                <div class="sidebar-group-header" onclick="showGroupSection('users', this)">
+                  <div class="group-info">
+                    <i class="fa-solid fa-users-gear"></i>
+                    <span>المستخدمين والصلاحيات</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sidebar-group" data-section="finance">
+                <div class="sidebar-group-header" onclick="showGroupSection('finance', this)">
+                  <div class="group-info">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                    <span>الإعدادات المالية</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sidebar-group" data-section="modules">
+                <div class="sidebar-group-header" onclick="showGroupSection('modules', this)">
+                  <div class="group-info">
+                    <i class="fa-solid fa-cubes"></i>
+                    <span>الوحدات والإضافات</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sidebar-group" data-section="backup">
+                <div class="sidebar-group-header" onclick="showGroupSection('backup', this)">
+                  <div class="group-info">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>النسخ الاحتياطي</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sidebar-separator"></div>
+
+              <div class="sidebar-group" data-section="appearance">
+                <div class="sidebar-group-header" onclick="showGroupSection('appearance', this)">
+                  <div class="group-info">
+                    <i class="fa-solid fa-paintbrush"></i>
+                    <span>المظهر</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+    </div>
+
+    <%- include('../Partials/filter') %>
+      <%- include('../Partials/scripts') %>
+        <script>
+          // =============================================
+          // Simple Navigation - Click group = show content
+          // =============================================
+
+          function showGroupSection(sectionId, headerElement) {
+            // Hide all content sections
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+
+            // Show target section
+            const targetSection = document.getElementById('section-' + sectionId);
+            if (targetSection) targetSection.classList.add('active');
+
+            // Reset all sidebar highlights
+            document.querySelectorAll('.sidebar-group').forEach(g => g.classList.remove('active-group'));
+            document.querySelectorAll('.sidebar-group-header').forEach(h => h.classList.remove('active'));
+
+            // Highlight clicked group
+            const group = headerElement.closest('.sidebar-group');
+            if (group) {
+              group.classList.add('active-group');
+              headerElement.classList.add('active');
+            }
+          }
+
+          function selectColor(element, color) {
+            document.querySelectorAll('.color-option').forEach(c => c.classList.remove('active'));
+            element.classList.add('active');
+          }
+
+          function addUser() {
+            const name = document.getElementById('NewUserName').value;
+            if (!name) { alert('يرجى إدخال اسم المستخدم'); return; }
+            ArbahToast.success('تم إضافة المستخدم: ' + name)
+
+            document.getElementById('NewUserName').value = '';
+            document.getElementById('NewUserEmail').value = '';
+            document.getElementById('NewUserPhone').value = '';
+          }
+
+          function createBackup() {
+            ArbahToast.info('جاري إنشاء نسخة احتياطية...\n\nسيتم إشعارك عند الانتهاء.')
+          }
+
+          function saveSettings() {
+            ArbahToast.success('تم حفظ الإعدادات بنجاح!')
+
+          }
+
+          function resetSettings() {
+            if (confirm('هل أنت متأكد من إعادة تعيين جميع الإعدادات؟')) {
+              alert('تم إعادة تعيين الإعدادات إلى الوضع الافتراضي.');
+            }
+          }
+
+          // Initialize - show company section by default
+          document.addEventListener('DOMContentLoaded', function () {
+            const firstGroup = document.querySelector('.sidebar-group');
+            if (firstGroup) {
+              const header = firstGroup.querySelector('.sidebar-group-header');
+              const items = firstGroup.querySelector('.sidebar-items');
+              const sectionId = firstGroup.getAttribute('data-section');
+
+              if (header) header.classList.add('active');
+              if (items) items.classList.add('expanded');
+              firstGroup.classList.add('active-group');
+
+              // Show the first section
+              if (sectionId) {
+                const targetSection = document.getElementById('section-' + sectionId);
+                if (targetSection) targetSection.classList.add('active');
+              }
+            }
+          });
+        </script>
+</body>
+
+</html>

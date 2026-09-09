@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+
+    <div class="WorkSpace">
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2> <i class="fa-solid fa-sitemap"></i> شجرة الحسابات</h2>
+            <p>إدارة دليل الحسابات </p>
+          </div>
+
+          <div class="Tree-Wrapper">
+            <div class="Tree-Header">
+              <h3><i class="fa-solid fa-sitemap"></i> هيكل الحسابات</h3>
+              <div class="Tree-Header-actions">
+                <button class="Tool-Btn btn-excel" onclick="expandAll()"><i class="fa-solid fa-expand"></i>
+                  توسيع الكل</button>
+                <button class="Tool-Btn" onclick="collapseAll()"><i class="fa-solid fa-compress"></i> تقليص الكل
+                </button>
+              </div>
+            </div>
+
+            <div class="Tree-Body" id="AccountTreeContainer">
+              <div class="Tree-Children expanded has-line" id="children-0">
+              </div>
+            </div>
+          </div>
+
+        </main>
+    </div>
+
+    <%- include('../Partials/filter') %>
+      <%- include('../Partials/scripts') %>
+        <script src="/Js/ChartAccounts.js"></script>
+
+</body>
+
+</html>

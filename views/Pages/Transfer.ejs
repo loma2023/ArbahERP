@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+
+    <div class="WorkSpace">
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2>☻ تحويل مخزني جديد</h2>
+            <p></p>
+          </div>
+
+          <div class="Details-Receipt">
+            <div class="Details-Receipt-Column">
+              <div class="Field">
+                <label>رقم التحويل</label>
+                <div class="input">
+                  <input type="text" value="26-TR-0001" disabled="">
+                  <i class="fa-solid fa-hashtag"></i>
+                </div>
+              </div>
+              <div class="Field">
+                <label>الرقم المرجعي</label>
+                <div class="input">
+                  <input type="text" id="ReferenceNumber" placeholder="رقم مرجعي (اختياري)">
+                  <i class="fa-solid fa-hashtag"></i>
+                </div>
+              </div>
+            </div>
+            <div class="Details-Receipt-Column">
+              <div class="Field">
+                <label>تاريخ التحويل</label>
+                <div class="input">
+                  <input type="date" id="TransferDate">
+                  <i class="fa-solid fa-calendar"></i>
+                </div>
+              </div>
+              <div class="Field">
+                <label>تاريخ الإستلام المتوقع</label>
+                <div class="input">
+                  <input type="date" id="ExpectedReceiveDate">
+                  <i class="fa-solid fa-calendar-check"></i>
+                </div>
+              </div>
+            </div>
+            <div class="Details-Receipt-Column">
+              <div class="Field">
+                <label>المخزن المصدر <span style="color:var(--accent-red)">*</span></label>
+                <div class="input SelectInput">
+                  <select id="SourceWarehouse" onchange="handleWarehouseChange()">
+                    <option value="">اختر المخزن المصدر...</option>
+                    <option value="main">WH-001 - المستودع الرئيسي</option>
+                    <option value="shaabi">WH-002 - مخزن الشعبي</option>
+                    <option value="ahsa">WH-003 - مخزن الأحساء</option>
+                  </select>
+                  <i class="fa-solid fa-warehouse"></i>
+                </div>
+              </div>
+              <div class="Field">
+                <label>المخزن الوجهة <span style="color:var(--accent-red)">*</span></label>
+                <div class="input SelectInput">
+                  <select id="DestinationWarehouse" onchange="handleWarehouseChange()">
+                    <option value="">اختر المخزن الوجهة...</option>
+                    <option value="main">WH-001 - المستودع الرئيسي</option>
+                    <option value="shaabi">WH-002 - مخزن الشعبي</option>
+                    <option value="ahsa">WH-003 - مخزن الأحساء</option>
+                  </select>
+                  <i class="fa-solid fa-warehouse"></i>
+                </div>
+              </div>
+            </div>
+            <div class="Details-Receipt-Column">
+              <div class="Field">
+                <label>مركز تكلفة المصدر</label>
+                <div class="input SelectInput">
+                  <select id="SourceCostCenter">
+                    <option value="">اختر مركز التكلفة...</option>
+                    <option value="main">CC-001 - المستودع الرئيسي</option>
+                    <option value="riyadh">CC-002 - فرع الرياض</option>
+                    <option value="jeddah">CC-003 - فرع جدة</option>
+                  </select>
+                  <i class="fa-solid fa-location-dot"></i>
+                </div>
+              </div>
+              <div class="Field">
+                <label>مركز تكلفة الوجهة</label>
+                <div class="input SelectInput">
+                  <select id="DestinationCostCenter">
+                    <option value="">اختر مركز التكلفة...</option>
+                    <option value="main">CC-001 - المستودع الرئيسي</option>
+                    <option value="riyadh">CC-002 - فرع الرياض</option>
+                    <option value="jeddah">CC-003 - فرع جدة</option>
+                  </select>
+                  <i class="fa-solid fa-location-dot"></i>
+                </div>
+              </div>
+            </div>
+            <div class="Details-Receipt-Column">
+              <div class="Field">
+                <label>نوع التحويل</label>
+                <div class="input SelectInput">
+                  <select id="TransferType">
+                    <option value="normal">تحويل عادي</option>
+                    <option value="urgent">تحويل عاجل</option>
+                    <option value="return">تحويل مرتجع</option>
+                    <option value="adjustment">تسوية مخزنية</option>
+                  </select>
+                  <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                </div>
+              </div>
+              <div class="Field">
+                <label>المسؤول عن التحويل</label>
+                <div class="input SelectInput">
+                  <select id="TransferResponsible">
+                    <option value="">اختر المسؤول...</option>
+                    <option value="emp_001">EMP-001 - أحمد محمد</option>
+                    <option value="emp_002">EMP-002 - خالد عبدالله</option>
+                    <option value="emp_003">EMP-003 - سعيد علي</option>
+                  </select>
+                  <i class="fa-solid fa-user-tie"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="Container-Table Container-Table-Receipt">
+            <div class="Container-Table-Header">
+              <div class="Container-AddItem">
+                <div class="xxxxxxx">
+                  <div class="Field">
+                    <div class="input">
+                      <input type="text" id="QuickSearchItem" placeholder="ابحث باسم الصنف أو الباركود...">
+                      <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                  </div>
+                  <button class="Tool-Btn btn-add-item"
+                    onclick="openPopUpWindow('AddNewPopup'); setTimeout(initTransferPopup, 100);">
+                    <i class="fa-solid fa-plus"></i> إضافة صنف للتحويل
+                  </button>
+                </div>
+                <div class="xxxxxxx PriceType">
+                  <span id="WarehouseInfo" style="color: var(--text-sub); font-size: 13px;">
+                    <i class="fa-solid fa-circle-info"></i> اختر المخزن المصدر أولاً
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="Container-Table-Body">
+              <table class="Perfect-Table" id="TransferTable">
+                <thead>
+                  <tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 25%;">اسم الصنف</th>
+                    <th style="width: 10%;">الوحدة</th>
+                    <th style="width: 10%;">الكمية المتاحة</th>
+                    <th style="width: 10%;">الكمية المحولة</th>
+                    <th style="width: 10%;">سعر التكلفة</th>
+                    <th style="width: 10%;">الإجمالي</th>
+                    <th style="width: 17%;">ملاحظات</th>
+                    <th style="width: 5%;">حذف</th>
+                  </tr>
+                </thead>
+                <tbody id="TransferTableBody">
+                  <tr>
+                    <td onclick="openPopUpWindow('AddNewPopup'); setTimeout(initTransferPopup, 100);" colspan="9"
+                      class="NotFound">
+                      لا توجد أصناف في التحويل. اضغط "إضافة صنف" او F1 للبدء
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="Container-Table-Footer">
+              <span id="ItemsCount">عدد الأصناف: 0</span>
+              <span id="TotalTransferQty" style="margin-right: 20px; color: var(--text-sub);">إجمالي الكمية المحولة:
+                0</span>
+            </div>
+          </div>
+
+          <div class="Control-bar Control-bar-Receipt">
+            <div class="compact-cards-row">
+              <div class="mini-metric-card card-orange">
+                <div class="icon-box"><i class="fa-solid fa-calculator"></i></div>
+                <div class="info-text">
+                  <span class="lbl">عدد الأصناف</span>
+                  <input type="text" id="TotalItemsCount" class="num" value="0" readonly="">
+                </div>
+              </div>
+              <div class="mini-metric-card card-green">
+                <div class="icon-box"><i class="fa-solid fa-boxes-stacked"></i></div>
+                <div class="info-text">
+                  <span class="lbl">إجمالي الكمية</span>
+                  <input type="text" id="TotalQuantity" class="num" value="0" readonly="">
+                </div>
+              </div>
+              <div class="mini-metric-card card-blue">
+                <div class="icon-box"><i class="fa-solid fa-money-bill-wave"></i></div>
+                <div class="info-text">
+                  <span class="lbl">إجمالي التكلفة</span>
+                  <input type="text" id="TotalCost" class="num" value="0.00" readonly="">
+                </div>
+              </div>
+              <div class="mini-metric-card card-purple">
+                <div class="icon-box"><i class="fa-solid fa-weight-hanging"></i></div>
+                <div class="info-text">
+                  <span class="lbl">الوزن الإجمالي (كجم)</span>
+                  <input type="number" id="TotalWeight" class="num" value="0" min="0" step="0.1"
+                    onchange="calculateTransferTotals()">
+                </div>
+              </div>
+              <div class="mini-metric-card card-red">
+                <div class="icon-box"><i class="fa-solid fa-truck"></i></div>
+                <div class="info-text">
+                  <span class="lbl">تكلفة الشحن</span>
+                  <input type="number" id="ShippingCost" class="num" value="0" min="0" step="0.01"
+                    onchange="calculateTransferTotals()">
+                </div>
+              </div>
+              <div class="mini-metric-card card-orange">
+                <div class="icon-box"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                <div class="info-text">
+                  <span class="lbl">التكلفة الإجمالية</span>
+                  <input type="text" id="GrandTotal" class="num" value="0.00" readonly="" style="font-weight: 700;">
+                </div>
+              </div>
+            </div>
+
+            <div class="action-buttons-group">
+              <button class="Tool-Btn btn-print" onclick="printTransferFromPage()">
+                <i class="fa-solid fa-print"></i> طباعة
+              </button>
+              <button class="Tool-Btn btn-delete-selected" onclick="clearAllTransferItems()">
+                <i class="fa-solid fa-trash-can"></i> إفراغ
+              </button>
+              <button class="Tool-Btn btn-save" onclick="saveTransfer()">
+                <i class="fa-solid fa-save"></i> حفظ التحويل
+              </button>
+            </div>
+          </div>
+        </main>
+    </div>
+
+    <div class="Container-PopUp-Window" id="AddNewPopup">
+      <div class="PopUp-Window" id="PopUp-Window">
+        <div class="PopUpWindow-Header" id="WindowHeaderDrag">
+          <div class="PopUpWindow-Title">
+            <h3>اختيار صنف من المخزون</h3>
+            <p>ابحث عن الصنف واختره لإضافته للتحويل</p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('AddNewPopup')">
+            <i class="fa fa-xmark"></i>
+          </button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <div class="Search-Box">
+            <div class="Field">
+              <div class="input">
+                <input type="text" id="ItemSearchInput" placeholder="ابحث باسم الصنف أو الباركود أو الكود..."
+                  onkeyup="searchTransferItems()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </div>
+            </div>
+          </div>
+          <div class="Container-Table-Body">
+            <table class="Perfect-Table" id="ItemsTable">
+              <thead>
+                <tr>
+                  <th style="width: 4%;">
+                    <input type="checkbox" id="SelectAllItems" onchange="toggleTransferSelectAll()">
+                  </th>
+                  <th style="width: 8%;">#</th>
+                  <th style="width: 12%;">كود الصنف</th>
+                  <th style="width: 28%;">اسم الصنف</th>
+                  <th style="width: 12%;">الوحدة</th>
+                  <th style="width: 12%;">سعر التكلفة</th>
+                  <th style="width: 12%;">المخزون المتاح</th>
+                  <th style="width: 12%;">الموقع</th>
+                </tr>
+              </thead>
+              <tbody id="ItemsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('AddNewPopup')"><i class="fa fa-xmark"></i> إلغاء</button>
+          <button class="apply" onclick="addSelectedTransferItems()" id="AddSelectedBtn" disabled="">
+            <i class="fa fa-plus"></i> إضافة المختار (<span id="SelectedCount">0</span>)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../Partials/filter') %>
+      <%- include('../Partials/scripts') %>
+        <script src="/Js/Transfer.js"></script>
+
+</body>
+
+</html>

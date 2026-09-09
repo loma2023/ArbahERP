@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+
+    <div class="WorkSpace">
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2><i class="fa-solid fa-book-open"></i> القيود اليومية</h2>
+            <p>إدارة القيود المحاسبية وإنشاء قيود يدوية</p>
+          </div>
+
+          <div class="Control-bar">
+            <div class="compact-cards-row">
+              <div class="mini-metric-card card-green">
+                <div class="icon-box"><i class="fa-solid fa-list-ol"></i></div>
+                <div class="info-text">
+                  <span class="lbl">عدد القيود</span>
+                  <span class="num" id="TotalEntries">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-blue">
+                <div class="icon-box"><i class="fa-solid fa-arrow-down"></i></div>
+                <div class="info-text">
+                  <span class="lbl">إجمالي المدين</span>
+                  <span class="num" id="TotalDebit">0 ر.س</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-red">
+                <div class="icon-box"><i class="fa-solid fa-arrow-up"></i></div>
+                <div class="info-text">
+                  <span class="lbl">إجمالي الدائن</span>
+                  <span class="num" id="TotalCredit">0 ر.س</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-purple">
+                <div class="icon-box"><i class="fa-solid fa-scale-balanced"></i></div>
+                <div class="info-text">
+                  <span class="lbl">الرصيد</span>
+                  <span class="num" id="BalanceDiff">متوازن</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-green">
+                <div class="icon-box"><i class="fa-solid fa-check-circle"></i></div>
+                <div class="info-text">
+                  <span class="lbl">القيود المرحلة</span>
+                  <span class="num" id="PostedEntries">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-orange">
+                <div class="icon-box"><i class="fa-solid fa-pen"></i></div>
+                <div class="info-text">
+                  <span class="lbl">مسودات</span>
+                  <span class="num" id="DraftEntries">0</span>
+                </div>
+              </div>
+            </div>
+            <div class="action-buttons-group">
+              <button class="Tool-Btn btn-add-customer"
+                onclick="openPopUpWindow('AddNewPopup'); resetEntryForm(); fetchNextEntryNo();">
+                <i class="fa-solid fa-plus"></i> قيد يدوي جديد
+              </button>
+              <button class="Tool-Btn btn-excel" onclick="exportJournalExcel()">
+                <i class="fa-solid fa-file-excel"></i> تصدير Excel
+              </button>
+            </div>
+          </div>
+
+          <div class="Filter-bar">
+            <!-- من تاريخ -->
+            <div class="Field">
+              <label>من تاريخ</label>
+              <div class="input">
+                <input type="date" data-filter="date-from">
+                <i class="fa-solid fa-calendar"></i>
+              </div>
+            </div>
+
+            <!-- إلى تاريخ -->
+            <div class="Field">
+              <label>إلى تاريخ</label>
+              <div class="input">
+                <input type="date" data-filter="date-to">
+                <i class="fa-solid fa-calendar"></i>
+              </div>
+            </div>
+
+            <!-- بحث نصي -->
+            <div class="Field" style="flex: 1;">
+              <label>بحث</label>
+              <div class="input">
+                <input type="text" data-filter="search" placeholder="رقم العملية، اسم الموظف...">
+                <i class="fa-solid fa-search"></i>
+              </div>
+            </div>
+
+            <!-- زرار بحث -->
+            <button class="Tool-Btn" onclick="activeTableFilter?.applyAllFilters()">
+              <i class="fa-solid fa-search"></i> بحث
+            </button>
+
+            <!-- مسح -->
+            <button class="Tool-Btn" onclick="activeTableFilter?.clearFilter()">
+              <i class="fa-solid fa-rotate-left"></i> مسح
+            </button>
+          </div>
+
+          <div class="Container-Table">
+            <div class="Container-Table-Header">
+              <h3><i class="fa-solid fa-list-ol"></i> سجل القيود اليومية</h3>
+            </div>
+            <div class="Container-Table-Body">
+              <table class="Perfect-Table" id="MainPerfectTable">
+                <thead>
+                  <tr>
+                    <th style="width: 40px;">#</th>
+                    <th style="width: 100px;">
+                      <div class="th-content">رقم القيد <i class="fa-solid fa-filter Filter-Btn" data-columnindex="1"
+                          data-columnname="entryNo"></i></div>
+                    </th>
+                    <th style="width: 100px;">
+                      <div class="th-content">التاريخ <i class="fa-solid fa-filter Filter-Btn" data-columnindex="2"
+                          data-columnname="entryDate"></i></div>
+                    </th>
+                    <th style="width: 100px;">
+                      <div class="th-content">الفرع <i class="fa-solid fa-filter Filter-Btn" data-columnindex="3"
+                          data-columnname="branch"></i></div>
+                    </th>
+                    <th style="width: 100px;">
+                      <div class="th-content">مركز التكلفة <i class="fa-solid fa-filter Filter-Btn" data-columnindex="4"
+                          data-columnname="costCenter"></i></div>
+                    </th>
+                    <th style="width: 280px;">
+                      <div class="th-content">البيان <i class="fa-solid fa-filter Filter-Btn" data-columnindex="5"
+                          data-columnname="description"></i></div>
+                    </th>
+                    <th style="width: 110px;">
+                      <div class="th-content">المدين <i class="fa-solid fa-filter Filter-Btn" data-columnindex="6"
+                          data-columnname="totalDebit"></i></div>
+                    </th>
+                    <th style="width: 110px;">
+                      <div class="th-content">الدائن <i class="fa-solid fa-filter Filter-Btn" data-columnindex="7"
+                          data-columnname="totalCredit"></i></div>
+                    </th>
+                    <th style="width: 80px;">
+                      <div class="th-content">الحالة <i class="fa-solid fa-filter Filter-Btn" data-columnindex="8"
+                          data-columnname="status"></i></div>
+                    </th>
+                    <th style="width: 80px;">
+                      <div class="th-content">النوع <i class="fa-solid fa-filter Filter-Btn" data-columnindex="9"
+                          data-columnname="type"></i></div>
+                    </th>
+                    <th style="width: 80px;">الإجراء</th>
+                  </tr>
+                </thead>
+                <tbody id="JournalTableBody">
+                  <tr>
+                    <td colspan="11" class="NotFound">جاري التحميل...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="Container-Table-Footer">
+              <span class="info-text" id="showingDataMetrics">عرض 0 من 0</span>
+              <div id="PaginationPages" class="Pagination-Pages"></div>
+            </div>
+          </div>
+        </main>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!--    نافذة إضافة / تعديل قيد يومي                          -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div class="Container-PopUp-Window" id="AddNewPopup">
+      <div class="PopUp-Window" id="PopUp-Window" style="width: 950px; max-width: 95vw; max-height: 97vh;">
+        <div class="PopUpWindow-Header" id="WindowHeaderDrag">
+          <div class="PopUpWindow-Title">
+            <h3 id="PopupTitle">قيد يدوي جديد</h3>
+            <p id="PopupSubtitle">أدخل بيانات القيد والحسابات المشاركة</p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('AddNewPopup'); resetEntryForm();">
+            <i class="fa fa-xmark"></i>
+          </button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <form id="EntryForm">
+            <input type="hidden" id="EntryId" value="">
+            <div class="Form-Section">
+              <h4><i class="fa fa-info-circle"></i> البيانات الأساسية</h4>
+              <div class="grid Grid-4">
+                <div class="Field">
+                  <label>رقم القيد <span class="required">*</span></label>
+                  <div class="input">
+                    <input type="text" id="NewEntryNo" placeholder="JV-0001">
+                    <i class="fa fa-hashtag"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>التاريخ <span class="required">*</span></label>
+                  <div class="input">
+                    <input type="date" id="NewEntryDate">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                </div>
+                <!-- الفرع -->
+                <div class="Field" data-select="branch">
+                  <label>الفرع</label>
+                  <div class="input SelectInput">
+                    <input type="text" class="select-search" placeholder="اختر الفرع..." autocomplete="off">
+                    <input type="hidden" class="select-value" id="BranchId">
+                    <i class="fa fa-building select-icon"></i>
+                  </div>
+                  <div class="SelectOptionDropdown">
+                    <div class="select-content"></div>
+                  </div>
+                </div>
+
+                <!-- مركز التكلفة -->
+                <div class="Field" data-select="costcenter">
+                  <label>مركز التكلفة</label>
+                  <div class="input SelectInput">
+                    <input type="text" class="select-search" placeholder="اختر مركز التكلفة..." autocomplete="off">
+                    <input type="hidden" class="select-value" id="CostcenterId">
+                    <i class="fa fa-chart-pie select-icon"></i>
+                  </div>
+                  <div class="SelectOptionDropdown">
+                    <div class="select-content"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="Field" style="margin-top: 10px;">
+                <label>البيان العام</label>
+                <div class="input">
+                  <input type="text" id="NewEntryDesc" placeholder="وصف القيد المحاسبي...">
+                  <i class="fa fa-file-lines"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!--    تفاصيل القيد - جدول الأسطر                  -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="Form-Section" style="margin-top: 16px;">
+              <h4><i class="fa fa-list"></i> تفاصيل القيد</h4>
+              <div class="Container-Table Form-Section-Table">
+                <div class="Container-Table-Body">
+                  <table class="Perfect-Table" id="EntryLinesTable">
+                    <thead>
+                      <tr>
+                        <th style="width:38%;">اختر الحساب...</th>
+                        <th style="width: 24%;">بيان</th>
+                        <th style="width: 17%;">مدين</th>
+                        <th style="width: 17%;">دائن</th>
+                        <th style="width: 4%;">حذف</th>
+                      </tr>
+                    </thead>
+                    <tbody id="EntryLinesBody">
+                      <!-- أسطر القيد تُضاف ديناميكيا -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <button type="button" class="btn-add-unit" onclick="addEntryLine()">
+                <i class="fa fa-plus"></i> إضافة سطر جديد
+              </button>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!--    شريط الإجماليات                             -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="Form-Section">
+              <div class="entry-totals-bar">
+                <div class="total-item">
+                  <span class="label">إجمالي المدين</span>
+                  <span class="value debit" id="TotalDebitLine">0.00</span>
+                </div>
+                <div class="total-item">
+                  <span class="label">إجمالي الدائن</span>
+                  <span class="value credit" id="TotalCreditLine">0.00</span>
+                </div>
+                <div class="total-item">
+                  <span class="label">الفرق</span>
+                  <span class="value diff" id="TotalDiffLine">0.00</span>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('AddNewPopup'); resetEntryForm();">
+            <i class="fa fa-xmark"></i> إلغاء
+          </button>
+          <button class="apply" onclick="saveAsDraft()">
+            <i class="fa fa-floppy-disk"></i> حفظ كمسودة
+          </button>
+          <button class="apply" onclick="saveAndPostEntry()">
+            <i class="fa fa-check"></i> حفظ وترحيل
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!--    نافذة عرض تفاصيل القيد                                  -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div class="Container-PopUp-Window" id="DetailsPopup">
+      <div class="PopUp-Window" style="width: 900px; max-width: 95vw;">
+        <div class="PopUpWindow-Header">
+          <div class="PopUpWindow-Title">
+            <h3>تفاصيل قيد</h3>
+            <p><i class="fa-solid fa-hashtag"></i> <span id="DetailsCode">-</span></p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('DetailsPopup')">
+            <i class="fa fa-xmark"></i>
+          </button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <div class="voucher-details-container">
+            <div class="Watermark">قيد يومية</div>
+
+            <%- include('../Partials/letterHead') %>
+
+              <div class="Title-Voucher">قيد يومية</div>
+
+              <div class="voucher-info-grid Grid-4">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-blue">
+                    <i class="fa-solid fa-hashtag"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">رقم القيد</div>
+                    <div class="voucher-info-value" id="ViewEntryNo">-</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-purple">
+                    <i class="fa-solid fa-calendar"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">التاريخ</div>
+                    <div class="voucher-info-value" id="ViewEntryDate">-</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-green">
+                    <i class="fa-solid fa-pen"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الحالة</div>
+                    <div class="voucher-info-value" id="ViewEntryStatus">-</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-orange">
+                    <i class="fa-solid fa-layer-group"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">النوع</div>
+                    <div class="voucher-info-value" id="ViewEntryType">-</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-info-grid Grid-2" style="margin-top: 16px;">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-blue">
+                    <i class="fa-solid fa-building"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الفرع</div>
+                    <div class="voucher-info-value" id="ViewBranch">-</div>
+                  </div>
+                </div>
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-purple">
+                    <i class="fa-solid fa-chart-pie"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">مركز التكلفة</div>
+                    <div class="voucher-info-value" id="ViewCostCenter">-</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="Container-Table Form-Section-Table Container-Table-Journal" style="margin-top: 20px;">
+                <div class="Container-Table-Header">
+                  <h3><i class="fa-solid fa-list"></i> تفاصيل القيد</h3>
+                </div>
+                <div class="Container-Table-Body" style="height: auto;">
+                  <table class="Perfect-Table">
+                    <thead>
+                      <tr>
+                        <th style="width:11%;">كود الحساب</th>
+                        <th style="width:33%;">الحساب</th>
+                        <th style="width:29%;">البيان</th>
+                        <th style="width:13%;">مدين</th>
+                        <th style="width:13%;">دائن</th>
+                      </tr>
+                    </thead>
+                    <tbody id="ViewEntryLinesBody">
+                      <!-- أسطر القيد تُعرض ديناميكيا -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="voucher-notes-section" style="margin-top: 16px;">
+                <div class="voucher-notes-title">
+                  <i class="fa-solid fa-pen"></i> البيان
+                </div>
+                <div class="voucher-notes-text" id="ViewEntryDescription">
+                  -
+                </div>
+              </div>
+
+              <div class="LetterFoot">
+                <div class="Footer-Left">
+                  <span class="system-badge"><i class="fa-solid fa-shield-halved"></i>ArbahERP v4.0</span>
+                  <span id="ViewEntryFooterInfo">تم إنشاؤها بواسطة: - | -</span>
+                </div>
+                <div class="Footer-Pages">صفحة 1 من 1</div>
+              </div>
+          </div>
+        </div>
+
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('DetailsPopup')">
+            <i class="fa fa-xmark"></i> إغلاق
+          </button>
+          <button class="apply btn-print" onclick="PrintAreaFn('#DetailsPopup .PopUpWindow-Body')">
+            <i class="fa fa-print"></i> طباعة
+          </button>
+          <button class="apply" id="PostEntryBtn" onclick="postEntry()">
+            <i class="fa fa-check"></i> ترحيل
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../Partials/filter') %>
+      <%- include('../Partials/scripts') %>
+
+        <script src="Js/JournalEntries.js"></script>
+</body>
+
+</html>

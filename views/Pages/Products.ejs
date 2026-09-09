@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <%- include('../Partials/head') %>
+</head>
+
+<body>
+  <%- include('../Partials/sidebar') %>
+    <div class="WorkSpace">
+      <%- include('../Partials/header') %>
+
+        <main class="WorkSpace-Content">
+          <div class="Page-Title">
+            <h2><i class="fa-solid fa-cube"></i> المنتجات </h2>
+            <p>إدارة الأصناف والمنتجات مع الوحدات والأسعار المتعددة</p>
+          </div>
+
+          <div class="Control-bar">
+            <div class="compact-cards-row">
+              <div class="mini-metric-card card-orange">
+                <div class="icon-box"><i class="fa-solid fa-boxes-stacked"></i></div>
+                <div class="info-text">
+                  <span class="lbl">إجمالي الأصناف</span>
+                  <span class="num" id="TotalItemsCount">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-red">
+                <div class="icon-box"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="info-text">
+                  <span class="lbl">وشك على النفاذ</span>
+                  <span class="num" id="LowStockCount">0</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-green">
+                <div class="icon-box"><i class="fa-solid fa-coins"></i></div>
+                <div class="info-text">
+                  <span class="lbl">قيمة المخزون</span>
+                  <span class="num" id="InventoryValue">0 ر.س</span>
+                </div>
+              </div>
+              <div class="mini-metric-card card-blue">
+                <div class="icon-box"><i class="fa-solid fa-tags"></i></div>
+                <div class="info-text">
+                  <span class="lbl">عدد الفئات</span>
+                  <span class="num" id="CategoriesCount">0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="action-buttons-group">
+              <button class="Tool-Btn btn-add-Customer" onclick="resetForm(); openPopUpWindow('AddNewPopup');">
+                <i class="fa-solid fa-plus"></i> إضافة صنف
+              </button>
+              <button class="Tool-Btn btn-excel" onclick="exportInventoryExcel()"><i class="fa-solid fa-file-excel"></i>
+                تصدير Excel</button>
+            </div>
+          </div>
+
+          <div class="Container-Table">
+            <div class="Container-Table-Body">
+              <table class="Perfect-Table" id="MainPerfectTable">
+                <thead>
+                  <tr>
+                    <th style="width: 3%;">#</th>
+                    <th style="width: 20%;">
+                      <div class="th-content">الصنف <i class="fa-solid fa-filter Filter-Btn" data-columnindex="1"
+                          data-columnname="name"></i></div>
+                    </th>
+                    <th style="width: 10%;">
+                      <div class="th-content">الفئة <i class="fa-solid fa-filter Filter-Btn" data-columnindex="2"
+                          data-columnname="category"></i></div>
+                    </th>
+                    <th style="width: 25%;">
+                      <div class="th-content">الوحدات والأسعار <i class="fa-solid fa-filter Filter-Btn"
+                          data-columnindex="3" data-columnname="units"></i></div>
+                    </th>
+                    <th style="width: 25%;">
+                      <div class="th-content">الكمية الموجودة <i class="fa-solid fa-filter Filter-Btn"
+                          data-columnindex="5" data-columnname="stock"></i></div>
+                    </th>
+                    <th style="width: 7%;">الحالة</th>
+                    <th style="width: 5%;">الضريبة</th>
+                    <th style="width: 5%;">الإجراء</th>
+                  </tr>
+                </thead>
+                <tbody id="ProductsTable">
+                </tbody>
+              </table>
+            </div>
+            <div class="Container-Table-Footer">
+              <span class="info-text" id="showingDataMetrics">عرض 0 من 0</span>
+              <div id="PaginationPages" class="Pagination-Pages"></div>
+            </div>
+          </div>
+        </main>
+    </div>
+
+    <div class="Container-PopUp-Window" id="AddNewPopup">
+      <div class="PopUp-Window" id="PopUp-Window">
+        <div class="PopUpWindow-Header" id="WindowHeaderDrag">
+          <div class="PopUpWindow-Title">
+            <h3 id="PopupTitle">إضافة صنف جديد</h3>
+            <p id="PopupSubtitle">أدخل بيانات الصنف والوحدات والأسعار</p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('AddNewPopup')">
+            <i class="fa fa-xmark"></i></button>
+        </div>
+        <div class="PopUpWindow-Body">
+          <form id="ItemForm">
+            <input type="hidden" id="ItemId" value="">
+            <div class="Form-Section">
+              <h4><i class="fa fa-box"></i> البيانات الأساسية</h4>
+              <div class="grid">
+                <div class="Field">
+                  <label>كود الصنف</label>
+                  <div class="input">
+                    <input type="text" id="ItemCode" disabled placeholder="ITM-XXX" readonly>
+                    <i class="fa-solid fa-hashtag"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>اسم الصنف <span style="color:red">*</span></label>
+                  <div class="input"><input type="text" id="ItemName" placeholder="اسم الصنف"><i class="fa fa-box"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="grid" style="margin-top: 12px;">
+                <div class="Field">
+                  <label>الفئة</label>
+                  <div class="input SelectInput">
+                    <select id="ItemCategory">
+                      <option value="إلكترونيات">إلكترونيات</option>
+                      <option value="اكسسوارات">اكسسوارات</option>
+                      <option value="تخزين">تخزين</option>
+                      <option value="شبكات">شبكات</option>
+                      <option value="صوتيات">صوتيات</option>
+                    </select>
+                    <i class="fa fa-tags"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>الباركود</label>
+                  <div class="input"><input type="text" id="ItemBarcode" placeholder="Barcode"><i
+                      class="fa fa-barcode"></i></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="Form-Section">
+              <h4><i class="fa fa-warehouse"></i> المخزون والضريبة</h4>
+              <div class="grid">
+                <div class="Field">
+                  <label>المخزون الحالي</label>
+                  <div class="input"><input type="number" id="ItemStock" value="0" min="0"><i
+                      class="fa fa-warehouse"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>الحد الأدنى للتنبيه</label>
+                  <div class="input"><input type="number" id="MinStockAlert" value="5" min="0"><i
+                      class="fa fa-triangle-exclamation"></i></div>
+                </div>
+                <div class="Field">
+                  <label>حالة الضريبة</label>
+                  <div class="input SelectInput">
+                    <select id="TaxStatus">
+                      <option value="taxable">خاضع للضريبة (15%)</option>
+                      <option value="exempt">معفى من الضريبة</option>
+                    </select>
+                    <i class="fa fa-percent"></i>
+                  </div>
+                </div>
+                <div class="Field">
+                  <label>المخزن الافتراضي</label>
+                  <div class="input SelectInput">
+                    <select id="DefaultWarehouse">
+                      <option value="main">المستودع الرئيسي</option>
+                      <option value="shaabi">مخزن الشعبي</option>
+                      <option value="ahsa">مخزن الأحساء</option>
+                    </select>
+                    <i class="fa fa-warehouse"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="Container-Table Form-Section-Table">
+              <div class="Container-Table-Header">
+                <h3><i class="fa fa-layer-group"></i> الوحدات والأسعار (لكل وحدة سعر مختلف)</h3>
+              </div>
+              <div class="Container-Table-Body">
+                <table class="Perfect-Table ">
+                  <thead>
+                    <tr>
+                      <th style="width: 20%;">اسم الوحدة <span style="color:red">*</span></th>
+                      <th style="width: 17%;">سعر الشراء</th>
+                      <th style="width: 17%;">سعر التجزئة</th>
+                      <th style="width: 17%;">سعر الجملة</th>
+                      <th style="width: 17%;">سعر VIP</th>
+                      <th style="width: 17%;">الكمية الأساسية</th>
+                      <th style="width: 17%;">الوحدة الأساسية</th>
+                      <th style="width: 12%;">حذف</th>
+                    </tr>
+                  </thead>
+                  <tbody id="UnitsTableBody">
+                    <tr>
+                      <td>
+                        <div class="Field">
+                          <div class="input"><input type="text" class="unit-input" placeholder="اسم الوحدة"><i
+                              class="fa fa-file-lines"></i></div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="Field">
+                          <div class="input"><input type="number" class="unit-input" placeholder="0.00"><i
+                              class="fa fa-file-lines"></i></div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="Field">
+                          <div class="input"><input type="number" class="unit-input" placeholder="0.00"><i
+                              class="fa fa-file-lines"></i></div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="Field">
+                          <div class="input"><input type="number" disabled class="unit-input" placeholder="1"
+                              value="1"><i class="fa fa-file-lines"></i></div>
+                        </div>
+                      </td>
+                      <td>
+                        <span class="status-badge Color-Bg-green">أساسية</span>
+                      </td>
+                      <td>
+                        <button type="button" class="btn-remove-unit" onclick="removeUnitRow(this)"><i
+                            class="fa fa-trash"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <button type="button" class="btn-add-unit" onclick="addUnitRow()"><i class="fa fa-plus"></i>
+                إضافة وحدة جديدة</button>
+            </div>
+          </form>
+        </div>
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('AddNewPopup')"><i class="fa fa-xmark"></i> إلغاء</button>
+          <button class="apply" onclick="saveItem()"><i class="fa fa-save"></i> حفظ الصنف</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="Container-PopUp-Window" id="DetailsPopup">
+      <div class="PopUp-Window">
+        <div class="PopUpWindow-Header">
+          <div class="PopUpWindow-Title">
+            <h3>تفاصيل الصنف</h3>
+            <p><i class="fa-solid fa-hashtag"></i>
+              <span id="DetailsCode">PROD-001</span>
+            </p>
+          </div>
+          <button class="PopUpWindow-CloseBtn" onclick="closePopUpWindow('DetailsPopup')"><i
+              class="fa fa-xmark"></i></button>
+        </div>
+
+        <div class="PopUpWindow-Body" id="VoucherDetailsBody">
+          <div class="voucher-details-container">
+            <div class="Watermark">تفاصيل صنف </div>
+
+            <%- include('../Partials/letterHead') %>
+
+              <div class="Title-Voucher">تفاصيل صنف</div>
+
+              <div class="voucher-info-grid">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-red">
+                    <i class="fa-solid fa-building"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">اسم الصنف </div>
+                    <div class="voucher-info-value" id="DetailsName">-</div>
+                    <div class="voucher-info-label" id="DetailsCodeLabel">-</div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="voucher-info-grid Grid-3">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-blue">
+                    <i class="fa-solid fa-barcode"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">باركود الصنف</div>
+                    <div class="voucher-info-value" id="DetailsBarcode">-</div>
+                  </div>
+                </div>
+
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-purple">
+                    <i class="fa-solid fa-tags"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الفئة</div>
+                    <div class="voucher-info-value" id="DetailsCategory">-</div>
+                  </div>
+                </div>
+
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-cyan">
+                    <i class="fa-solid fa-percent"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الضريبة</div>
+                    <div class="voucher-info-value" id="DetailsTax">-</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voucher-notes-section">
+                <div class="voucher-notes-title">
+                  <i class="fa-solid fa-cube"></i> الوحدات والسعر
+                </div>
+                <div class="voucher-notes-text" id="DetailsUnits">
+                </div>
+              </div>
+
+              <div class="voucher-info-grid Grid-3">
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-blue">
+                    <i class="fa-solid fa-box"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الكمية الافتتاحية </div>
+                    <div class="voucher-info-value" id="DetailsOpeningStock">0</div>
+                  </div>
+                </div>
+
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-purple">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">حد الطلب</div>
+                    <div class="voucher-info-value" id="DetailsMinAlert">0</div>
+                  </div>
+                </div>
+
+                <div class="voucher-info-card">
+                  <div class="voucher-info-icon Color-Bg-cyan">
+                    <i class="fa-solid fa-warehouse"></i>
+                  </div>
+                  <div class="voucher-info-content">
+                    <div class="voucher-info-label">الكمية الحالية</div>
+                    <div class="voucher-info-value" id="DetailsStock">0</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="LetterFoot">
+                <div class="Footer-Left">
+                  <span class="system-badge"><i class="fa-solid fa-shield-halved"></i>ArbahERP v1.0</span>
+                  <span>تم إنشاؤها بواسطة: إسلام عبدالرحمن ابراهيم عبدالنعيم | 2024/06/09 14:30:25</span>
+                </div>
+                <div class="Footer-Pages">صفحة 1 من 1</div>
+              </div>
+
+          </div>
+        </div>
+
+        <div class="PopUpWindow-Footer">
+          <button class="reset" onclick="closePopUpWindow('DetailsPopup')"><i class="fa fa-xmark"></i>
+            إغلاق</button>
+          <button class="apply" onclick="PrintAreaFn('#DetailsPopup .PopUpWindow-Body')"><i
+              class="fa-solid fa-print"></i>
+            طباعة</button>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../Partials/filter') %>
+      <%- include('../Partials/scripts') %>
+        <script src="/js/Products.js"></script>
+</body>
+
+</html>
