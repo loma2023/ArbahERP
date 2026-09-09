@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const dotenv = require("dotenv");
-dotenv.config();
+dotenv.config({ quiet: true });
 const connectDB = require("./Config/db");
 const seedAccounts = require("./Config/SeedChartOfAccounts");
 const cors = require("cors");
